@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>食品中微塑膠檢測｜3 小時互動課程（NIR・FTIR・Raman・GC-MS・LC-MS）</title>
+  <title>食品中微塑膠檢測｜NIR・FTIR・Raman・GC-MS・LC-MS</title>
   <style>
     :root {
       --bg: #f8fafc;
@@ -139,6 +139,7 @@
       background: #f1f5f9; border: 1px solid var(--line);
       font-size: 18px; color: #1e293b;
     }
+    .resultBox:empty { display: none; }
     .progress {
       position: fixed; left: 0; top: 0; height: 5px;
       background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
@@ -226,60 +227,48 @@
 
     <!-- S1 封面 -->
     <section class="slide active">
-      <h1>食品中微塑膠檢測<br/><span style="color:#0ea5e9;font-size:38px;">微塑膠分析的五大儀器技術</span></h1>
-      <p class="subtitle">3 小時授課簡報 ｜ NIR・FTIR・Raman・Py-GC-MS・LC-MS</p>
-      <div>
-        <span class="tag">微塑膠 MP</span>
-        <span class="tag">奈米塑膠 NP</span>
-        <span class="tag purple">振動光譜</span>
-        <span class="tag purple">熱裂解質譜</span>
-        <span class="tag pink">食品安全</span>
-      </div>
+      <h1>食品中微塑膠檢測</h1>
+      <p class="subtitle">NIR・FTIR・Raman・Py-GC-MS・LC-MS</p>
       <div class="card">
         <h3>今天你會學到</h3>
         <ul>
           <li>食品中微塑膠的來源、種類與健康疑慮</li>
-          <li>NIR / FTIR / Raman 三種振動光譜各自的<span class="highlight">偵測極限</span>與應用場景</li>
+          <li>三種振動光譜各自的<span class="highlight">偵測極限</span>與應用場景</li>
           <li>Py-GC-MS、TED-GC-MS 如何進行<span class="highlight">質量定量</span></li>
           <li>LC-MS 在塑化劑、寡聚物、添加劑分析的角色</li>
           <li>如何依樣品特性與目標<span class="highlight">選擇正確方法</span></li>
         </ul>
       </div>
-      <p class="mini">本簡報為教師授課用版本：互動題會直接顯示正解回饋；橘色框為教師備課提示；底部可列印為 PDF。</p>
     </section>
 
     <!-- S2 課程地圖 -->
     <section class="slide">
       <h2>課程地圖（180 分鐘）</h2>
       <table>
-        <tr><th style="width:90px">時間</th><th>模組</th><th>主題</th><th>互動形式</th></tr>
-        <tr><td>0–10</td><td>M0</td><td>引言與暖身投票</td><td>投票、自由作答</td></tr>
-        <tr><td>10–35</td><td>M1</td><td>微塑膠 101：定義、來源、前處理</td><td>選擇題、配對</td></tr>
-        <tr><td>35–85</td><td>M2</td><td>振動光譜：NIR、FTIR、Raman</td><td>圖譜辨識、是非題</td></tr>
-        <tr><td>85–95</td><td>—</td><td>休息</td><td>—</td></tr>
-        <tr><td>95–155</td><td>M3</td><td>質譜技術：Py-GC-MS、LC-MS</td><td>裂解產物配對、情境決策</td></tr>
-        <tr><td>155–170</td><td>M4</td><td>方法整合與決策樹</td><td>實驗設計、文獻案例</td></tr>
-        <tr><td>170–180</td><td>M5</td><td>總結與 Exit Ticket</td><td>短答回饋</td></tr>
+        <tr><th style="width:100px">時間</th><th>主題</th></tr>
+        <tr><td>0–10</td><td>引言與暖身</td></tr>
+        <tr><td>10–35</td><td>微塑膠 101：定義、來源、樣品前處理</td></tr>
+        <tr><td>35–85</td><td>振動光譜：NIR、FTIR、Raman</td></tr>
+        <tr><td>85–95</td><td>休息</td></tr>
+        <tr><td>95–155</td><td>質譜技術：Py-GC-MS、LC-MS</td></tr>
+        <tr><td>155–170</td><td>方法整合與決策樹</td></tr>
+        <tr><td>170–180</td><td>總結與 Exit Ticket</td></tr>
       </table>
-      <div class="card ref">
-        <p class="mini"><strong>核心參考文獻：</strong>Käppler et al. (2016) <em>Anal Bioanal Chem</em>; Primpke et al. (2020) <em>Appl Spectrosc</em>; Ribeiro et al. (2020) <em>Environ Sci Technol</em>; Cowger et al. (2020) <em>Appl Spectrosc</em>; Schwaferts et al. (2019) <em>TrAC</em>; La Nasa et al. (2020) <em>J Hazard Mater</em>.</p>
-      </div>
     </section>
 
     <!-- S3 暖身投票 -->
     <section class="slide">
       <h2>暖身：你覺得「成年人每週平均吃進」多少微塑膠？</h2>
       <div class="card activity">
-        <h3>請選擇你的猜測</h3>
         <button class="choice" onclick="selectChoice(this,'q_warmup','A')">A. 幾乎沒有（&lt; 0.01 g）</button>
         <button class="choice" onclick="selectChoice(this,'q_warmup','B')">B. 約 1 g（一張提款卡的塑膠粉末）</button>
         <button class="choice" onclick="selectChoice(this,'q_warmup','C')">C. 約 5 g（一張信用卡的塑膠粉末）</button>
         <button class="choice" onclick="selectChoice(this,'q_warmup','D')">D. 約 50 g（一支牙刷的塑膠粉末）</button>
-        <div class="resultBox" id="q_warmup_result">選完後告訴旁邊同學你的理由。</div>
+        <div class="resultBox" id="q_warmup_result"></div>
       </div>
       <details>
-        <summary>提示：研究報告怎麼說？</summary>
-        <p>WWF 委託紐卡索大學 Senathirajah et al. (2021) 的系統性回顧估計：成年人<span class="highlight">每週可能攝入 0.1–5 g</span>（中位數約 0.7 g/週）微塑膠，相當於信用卡等級的數量級。實際攝入量隨飲水習慣（瓶裝水比自來水高 3–4 倍）、貝類食用量、海鹽使用量等差異甚大。</p>
+        <summary>研究結果</summary>
+        <p>Senathirajah et al. (2021) 系統性回顧估計：成年人<span class="highlight">每週攝入 0.1–5 g</span>（中位數 0.7 g/週）微塑膠，相當於一張信用卡的塑膠量。瓶裝水比自來水高 3–4 倍。</p>
         <p class="citation">Senathirajah K. et al. (2021) <em>J Hazard Mater</em> 404:124004.</p>
       </details>
     </section>
@@ -391,19 +380,13 @@
           </ul>
         </div>
       </div>
-      <div class="card teacherTip">
-        <h3>🎯 課程定位</h3>
-        <p>本課程聚焦於<span class="highlight">分析化學技術</span>本身，毒理學與風險評估只做背景說明。我們的目標是讓學生能在實驗室真正執行分析、判讀光譜、選擇方法。</p>
-      </div>
       <p class="citation">Leslie HA. et al. (2022) Discovery and quantification of plastic particle pollution in human blood. <em>Environ Int</em> 163:107199.</p>
     </section>
 
     <!-- S8 樣品前處理總覽 -->
     <section class="slide">
       <h2>樣品前處理：分析前最關鍵的一步</h2>
-      <div class="card">
-        <p>不論用什麼儀器分析，<span class="highlight">前處理品質決定一切</span>。錯誤的前處理會：① 破壞塑膠本身、② 引入背景污染、③ 干擾光譜判讀。</p>
-      </div>
+      <p>錯誤的前處理會：① 破壞塑膠本身、② 引入背景污染、③ 干擾光譜判讀。<span class="highlight">前處理品質決定一切</span>。</p>
       <table>
         <tr><th>步驟</th><th>目的</th><th>常用方法</th><th>注意事項</th></tr>
         <tr><td>1. 取樣</td><td>避免空氣污染</td><td>玻璃容器、鋁箔覆蓋、無棉質實驗衣</td><td>全程設<span class="bad">程序空白組</span></td></tr>
@@ -417,14 +400,13 @@
 
     <!-- S9 互動：消化方法 -->
     <section class="slide">
-      <h2>互動：消化方法的選擇</h2>
+      <h2>分析 100 g 鮮魚消化道內的微塑膠，哪種消化方法最適合？</h2>
       <div class="card activity">
-        <h3>情境：你要分析 100 g 鮮魚消化道內的微塑膠，哪種消化方法最適合？</h3>
         <button class="choice" onclick="checkMCQ(this,'q_digest','A',false)">A. 濃硝酸 (HNO₃) 加熱迴流</button>
         <button class="choice" onclick="checkMCQ(this,'q_digest','B',true)">B. 10% KOH，40°C，24–48 小時</button>
         <button class="choice" onclick="checkMCQ(this,'q_digest','C',false)">C. 直接用蒸餾水浸泡</button>
         <button class="choice" onclick="checkMCQ(this,'q_digest','D',false)">D. 30% H₂O₂ 加熱至 80°C 持續 24 h</button>
-        <div class="resultBox" id="q_digest_result">點選一個答案。</div>
+        <div class="resultBox" id="q_digest_result"></div>
       </div>
       <details>
         <summary>為什麼？</summary>
@@ -535,7 +517,7 @@
         <button class="choice" onclick="checkMCQ(this,'q_nir','B',true)">B. 工廠回收線高速分選 2 cm 大小的 PET 與 HDPE 瓶片</button>
         <button class="choice" onclick="checkMCQ(this,'q_nir','C',false)">C. 鑑定海鹽中 50 μm 的塑膠纖維</button>
         <button class="choice" onclick="checkMCQ(this,'q_nir','D',false)">D. 偵測魚肉裡 0.5 μg 的 PS</button>
-        <div class="resultBox" id="q_nir_result">點選一個答案。</div>
+        <div class="resultBox" id="q_nir_result"></div>
       </div>
       <details>
         <summary>解析</summary>
@@ -622,15 +604,14 @@
 
     <!-- S17 互動：FTIR 圖譜辨識 1 -->
     <section class="slide">
-      <h2>互動：FTIR 圖譜辨識（一）</h2>
+      <h2>FTIR 圖譜辨識（一）：請判斷塑膠類型</h2>
       <div class="card activity">
-        <h3>下方為某未知塑膠的 FTIR 圖譜，主要吸收峰在 2915、2848、1463、720 cm⁻¹。請判斷塑膠類型：</h3>
-        <div class="chart" data-spec="ftir_pe" data-title="未知塑膠 FTIR 圖譜" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#0c4a6e" data-xreverse="1" data-markers="2915,2848,1463,720" data-source="待學生判讀的測試圖譜"></div>
+        <div class="chart" data-spec="ftir_pe" data-title="未知塑膠 FTIR｜主要吸收峰：2915、2848、1463、720 cm⁻¹" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#0c4a6e" data-xreverse="1" data-markers="2915,2848,1463,720"></div>
         <button class="choice" onclick="checkMCQ(this,'q_ftir1','PE',true)">A. 聚乙烯 (PE)</button>
         <button class="choice" onclick="checkMCQ(this,'q_ftir1','PP',false)">B. 聚丙烯 (PP)</button>
         <button class="choice" onclick="checkMCQ(this,'q_ftir1','PET',false)">C. 聚對苯二甲酸乙二酯 (PET)</button>
         <button class="choice" onclick="checkMCQ(this,'q_ftir1','PS',false)">D. 聚苯乙烯 (PS)</button>
-        <div class="resultBox" id="q_ftir1_result">點選一個答案。</div>
+        <div class="resultBox" id="q_ftir1_result"></div>
       </div>
       <details>
         <summary>判讀邏輯</summary>
@@ -645,15 +626,14 @@
 
     <!-- S18 互動：FTIR 圖譜辨識 2 -->
     <section class="slide">
-      <h2>互動：FTIR 圖譜辨識（二）</h2>
+      <h2>FTIR 圖譜辨識（二）：海鹽中分離的 80 μm 透明顆粒</h2>
       <div class="card activity">
-        <h3>某海鹽樣品中分離出一顆 80 μm 透明顆粒，μ-FTIR 結果顯示強烈吸收於 1715、1240、1090 cm⁻¹，以及 720 cm⁻¹。請判斷：</h3>
-        <div class="chart" data-spec="ftir_pet" data-title="海鹽中分離出的 80 μm 透明顆粒 FTIR" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#0c4a6e" data-xreverse="1" data-markers="1715,1240,1090,723" data-source="待學生判讀的測試圖譜"></div>
+        <div class="chart" data-spec="ftir_pet" data-title="μ-FTIR｜強烈吸收於 1715、1240、1090、720 cm⁻¹" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#0c4a6e" data-xreverse="1" data-markers="1715,1240,1090,723"></div>
         <button class="choice" onclick="checkMCQ(this,'q_ftir2','PE',false)">A. 聚乙烯 (PE)</button>
         <button class="choice" onclick="checkMCQ(this,'q_ftir2','PVC',false)">B. 聚氯乙烯 (PVC)</button>
         <button class="choice" onclick="checkMCQ(this,'q_ftir2','PET',true)">C. 聚對苯二甲酸乙二酯 (PET)</button>
         <button class="choice" onclick="checkMCQ(this,'q_ftir2','PA',false)">D. 耐隆 (PA / Nylon)</button>
-        <div class="resultBox" id="q_ftir2_result">點選一個答案。</div>
+        <div class="resultBox" id="q_ftir2_result"></div>
       </div>
       <details>
         <summary>判讀邏輯</summary>
@@ -711,14 +691,14 @@
 
     <!-- S21 互動：Raman 圖譜辨識 -->
     <section class="slide">
-      <h2>互動：Raman 圖譜辨識</h2>
+      <h2>Raman 圖譜辨識：免洗杯刮下的 30 μm 顆粒</h2>
+      <p>主要峰位於 <span class="highlight">621、1001、1031、1602、3050 cm⁻¹</span></p>
       <div class="card activity">
-        <h3>從免洗杯刮下的一顆 30 μm 透明顆粒，Raman 結果顯示主要峰位於 <span class="highlight">621、1001、1031、1602、3050 cm⁻¹</span>。請判斷：</h3>
         <button class="choice" onclick="checkMCQ(this,'q_raman1','PE',false)">A. PE</button>
         <button class="choice" onclick="checkMCQ(this,'q_raman1','PP',false)">B. PP</button>
         <button class="choice" onclick="checkMCQ(this,'q_raman1','PS',true)">C. PS</button>
         <button class="choice" onclick="checkMCQ(this,'q_raman1','PVC',false)">D. PVC</button>
-        <div class="resultBox" id="q_raman1_result">點選一個答案。</div>
+        <div class="resultBox" id="q_raman1_result"></div>
       </div>
       <details>
         <summary>判讀邏輯</summary>
@@ -762,37 +742,36 @@
 
     <!-- S23 模組二整合是非題 -->
     <section class="slide">
-      <h2>模組二整合測驗：是非題（連續 5 題）</h2>
+      <h2>振動光譜整合測驗：是非題</h2>
       <div class="card activity">
-        <h3>請判斷下列敘述是否正確：</h3>
         <p><strong>1.</strong> FTIR 在 1715 cm⁻¹ 的強吸收是辨識 PET 的關鍵指標。</p>
         <button class="choice" onclick="checkMCQ(this,'q_tf1','T',true)">✓ 正確</button>
         <button class="choice" onclick="checkMCQ(this,'q_tf1','F',false)">✗ 錯誤</button>
-        <div class="resultBox" id="q_tf1_result">—</div>
+        <div class="resultBox" id="q_tf1_result"></div>
       </div>
       <div class="card activity">
         <p><strong>2.</strong> Raman 光譜法在水溶液中表現極差，所以無法分析水裡的微塑膠。</p>
         <button class="choice" onclick="checkMCQ(this,'q_tf2','T',false)">✓ 正確</button>
         <button class="choice" onclick="checkMCQ(this,'q_tf2','F',true)">✗ 錯誤</button>
-        <div class="resultBox" id="q_tf2_result">—</div>
+        <div class="resultBox" id="q_tf2_result"></div>
       </div>
       <div class="card activity">
         <p><strong>3.</strong> 顯微 FTIR 受紅外光繞射極限限制，傳統機型偵測下限約為 10–20 μm。</p>
         <button class="choice" onclick="checkMCQ(this,'q_tf3','T',true)">✓ 正確</button>
         <button class="choice" onclick="checkMCQ(this,'q_tf3','F',false)">✗ 錯誤</button>
-        <div class="resultBox" id="q_tf3_result">—</div>
+        <div class="resultBox" id="q_tf3_result"></div>
       </div>
       <div class="card activity">
         <p><strong>4.</strong> NIR 適合用來分析 5 μm 以下的奈米塑膠。</p>
         <button class="choice" onclick="checkMCQ(this,'q_tf4','T',false)">✓ 正確</button>
         <button class="choice" onclick="checkMCQ(this,'q_tf4','F',true)">✗ 錯誤</button>
-        <div class="resultBox" id="q_tf4_result">—</div>
+        <div class="resultBox" id="q_tf4_result"></div>
       </div>
       <div class="card activity">
         <p><strong>5.</strong> 改用 785 或 1064 nm 雷射可降低 Raman 的螢光干擾。</p>
         <button class="choice" onclick="checkMCQ(this,'q_tf5','T',true)">✓ 正確</button>
         <button class="choice" onclick="checkMCQ(this,'q_tf5','F',false)">✗ 錯誤</button>
-        <div class="resultBox" id="q_tf5_result">—</div>
+        <div class="resultBox" id="q_tf5_result"></div>
       </div>
       <div class="card teacherTip">
         <h3>答案：T, F, T, F, T</h3>
@@ -804,19 +783,9 @@
     <!-- S24 休息 -->
     <section class="slide">
       <h2>☕ 休息 10 分鐘</h2>
-      <div class="card">
-        <h3>下半場預告</h3>
-        <ul>
-          <li>為什麼有了 FTIR / Raman 還需要 GC-MS、LC-MS？</li>
-          <li>熱裂解-氣相層析-質譜 (Py-GC-MS)：如何把塑膠「燒開」變成可定量的化學訊號</li>
-          <li>各種塑膠的<span class="highlight">指標裂解產物</span></li>
-          <li>LC-MS 在塑化劑、寡聚物分析的角色</li>
-          <li>方法選擇決策樹</li>
-        </ul>
-      </div>
       <div class="card activity">
-        <h3>小思考（休息時想一想）</h3>
-        <p>FTIR / Raman 可以告訴你「這是 PET」，但無法直接告訴你「樣品中有多少質量的 PET」。<br/>為什麼？要怎麼解決？</p>
+        <h3>休息時想一想</h3>
+        <p>FTIR / Raman 可以告訴你「這是 PET」，但無法直接告訴你「樣品中有多少<span class="highlight">質量</span>的 PET」。為什麼？要怎麼解決？</p>
         <textarea data-key="q_break" placeholder="寫下你的想法..."></textarea>
       </div>
     </section>
@@ -938,14 +907,14 @@
 
     <!-- S28 互動：裂解產物配對 -->
     <section class="slide">
-      <h2>互動：裂解產物配對</h2>
+      <h2>Py-GC-MS 裂解產物配對</h2>
+      <p>某未知樣品色譜圖最強峰質譜為 <span class="highlight">m/z = 104</span>，伴隨 m/z = 208、312 較小峰群。主成分塑膠是？</p>
       <div class="card activity">
-        <h3>某未知樣品經 Py-GC-MS 分析，色譜圖最強峰質譜為 m/z = 104，伴隨 m/z = 208、312 的較小峰群。請判斷主成分塑膠：</h3>
         <button class="choice" onclick="checkMCQ(this,'q_pygc1','PE',false)">A. PE</button>
         <button class="choice" onclick="checkMCQ(this,'q_pygc1','PP',false)">B. PP</button>
         <button class="choice" onclick="checkMCQ(this,'q_pygc1','PS',true)">C. PS</button>
         <button class="choice" onclick="checkMCQ(this,'q_pygc1','PET',false)">D. PET</button>
-        <div class="resultBox" id="q_pygc1_result">點選一個答案。</div>
+        <div class="resultBox" id="q_pygc1_result"></div>
       </div>
       <details>
         <summary>判讀邏輯</summary>
@@ -989,14 +958,14 @@
 
     <!-- S30 互動：方法選擇 1 -->
     <section class="slide">
-      <h2>互動：情境決策（一）— 海鹽中的微塑膠</h2>
+      <h2>情境決策（一）：海鹽中的微塑膠</h2>
+      <p>500 g 商業海鹽，欲測 1–500 μm 微塑膠的<span class="highlight">類型與顆粒數</span>。請選最合適的<strong>主要</strong>分析儀器：</p>
       <div class="card activity">
-        <h3>背景：你拿到 500 g 商業海鹽，想知道其中 1–500 μm 微塑膠的<span class="highlight">類型與顆粒數</span>。實驗室有 ATR-FTIR、μ-FTIR、Raman、Py-GC-MS。請選最合適的<strong>主要</strong>分析儀器：</h3>
         <button class="choice" onclick="checkMCQ(this,'q_dec1','ATR',false)">A. ATR-FTIR（一顆一顆量）</button>
         <button class="choice" onclick="checkMCQ(this,'q_dec1','uFTIR',true)">B. μ-FTIR 化學成像（FPA 偵測器）</button>
         <button class="choice" onclick="checkMCQ(this,'q_dec1','Raman',false)">C. 顯微 Raman（一顆一顆量）</button>
         <button class="choice" onclick="checkMCQ(this,'q_dec1','PyGC',false)">D. Py-GC-MS</button>
-        <div class="resultBox" id="q_dec1_result">點選一個答案。</div>
+        <div class="resultBox" id="q_dec1_result"></div>
       </div>
       <details>
         <summary>解析</summary>
@@ -1012,14 +981,14 @@
 
     <!-- S31 互動：方法選擇 2 -->
     <section class="slide">
-      <h2>互動：情境決策（二）— 瓶裝水中的奈米塑膠</h2>
+      <h2>情境決策（二）：瓶裝水中的奈米塑膠</h2>
+      <p>法規要求測定 1.5 L 瓶裝水中 100 nm – 1 μm 奈米塑膠的<span class="highlight">總質量濃度</span>（μg/L）。請選最合適的方法組合：</p>
       <div class="card activity">
-        <h3>背景：法規要求測定 1.5 L 瓶裝水中 100 nm – 1 μm 奈米塑膠的<span class="highlight">總質量濃度</span>（μg/L）。請選最合適的方法組合：</h3>
         <button class="choice" onclick="checkMCQ(this,'q_dec2','ATR',false)">A. ATR-FTIR 直接量水樣</button>
         <button class="choice" onclick="checkMCQ(this,'q_dec2','uFTIR',false)">B. μ-FTIR 化學成像</button>
         <button class="choice" onclick="checkMCQ(this,'q_dec2','SERS',false)">C. 顯微 Raman 一顆一顆量</button>
         <button class="choice" onclick="checkMCQ(this,'q_dec2','PyGC',true)">D. AF4 場流分餾濃縮後進 Py-GC-MS（或 TED-GC-MS）</button>
-        <div class="resultBox" id="q_dec2_result">點選一個答案。</div>
+        <div class="resultBox" id="q_dec2_result"></div>
       </div>
       <details>
         <summary>解析</summary>
@@ -1095,8 +1064,7 @@
         </div>
       </div>
       <div class="card teacherTip">
-        <h3>🎯 教學提示</h3>
-        <p>學生常混淆「微塑膠分析」與「塑化劑分析」。建議在課程中明確區分：<span class="highlight">微塑膠顆粒分析 → 光譜法 + Py-GC-MS</span>；<span class="highlight">塑膠衍生化學物分析 → LC-MS</span>。兩者目標、樣品前處理、儀器設定完全不同。</p>
+        <p><span class="highlight">微塑膠顆粒分析 → 光譜法 + Py-GC-MS</span>；<span class="highlight">塑膠衍生化學物分析 → LC-MS</span>。目標、樣品前處理、儀器設定完全不同。</p>
       </div>
       <p class="citation">Cao XL. (2010) Phthalate esters in foods: sources, occurrence, and analytical methods. <em>Compr Rev Food Sci Food Saf</em> 9:21–43.</p>
     </section>
@@ -1174,16 +1142,16 @@
       <div class="specBox">
         <svg viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg">
           <style>
-            .node { fill: #1e293b; stroke: #67e8f9; stroke-width: 1.5; rx: 10; }
-            .ans { fill: #064e3b; stroke: #86efac; stroke-width: 1.5; }
-            .qtext { fill: #cffafe; font-size: 14px; }
-            .atext { fill: #d1fae5; font-size: 13px; font-weight: 700; }
-            .lbl { fill: #94a3b8; font-size: 12px; }
-            .arrow { fill: none; stroke: #94a3b8; stroke-width: 1.5; marker-end: url(#ah); }
+            .node { fill: #e0f2fe; stroke: #0ea5e9; stroke-width: 1.5; rx: 10; }
+            .ans { fill: #dcfce7; stroke: #16a34a; stroke-width: 1.5; }
+            .qtext { fill: #075985; font-size: 14px; font-weight: 600; }
+            .atext { fill: #14532d; font-size: 13px; font-weight: 700; }
+            .lbl { fill: #475569; font-size: 12px; font-weight: 600; }
+            .arrow { fill: none; stroke: #64748b; stroke-width: 1.5; marker-end: url(#ah); }
           </style>
           <defs>
             <marker id="ah" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-              <path d="M0,0 L0,6 L9,3 z" fill="#94a3b8"/>
+              <path d="M0,0 L0,6 L9,3 z" fill="#64748b"/>
             </marker>
           </defs>
           <!-- root -->
@@ -1297,17 +1265,12 @@
           </ul>
         </div>
         <div class="card">
-          <h3>方法選擇邏輯</h3>
+          <h3>方法與品管</h3>
           <ul>
-            <li><span class="highlight">μ-FTIR 是合理選擇</span>：粒徑 &gt; 45 μm，可逐顆鑑定</li>
-            <li>空白：每天 3 個程序空白濾膜，扣除背景</li>
-            <li>計數規範：纖維與碎片分開計數</li>
-          </ul>
-          <h3>對食品分析師的啟示</h3>
-          <ul>
-            <li>不要用真空玻璃乾燥器之外的塑膠容器處理樣品</li>
-            <li>實驗衣應使用純棉</li>
-            <li>空氣中纖維是主要污染源（含 polyester、cotton）</li>
+            <li><span class="highlight">μ-FTIR</span>：粒徑 &gt; 45 μm，可逐顆鑑定</li>
+            <li>每天 3 個程序空白濾膜扣除背景</li>
+            <li>纖維與碎片分開計數</li>
+            <li>純棉實驗衣、避免塑膠容器（空氣纖維是最大污染源）</li>
           </ul>
         </div>
       </div>
@@ -1380,20 +1343,16 @@
 
     <!-- S40 互動：實驗設計題 -->
     <section class="slide">
-      <h2>互動：實驗設計題（綜合應用）</h2>
+      <h2>實驗設計題：嬰兒奶瓶 (PP) 80°C 沖泡釋出微塑膠分析</h2>
       <div class="card activity">
-        <h3>情境：你是檢驗單位研究員，被要求分析「市售嬰兒奶瓶 (PP 製) 在 80°C 沖泡奶粉時，是否釋放微塑膠到沖泡液中」。請設計實驗流程，並回答下列問題：</h3>
-        <p><strong>(1)</strong> 你會選擇什麼<span class="highlight">主要儀器</span>？為什麼？</p>
-        <textarea data-key="q_design_1" placeholder="例：FTIR + Py-GC-MS 雙軌..."></textarea>
-
-        <p><strong>(2)</strong> 你會如何設計<span class="highlight">空白組與對照組</span>？</p>
-        <textarea data-key="q_design_2" placeholder="例：玻璃奶瓶當對照、空氣沉降空白..."></textarea>
-
-        <p><strong>(3)</strong> 沖泡液要如何<span class="highlight">前處理</span>才能上機？</p>
-        <textarea data-key="q_design_3" placeholder="例：過濾濾膜選擇、消化方式..."></textarea>
-
-        <p><strong>(4)</strong> 你會如何<span class="highlight">驗證準確度</span>？</p>
-        <textarea data-key="q_design_4" placeholder="例：spike-recovery、平行樣本..."></textarea>
+        <p><strong>(1) 主要儀器</strong>？為什麼？</p>
+        <textarea data-key="q_design_1"></textarea>
+        <p><strong>(2)</strong> 如何設計<span class="highlight">空白組與對照組</span>？</p>
+        <textarea data-key="q_design_2"></textarea>
+        <p><strong>(3)</strong> 沖泡液如何<span class="highlight">前處理</span>？</p>
+        <textarea data-key="q_design_3"></textarea>
+        <p><strong>(4)</strong> 如何<span class="highlight">驗證準確度</span>？</p>
+        <textarea data-key="q_design_4"></textarea>
       </div>
       <details>
         <summary>參考答案（Li et al. 2020 真實研究）</summary>
@@ -1449,95 +1408,72 @@
 
     <!-- S42 課程總結 -->
     <section class="slide">
-      <h2>課程總結：你今天帶走了什麼？</h2>
-      <div class="grid">
-        <div class="card">
-          <h3>知識面</h3>
-          <ul>
-            <li>微塑膠 (MP) vs 奈米塑膠 (NP) 的定義與來源</li>
-            <li>5 種食品常見塑膠 (PE/PP/PET/PS/PVC) 的 FTIR 與 Raman 特徵峰</li>
-            <li>NIR / FTIR / Raman / Py-GC-MS / LC-MS 的<span class="highlight">原理、極限、定量單位</span></li>
-            <li>樣品前處理：消化、密度分離、過濾的注意事項</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>技能面</h3>
-          <ul>
-            <li>能<span class="highlight">判讀 FTIR / Raman / Py-GC-MS 結果</span>並推斷塑膠類型</li>
-            <li>能根據樣品<span class="highlight">尺寸、目標、基質</span>選擇正確方法</li>
-            <li>能<span class="highlight">設計空白組與品保流程</span>避免污染</li>
-            <li>能引用代表性文獻支持研究設計</li>
-          </ul>
-        </div>
-      </div>
+      <h2>課程總結</h2>
       <div class="card ref">
         <h3>三句口訣</h3>
         <ol>
           <li><strong>FTIR 看顆粒，Py-GC-MS 看質量。</strong></li>
-          <li><strong>大顆粒選 ATR，小顆粒選 μ-FTIR/Raman，奈米級選 Py-GC-MS + SERS。</strong></li>
+          <li><strong>大顆粒選 ATR，小顆粒選 μ-FTIR / Raman，奈米級選 Py-GC-MS + SERS。</strong></li>
           <li><strong>空白組是命脈，未做空白的數據不可採信。</strong></li>
         </ol>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <h3>知識</h3>
+          <ul>
+            <li>MP vs NP 的定義與來源</li>
+            <li>PE/PP/PET/PS/PVC 的 FTIR 與 Raman 特徵峰</li>
+            <li>五大技術的<span class="highlight">原理、極限、定量單位</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>能力</h3>
+          <ul>
+            <li>判讀 FTIR / Raman / Py-GC-MS 結果並推斷塑膠類型</li>
+            <li>根據樣品<span class="highlight">尺寸、目標、基質</span>選擇正確方法</li>
+            <li>設計空白組與品保流程避免污染</li>
+          </ul>
+        </div>
       </div>
     </section>
 
     <!-- S43 Exit Ticket -->
     <section class="slide">
-      <h2>Exit Ticket：3 分鐘回饋</h2>
+      <h2>Exit Ticket</h2>
       <div class="card activity">
         <h3>1. 用一句話總結今天最重要的學習</h3>
-        <textarea data-key="exit_1" placeholder="例：我終於理解為什麼 Py-GC-MS 在奈米塑膠分析比 FTIR 更重要..."></textarea>
+        <textarea data-key="exit_1"></textarea>
       </div>
       <div class="card activity">
-        <h3>2. 哪個概念你還不確定，希望老師再講一次？</h3>
-        <textarea data-key="exit_2" placeholder="例：密度分離溶液的選擇邏輯..."></textarea>
+        <h3>2. 哪個概念你還不確定，希望再講一次？</h3>
+        <textarea data-key="exit_2"></textarea>
       </div>
       <div class="card activity">
         <h3>3. 如果讓你選一個技術深入學習，你會選？為什麼？</h3>
-        <textarea data-key="exit_3" placeholder="例：μ-FTIR，因為實驗室有此設備且我想做海洋樣品..."></textarea>
+        <textarea data-key="exit_3"></textarea>
       </div>
-      <div class="card">
-        <h3>📤 提交你的作答</h3>
-        <p>點下方按鈕匯出 TSV，或截圖傳給授課老師。</p>
-        <button onclick="exportAnswers()">📋 匯出今日作答</button>
-        <p class="mini">作答已自動儲存於瀏覽器 localStorage，下次開啟仍可看到。</p>
-      </div>
+      <p class="mini">作答自動儲存於瀏覽器；底部「匯出作答」可下載 TSV。</p>
     </section>
 
     <!-- S44 致謝 -->
-    <section class="slide">
-      <h2>致謝與聲明</h2>
-      <div class="card">
-        <h3>本教材</h3>
-        <ul>
-          <li>內容綜整自下列同行評審文獻（見「進階閱讀」）與 Nielsen《Food Analysis 6/e》框架</li>
-          <li>所有<span class="highlight">光譜示意圖為教學用 SVG</span>，數據點位置基於公開文獻常見值，<span class="warn">不可作為標準圖譜使用</span></li>
-          <li>互動題之「正解」反映目前主流文獻共識，實驗室實際操作可能因儀器、樣品、SOP 而異</li>
-          <li>歡迎用於非營利教學，請保留原始引用</li>
-        </ul>
-      </div>
-      <div class="card ref">
-        <h3>授課老師</h3>
-        <p>本教材由 Claude Code 協助製作，提供大學食品分析課程使用。教師可依需求自行修改、增刪題目，或從右上角切換「教師版」查看教學提示與展開所有解答。</p>
-        <p class="mini">部署位置：GitHub Pages（見隨附部署網址）。原始 HTML 可在 GitHub repo 下載並二次編輯。</p>
-      </div>
-      <h1 style="text-align:center;margin-top:40px;">謝謝大家！</h1>
+    <section class="slide" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
+      <h1 style="font-size:80px;">謝謝大家！</h1>
+      <p class="subtitle" style="margin-top:20px;">提問、討論、批評，都歡迎。</p>
     </section>
 
 
   <!-- ============== 控制列 ============== -->
   <div class="controls">
     <div>
-      <button class="secondary" onclick="goSlide(0)">⏮ 首頁</button>
-      <button onclick="prevSlide()">◀ 上一頁</button>
-      <button onclick="nextSlide()">下一頁 ▶</button>
-      <button class="secondary" onclick="window.print()">🖨 列印 / PDF</button>
+      <button onclick="prevSlide()">◀</button>
+      <button onclick="nextSlide()">▶</button>
     </div>
     <div class="slideNo">
       <span id="slideNow">1</span> / <span id="slideTotal">1</span>
     </div>
     <div>
+      <button class="secondary" onclick="window.print()">🖨 列印</button>
       <button class="secondary" onclick="exportAnswers()">📋 匯出作答</button>
-      <button class="warnBtn" onclick="resetAll()">🔄 重置</button>
     </div>
   </div>
 
