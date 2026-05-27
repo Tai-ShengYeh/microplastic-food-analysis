@@ -48,14 +48,16 @@
 
 ## 🚀 線上瀏覽
 
-打開：[GitHub Pages 網址](#) （部署後填入）
+👉 **[https://tai-shengyeh.github.io/microplastic-food-analysis/](https://tai-shengyeh.github.io/microplastic-food-analysis/)**
+
+學生可直接打開上方網址，使用網頁版互動教材。所有作答會儲存在本機瀏覽器，可隨時匯出。
 
 ## 💻 本機使用
 
 直接點擊 `index.html` 在瀏覽器開啟即可，無需任何伺服器或安裝依賴。
 
 ```bash
-git clone https://github.com/<YOUR-USERNAME>/microplastic-food-analysis.git
+git clone https://github.com/Tai-ShengYeh/microplastic-food-analysis.git
 cd microplastic-food-analysis
 # 用瀏覽器打開 index.html
 ```
