@@ -244,16 +244,13 @@
     <!-- S2 課程內容 -->
     <section class="slide">
       <h2>課程內容</h2>
-      <table>
-        <tr><th style="width:100px">時間</th><th>主題</th></tr>
-        <tr><td>0–10</td><td>引言與暖身</td></tr>
-        <tr><td>10–35</td><td>微塑膠 101：定義、來源、樣品前處理</td></tr>
-        <tr><td>35–85</td><td>振動光譜：NIR、FTIR、Raman</td></tr>
-        <tr><td>85–95</td><td>休息</td></tr>
-        <tr><td>95–155</td><td>質譜技術：Py-GC-MS、LC-MS</td></tr>
-        <tr><td>155–170</td><td>方法整合與決策樹</td></tr>
-        <tr><td>170–180</td><td>總結與 Exit Ticket</td></tr>
-      </table>
+      <ul>
+        <li>微塑膠 101：定義、來源、樣品前處理</li>
+        <li>振動光譜：NIR、FTIR、Raman</li>
+        <li>質譜技術：Py-GC-MS、LC-MS</li>
+        <li>方法整合與決策樹</li>
+        <li>總結與 Exit Ticket</li>
+      </ul>
     </section>
 
     <!-- S3 暖身投票 -->
@@ -581,25 +578,122 @@
       <p class="citation">Primpke S. et al. (2020) Critical assessment of analytical methods for the harmonized and cost-efficient analysis of microplastics. <em>Appl Spectrosc</em> 74:1012–1047.</p>
     </section>
 
-    <!-- S16 FTIR 特徵峰對照 -->
+    <!-- S16 PE FTIR -->
     <section class="slide">
-      <h2>FTIR 五大常見塑膠的特徵峰</h2>
+      <h2><span class="pill cyan">PE</span> 聚乙烯 FTIR</h2>
+      <div class="chart" data-spec="ftir_pe" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#0284c7" data-xreverse="1" data-markers="2915,2848,1463,720"></div>
       <div class="grid">
-        <div class="chart" data-spec="ftir_pe" data-title="PE FTIR" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#0284c7" data-xreverse="1" data-markers="2915,2848,1463,720" data-source="依文獻峰位重建 (Käppler 2018; Jung 2018)"></div>
-        <div class="chart" data-spec="ftir_pp" data-title="PP FTIR" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#7c3aed" data-xreverse="1" data-markers="2917,1455,1377,998" data-source="依文獻峰位重建"></div>
-        <div class="chart" data-spec="ftir_pet" data-title="PET FTIR" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#db2777" data-xreverse="1" data-markers="1715,1240,1090,723" data-source="依文獻峰位重建"></div>
-        <div class="chart" data-spec="ftir_ps" data-title="PS FTIR" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#16a34a" data-xreverse="1" data-markers="3025,1601,1493,696" data-source="依文獻峰位重建"></div>
+        <div class="card">
+          <h3>四特徵峰</h3>
+          <ul>
+            <li><strong>2915</strong>：CH₂ 不對稱伸縮</li>
+            <li><strong>2848</strong>：CH₂ 對稱伸縮</li>
+            <li><strong>1463</strong>：CH₂ 剪式變角</li>
+            <li><strong>720</strong>：CH₂ 搖動（HDPE 結晶會分裂為 730/720 雙峰）</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>食品應用</h3>
+          <p>食品袋、保鮮膜、瓶蓋、塑膠袋。<br/>
+          密度 0.91–0.96 g/cm³，NaCl 即可浮選。</p>
+        </div>
       </div>
-      <div class="chart" data-spec="ftir_pvc" data-title="PVC FTIR" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#d97706" data-xreverse="1" data-markers="1426,1255,690,614" data-source="依文獻峰位重建"></div>
-      <p class="mini">X 軸為 Wavenumber（高→低，符合 FTIR 慣例）；Y 軸為穿透率（峰朝下即代表吸收）。峰位置依 Käppler 2018、Jung et al. 2018 文獻重建為合成圖。</p>
+    </section>
+
+    <!-- S16a PP FTIR -->
+    <section class="slide">
+      <h2><span class="pill purple">PP</span> 聚丙烯 FTIR</h2>
+      <div class="chart" data-spec="ftir_pp" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#7c3aed" data-xreverse="1" data-markers="2950,1455,1377,998"></div>
+      <div class="grid">
+        <div class="card">
+          <h3>特徵峰</h3>
+          <ul>
+            <li><strong>2950 / 2917</strong>：CH₃ 與 CH₂ 伸縮</li>
+            <li><strong>1455</strong>：CH₂ / CH₃ 變角</li>
+            <li><strong>1377</strong>：<span class="highlight">CH₃ 對稱變角</span>（區分 PE/PP 的關鍵）</li>
+            <li><strong>998 / 974 / 840</strong>：骨架振動三聯峰</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>食品應用</h3>
+          <p>微波容器、優格杯、塑膠茶包、嬰兒奶瓶（80°C 沖泡會釋出 MP）。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S16b PET FTIR -->
+    <section class="slide">
+      <h2><span class="pill pink">PET</span> 聚對苯二甲酸乙二酯 FTIR</h2>
+      <div class="chart" data-spec="ftir_pet" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#db2777" data-xreverse="1" data-markers="1715,1240,1090,723"></div>
+      <div class="grid">
+        <div class="card">
+          <h3>招牌峰群</h3>
+          <ul>
+            <li><strong>1715</strong>：<span class="highlight">酯類 C=O 強吸收</span>（PET 的招牌指紋）</li>
+            <li><strong>1240</strong>：C–O–C 不對稱伸縮</li>
+            <li><strong>1090</strong>：C–O 對稱伸縮</li>
+            <li><strong>723</strong>：對位取代苯 C–H 變角</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>食品應用</h3>
+          <p>保特瓶、即飲茶瓶、食用油瓶；海洋中的保特瓶碎片是<span class="highlight">海鹽 MP 主要來源</span>。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S16c PS FTIR -->
+    <section class="slide">
+      <h2><span class="pill green">PS</span> 聚苯乙烯 FTIR</h2>
+      <div class="chart" data-spec="ftir_ps" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#16a34a" data-xreverse="1" data-markers="3025,1601,1493,696"></div>
+      <div class="grid">
+        <div class="card">
+          <h3>芳香環特徵</h3>
+          <ul>
+            <li><strong>3025</strong>：芳香 C–H 伸縮</li>
+            <li><strong>1601 / 1493</strong>：苯環骨架振動</li>
+            <li><strong>696</strong>：<span class="highlight">單取代苯 C–H 面外變角</span>（PS 招牌）</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>食品應用</h3>
+          <p>免洗杯/碗、發泡盒、優格杯。發泡 PS 有額外發泡劑訊號。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S16d PVC FTIR -->
+    <section class="slide">
+      <h2><span class="pill amber">PVC</span> 聚氯乙烯 FTIR</h2>
+      <div class="chart" data-spec="ftir_pvc" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#d97706" data-xreverse="1" data-markers="1426,1255,690,614"></div>
+      <div class="grid">
+        <div class="card">
+          <h3>C–Cl 鍵特徵</h3>
+          <ul>
+            <li><strong>1426</strong>：CH₂ 變角</li>
+            <li><strong>1255</strong>：CH–Cl 變角</li>
+            <li><strong>690 / 614</strong>：<span class="highlight">C–Cl 伸縮</span>（PVC 獨有指紋）</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>食品應用</h3>
+          <p>部分保鮮膜、輸送管、紅色血袋；含大量塑化劑 DEHP/DBP（LC-MS 分析）。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S16e FTIR 對照表 -->
+    <section class="slide">
+      <h2>五大塑膠 FTIR 特徵峰速查</h2>
       <table>
-        <tr><th>塑膠</th><th>關鍵特徵峰 cm⁻¹</th><th>歸屬</th></tr>
-        <tr><td><span class="pill cyan">PE</span></td><td>2915, 2848, 1463, 720</td><td>C–H 伸縮、CH₂ 變角、CH₂ 搖動</td></tr>
-        <tr><td><span class="pill purple">PP</span></td><td>2950, 1455, 1377, 998, 840</td><td>CH₃ 不對稱、對稱變角，骨架</td></tr>
-        <tr><td><span class="pill pink">PET</span></td><td>1715, 1240, 1090, 720</td><td>C=O、C–O、芳香 C–H 變角</td></tr>
-        <tr><td><span class="pill green">PS</span></td><td>3025, 1601, 1493, 696</td><td>芳香 C–H、苯環骨架</td></tr>
-        <tr><td><span class="pill amber">PVC</span></td><td>1426, 1330, 690</td><td>CH₂、CH–Cl 變角、C–Cl 伸縮</td></tr>
+        <tr><th>塑膠</th><th>關鍵特徵峰 (cm⁻¹)</th><th>歸屬</th><th>判讀重點</th></tr>
+        <tr><td><span class="pill cyan">PE</span></td><td>2915, 2848, 1463, 720</td><td>C–H 伸縮、CH₂ 變角/搖動</td><td>無 1377</td></tr>
+        <tr><td><span class="pill purple">PP</span></td><td>2950, 1455, <strong>1377</strong>, 998</td><td>CH₃ 變角、骨架</td><td>1377 區分 PE</td></tr>
+        <tr><td><span class="pill pink">PET</span></td><td><strong>1715</strong>, 1240, 1090, 723</td><td>C=O、C–O、芳香 C–H</td><td>1715 強峰</td></tr>
+        <tr><td><span class="pill green">PS</span></td><td>3025, 1601, 1493, <strong>696</strong></td><td>芳香 C–H、苯環</td><td>696 招牌</td></tr>
+        <tr><td><span class="pill amber">PVC</span></td><td>1426, 1255, <strong>690</strong>, 614</td><td>CH–Cl、<strong>C–Cl</strong></td><td>C–Cl 獨有</td></tr>
       </table>
+      <p class="mini">X 軸 Wavenumber 高→低為 FTIR 慣例；Y 軸穿透率，峰朝下＝吸收。圖譜依 Käppler 2018、Jung 2018 文獻峰位重建。</p>
     </section>
 
     <!-- S17 互動：FTIR 圖譜辨識 1 -->
@@ -676,17 +770,119 @@
       </div>
     </section>
 
-    <!-- S20 Raman 特徵 -->
+    <!-- S20 HDPE Raman -->
     <section class="slide">
-      <h2>Raman 五大塑膠特徵位移 (cm⁻¹)</h2>
+      <h2><span class="pill cyan">PE</span> HDPE Raman</h2>
+      <div class="chart" data-spec="raman_hdpe" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#0284c7" data-markers="1296,1440,2848,2882" data-source="KU Leuven RDR doi:10.48804/FZNZMH"></div>
       <div class="grid">
-        <div class="chart" data-spec="raman_hdpe" data-title="HDPE Raman（KU Leuven 公開資料）" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#0284c7" data-markers="1296,1440,2848,2882" data-source="KU Leuven RDR doi:10.48804/FZNZMH"></div>
-        <div class="chart" data-spec="raman_pp" data-title="PP Raman" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#7c3aed" data-markers="808,973,2884,2953" data-source="KU Leuven RDR"></div>
-        <div class="chart" data-spec="raman_ps" data-title="PS Raman（注意 1001 招牌峰）" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#16a34a" data-markers="621,1001,1602,3050" data-source="KU Leuven RDR"></div>
-        <div class="chart" data-spec="raman_pet" data-title="PET Raman" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#db2777" data-markers="1117,1613,1726,3082" data-source="KU Leuven RDR"></div>
+        <div class="card">
+          <h3>特徵位移</h3>
+          <ul>
+            <li><strong>1296</strong>：CH₂ 扭轉</li>
+            <li><strong>1440</strong>：CH₂ 變角</li>
+            <li><strong>2848 / 2882</strong>：<span class="highlight">C–H 伸縮雙峰</span>（PE 最強訊號）</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>實務</h3>
+          <p>PE 缺少強芳香鍵，Raman 強度遠低於 PS、PET；分析時建議搭配 FTIR 互相驗證。</p>
+        </div>
       </div>
-      <div class="chart" data-spec="raman_pvc" data-title="PVC Raman（C–Cl 638/696）" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#d97706" data-markers="638,696,2913" data-source="KU Leuven RDR"></div>
-      <p class="mini"><span class="highlight">PS 在 1001 cm⁻¹</span>（單取代苯環的呼吸模式）強度極高，是最容易辨識的招牌指紋；HDPE 的 2848/2882 cm⁻¹ 雙峰、PVC 的 638/696 C–Cl 也都非常容易與其他塑膠區分。<br/>數據來源：KU Leuven RDR (doi:10.48804/FZNZMH)，EXIMIOUS 計畫 HPU Raman 光譜庫。</p>
+    </section>
+
+    <!-- S20a PP Raman -->
+    <section class="slide">
+      <h2><span class="pill purple">PP</span> Raman</h2>
+      <div class="chart" data-spec="raman_pp" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#7c3aed" data-markers="808,973,2884,2953"></div>
+      <div class="grid">
+        <div class="card">
+          <h3>特徵位移</h3>
+          <ul>
+            <li><strong>808</strong>：C–C 骨架</li>
+            <li><strong>973</strong>：CH₃ 搖動（區分 PE 關鍵）</li>
+            <li><strong>2884 / 2953</strong>：C–H 伸縮</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>實務</h3>
+          <p>973 cm⁻¹ 是 PP 獨有訊號，PE 完全沒有。低結晶度 PP 的 808 峰會減弱。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S20b PS Raman -->
+    <section class="slide">
+      <h2><span class="pill green">PS</span> Raman ─ 招牌 1001 cm⁻¹</h2>
+      <div class="chart" data-spec="raman_ps" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#16a34a" data-markers="621,1001,1602,3050"></div>
+      <div class="grid">
+        <div class="card">
+          <h3>特徵位移</h3>
+          <ul>
+            <li><strong>621</strong>：C–C 變角</li>
+            <li><strong>1001</strong>：<span class="highlight">單取代苯環呼吸模式</span>（強度極高、極尖銳，PS 的招牌指紋）</li>
+            <li><strong>1602</strong>：苯環 C=C 骨架</li>
+            <li><strong>3050</strong>：芳香 C–H 伸縮</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>實務</h3>
+          <p>1001 cm⁻¹ 訊號之強，常用作環境樣品中 PS 的<span class="highlight">內標校正參考</span>。免洗杯、發泡盒判讀首選。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S20c PET Raman -->
+    <section class="slide">
+      <h2><span class="pill pink">PET</span> Raman</h2>
+      <div class="chart" data-spec="raman_pet" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#db2777" data-markers="1117,1613,1726,3082"></div>
+      <div class="grid">
+        <div class="card">
+          <h3>特徵位移</h3>
+          <ul>
+            <li><strong>1117</strong>：C–O 伸縮</li>
+            <li><strong>1613</strong>：芳香 C=C 骨架</li>
+            <li><strong>1726</strong>：<span class="highlight">酯類 C=O 伸縮</span>（PET 識別關鍵）</li>
+            <li><strong>3082</strong>：芳香 C–H</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>實務</h3>
+          <p>同時看到 1613 (芳香) + 1726 (C=O) → 即可鎖定 PET，與 PA (僅 C=O 無芳香) 區分。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S20d PVC Raman -->
+    <section class="slide">
+      <h2><span class="pill amber">PVC</span> Raman ─ C–Cl 638/696</h2>
+      <div class="chart" data-spec="raman_pvc" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#d97706" data-markers="638,696,2913"></div>
+      <div class="grid">
+        <div class="card">
+          <h3>特徵位移</h3>
+          <ul>
+            <li><strong>638 / 696</strong>：<span class="highlight">C–Cl 伸縮</span>（PVC 獨有，所有其他塑膠都沒有）</li>
+            <li><strong>2913</strong>：C–H 伸縮</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>實務</h3>
+          <p>低於 700 cm⁻¹ 的強峰是 PVC 直接證據；同時 FTIR 690 cm⁻¹ 也是 PVC 招牌。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S20e Raman 對照表 -->
+    <section class="slide">
+      <h2>五大塑膠 Raman 特徵速查</h2>
+      <table>
+        <tr><th>塑膠</th><th>關鍵位移 (cm⁻¹)</th><th>歸屬</th><th>判讀重點</th></tr>
+        <tr><td><span class="pill cyan">PE</span></td><td>1296, 1440, 2848, 2882</td><td>C–H 伸縮雙峰</td><td>訊號弱</td></tr>
+        <tr><td><span class="pill purple">PP</span></td><td>808, <strong>973</strong>, 2884, 2953</td><td>骨架、CH₃ 搖動</td><td>973 區分 PE</td></tr>
+        <tr><td><span class="pill green">PS</span></td><td>621, <strong>1001</strong>, 1602, 3050</td><td>苯環呼吸</td><td><strong>1001 招牌</strong></td></tr>
+        <tr><td><span class="pill pink">PET</span></td><td>1117, 1613, <strong>1726</strong>, 3082</td><td>C=O + 芳香</td><td>1613+1726 同時</td></tr>
+        <tr><td><span class="pill amber">PVC</span></td><td><strong>638, 696</strong>, 2913</td><td><strong>C–Cl</strong></td><td>C–Cl 獨有</td></tr>
+      </table>
+      <p class="mini">數據來源：KU Leuven RDR (doi:10.48804/FZNZMH)，EXIMIOUS 計畫 HPU Raman 光譜庫。</p>
     </section>
 
     <!-- S21 互動：Raman 圖譜辨識 -->
