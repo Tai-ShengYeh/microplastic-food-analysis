@@ -121,13 +121,14 @@
       margin: 6px 0; padding: 12px 16px; white-space: normal;
       font-size: 18px; box-shadow: 0 1px 2px rgba(15,23,42,0.05);
     }
-    /* 活動卡內的選項 2 欄並排，節省垂直空間 */
-    .card.activity .choice {
-      display: inline-block;
-      width: calc(50% - 8px);
-      margin: 4px;
-      vertical-align: top;
+    /* 活動卡內的選項 2 欄並排：用 grid wrapper 確保不會被 inline-block whitespace 擠掉 */
+    .choices-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 8px 0;
     }
+    .choices-grid .choice { margin: 0; }
     .choice:hover { background: #f1f5f9; border-color: var(--accent); }
     .choice.selected { background: #e0f2fe; border-color: #0ea5e9; outline: 2px solid #38bdf8; color: #075985; font-weight: 600; }
     .choice.correct { background: #dcfce7; border-color: #16a34a; outline: 2px solid #22c55e; color: #14532d; font-weight: 600; }
@@ -264,10 +265,12 @@
     <section class="slide">
       <h2>暖身：你覺得「成年人每週平均吃進」多少微塑膠？</h2>
       <div class="card activity">
+        <div class="choices-grid">
         <button class="choice" onclick="selectChoice(this,'q_warmup','A')">A. 幾乎沒有（&lt; 0.01 g）</button>
         <button class="choice" onclick="selectChoice(this,'q_warmup','B')">B. 約 1 g（一張提款卡的塑膠粉末）</button>
         <button class="choice" onclick="selectChoice(this,'q_warmup','C')">C. 約 5 g（一張信用卡的塑膠粉末）</button>
         <button class="choice" onclick="selectChoice(this,'q_warmup','D')">D. 約 50 g（一支牙刷的塑膠粉末）</button>
+        </div>
         <div class="resultBox" id="q_warmup_result"></div>
       </div>
       <details>
@@ -406,10 +409,12 @@
     <section class="slide">
       <h2>分析 100 g 鮮魚消化道內的微塑膠，哪種消化方法最適合？</h2>
       <div class="card activity">
+        <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_digest','A',false)">A. 濃硝酸 (HNO₃) 加熱迴流</button>
         <button class="choice" onclick="checkMCQ(this,'q_digest','B',true)">B. 10% KOH，40°C，24–48 小時</button>
         <button class="choice" onclick="checkMCQ(this,'q_digest','C',false)">C. 直接用蒸餾水浸泡</button>
         <button class="choice" onclick="checkMCQ(this,'q_digest','D',false)">D. 30% H₂O₂ 加熱至 80°C 持續 24 h</button>
+        </div>
         <div class="resultBox" id="q_digest_result"></div>
       </div>
       <details>
@@ -517,10 +522,12 @@
       <h2>互動：NIR 適合哪一種情境？</h2>
       <div class="card activity">
         <h3>請從以下情境選出 NIR 最合適的應用（可能不只一個正確答案，請選最佳）</h3>
+        <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_nir','A',false)">A. 偵測自來水中 5 μm 的奈米級 PE 顆粒</button>
         <button class="choice" onclick="checkMCQ(this,'q_nir','B',true)">B. 工廠回收線高速分選 2 cm 大小的 PET 與 HDPE 瓶片</button>
         <button class="choice" onclick="checkMCQ(this,'q_nir','C',false)">C. 鑑定海鹽中 50 μm 的塑膠纖維</button>
         <button class="choice" onclick="checkMCQ(this,'q_nir','D',false)">D. 偵測魚肉裡 0.5 μg 的 PS</button>
+        </div>
         <div class="resultBox" id="q_nir_result"></div>
       </div>
       <details>
@@ -708,10 +715,12 @@
       <h2>FTIR 圖譜辨識（一）：請判斷塑膠類型</h2>
       <div class="card activity">
         <div class="chart" data-spec="ftir_pe" data-title="未知塑膠 FTIR｜主要吸收峰：2915、2848、1463、720 cm⁻¹" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#0c4a6e" data-xreverse="1" data-markers="2915,2848,1463,720"></div>
+        <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_ftir1','PE',true)">A. 聚乙烯 (PE)</button>
         <button class="choice" onclick="checkMCQ(this,'q_ftir1','PP',false)">B. 聚丙烯 (PP)</button>
         <button class="choice" onclick="checkMCQ(this,'q_ftir1','PET',false)">C. 聚對苯二甲酸乙二酯 (PET)</button>
         <button class="choice" onclick="checkMCQ(this,'q_ftir1','PS',false)">D. 聚苯乙烯 (PS)</button>
+        </div>
         <div class="resultBox" id="q_ftir1_result"></div>
       </div>
       <details>
@@ -730,10 +739,12 @@
       <h2>FTIR 圖譜辨識（二）：海鹽中分離的 80 μm 透明顆粒</h2>
       <div class="card activity">
         <div class="chart" data-spec="ftir_pet" data-title="μ-FTIR｜強烈吸收於 1715、1240、1090、720 cm⁻¹" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#0c4a6e" data-xreverse="1" data-markers="1715,1240,1090,723"></div>
+        <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_ftir2','PE',false)">A. 聚乙烯 (PE)</button>
         <button class="choice" onclick="checkMCQ(this,'q_ftir2','PVC',false)">B. 聚氯乙烯 (PVC)</button>
         <button class="choice" onclick="checkMCQ(this,'q_ftir2','PET',true)">C. 聚對苯二甲酸乙二酯 (PET)</button>
         <button class="choice" onclick="checkMCQ(this,'q_ftir2','PA',false)">D. 耐隆 (PA / Nylon)</button>
+        </div>
         <div class="resultBox" id="q_ftir2_result"></div>
       </div>
       <details>
@@ -897,10 +908,12 @@
       <h2>Raman 圖譜辨識：免洗杯刮下的 30 μm 顆粒</h2>
       <p>主要峰位於 <span class="highlight">621、1001、1031、1602、3050 cm⁻¹</span></p>
       <div class="card activity">
+        <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_raman1','PE',false)">A. PE</button>
         <button class="choice" onclick="checkMCQ(this,'q_raman1','PP',false)">B. PP</button>
         <button class="choice" onclick="checkMCQ(this,'q_raman1','PS',true)">C. PS</button>
         <button class="choice" onclick="checkMCQ(this,'q_raman1','PVC',false)">D. PVC</button>
+        </div>
         <div class="resultBox" id="q_raman1_result"></div>
       </div>
       <details>
@@ -948,8 +961,10 @@
       <h2>振動光譜整合測驗（一）</h2>
       <p>FTIR 在 <span class="highlight">1715 cm⁻¹</span> 的強吸收，是辨識 PET 的關鍵指標。</p>
       <div class="card activity">
+        <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_tf1','T',true)">✓ 正確</button>
         <button class="choice" onclick="checkMCQ(this,'q_tf1','F',false)">✗ 錯誤</button>
+        </div>
         <div class="resultBox" id="q_tf1_result"></div>
       </div>
       <div class="card teacherTip">
@@ -962,8 +977,10 @@
       <h2>振動光譜整合測驗（二）</h2>
       <p>Raman 光譜法在水溶液中表現極差，所以無法分析水裡的微塑膠。</p>
       <div class="card activity">
+        <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_tf2','T',false)">✓ 正確</button>
         <button class="choice" onclick="checkMCQ(this,'q_tf2','F',true)">✗ 錯誤</button>
+        </div>
         <div class="resultBox" id="q_tf2_result"></div>
       </div>
       <div class="card teacherTip">
@@ -976,8 +993,10 @@
       <h2>振動光譜整合測驗（三）</h2>
       <p>顯微 FTIR 受紅外光繞射極限限制，傳統機型偵測下限約為 10–20 μm。</p>
       <div class="card activity">
+        <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_tf3','T',true)">✓ 正確</button>
         <button class="choice" onclick="checkMCQ(this,'q_tf3','F',false)">✗ 錯誤</button>
+        </div>
         <div class="resultBox" id="q_tf3_result"></div>
       </div>
       <div class="card teacherTip">
@@ -990,8 +1009,10 @@
       <h2>振動光譜整合測驗（四）</h2>
       <p>NIR 適合用來分析 5 μm 以下的奈米塑膠。</p>
       <div class="card activity">
+        <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_tf4','T',false)">✓ 正確</button>
         <button class="choice" onclick="checkMCQ(this,'q_tf4','F',true)">✗ 錯誤</button>
+        </div>
         <div class="resultBox" id="q_tf4_result"></div>
       </div>
       <div class="card teacherTip">
@@ -1004,8 +1025,10 @@
       <h2>振動光譜整合測驗（五）</h2>
       <p>改用 785 或 1064 nm 雷射可降低 Raman 的螢光干擾。</p>
       <div class="card activity">
+        <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_tf5','T',true)">✓ 正確</button>
         <button class="choice" onclick="checkMCQ(this,'q_tf5','F',false)">✗ 錯誤</button>
+        </div>
         <div class="resultBox" id="q_tf5_result"></div>
       </div>
       <div class="card teacherTip">
@@ -1143,10 +1166,12 @@
       <h2>Py-GC-MS 裂解產物配對</h2>
       <p>某未知樣品色譜圖最強峰質譜為 <span class="highlight">m/z = 104</span>，伴隨 m/z = 208、312 較小峰群。主成分塑膠是？</p>
       <div class="card activity">
+        <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_pygc1','PE',false)">A. PE</button>
         <button class="choice" onclick="checkMCQ(this,'q_pygc1','PP',false)">B. PP</button>
         <button class="choice" onclick="checkMCQ(this,'q_pygc1','PS',true)">C. PS</button>
         <button class="choice" onclick="checkMCQ(this,'q_pygc1','PET',false)">D. PET</button>
+        </div>
         <div class="resultBox" id="q_pygc1_result"></div>
       </div>
       <details>
@@ -1194,10 +1219,12 @@
       <h2>情境決策（一）：海鹽中的微塑膠</h2>
       <p>500 g 商業海鹽，欲測 1–500 μm 微塑膠的<span class="highlight">類型與顆粒數</span>。請選最合適的<strong>主要</strong>分析儀器：</p>
       <div class="card activity">
+        <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_dec1','ATR',false)">A. ATR-FTIR（一顆一顆量）</button>
         <button class="choice" onclick="checkMCQ(this,'q_dec1','uFTIR',true)">B. μ-FTIR 化學成像（FPA 偵測器）</button>
         <button class="choice" onclick="checkMCQ(this,'q_dec1','Raman',false)">C. 顯微 Raman（一顆一顆量）</button>
         <button class="choice" onclick="checkMCQ(this,'q_dec1','PyGC',false)">D. Py-GC-MS</button>
+        </div>
         <div class="resultBox" id="q_dec1_result"></div>
       </div>
       <details>
@@ -1217,10 +1244,12 @@
       <h2>情境決策（二）：瓶裝水中的奈米塑膠</h2>
       <p>法規要求測定 1.5 L 瓶裝水中 100 nm – 1 μm 奈米塑膠的<span class="highlight">總質量濃度</span>（μg/L）。請選最合適的方法組合：</p>
       <div class="card activity">
+        <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_dec2','ATR',false)">A. ATR-FTIR 直接量水樣</button>
         <button class="choice" onclick="checkMCQ(this,'q_dec2','uFTIR',false)">B. μ-FTIR 化學成像</button>
         <button class="choice" onclick="checkMCQ(this,'q_dec2','SERS',false)">C. 顯微 Raman 一顆一顆量</button>
         <button class="choice" onclick="checkMCQ(this,'q_dec2','PyGC',true)">D. AF4 場流分餾濃縮後進 Py-GC-MS（或 TED-GC-MS）</button>
+        </div>
         <div class="resultBox" id="q_dec2_result"></div>
       </div>
       <details>
