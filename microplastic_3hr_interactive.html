@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>食品中微塑膠檢測｜3 小時互動課程（NIR・FTIR・Raman・GC-MS・LC-MS）</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --card: #111c2e;
+      --accent: #06b6d4;
+      --accent2: #a855f7;
+      --accent3: #f472b6;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --good: #22c55e;
+      --warn: #f59e0b;
+      --bad: #ef4444;
+      --line: rgba(255,255,255,0.16);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", Arial, sans-serif;
+      background: radial-gradient(circle at top left, #1e3a8a 0, var(--bg) 45%);
+      color: var(--text);
+      overflow: hidden;
+    }
+    .deck { width: 100vw; height: 100vh; position: relative; }
+    .studentDeck, .teacherDeck { display: none; }
+    .activeDeck { display: block; }
+    .slide {
+      display: none;
+      width: 100vw; height: 100vh;
+      padding: 48px 64px 96px;
+      overflow-y: auto;
+    }
+    .slide.active { display: block; animation: fade 0.22s ease-in-out; }
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1 { font-size: 50px; line-height: 1.18; margin: 0 0 22px; }
+    h2 { font-size: 36px; margin: 0 0 20px; color: #67e8f9; }
+    h3 { font-size: 24px; margin: 16px 0 10px; color: #a5f3fc; }
+    p, li { font-size: 21px; line-height: 1.55; }
+    small, .mini { color: var(--muted); font-size: 16px; }
+    .subtitle { font-size: 25px; color: var(--muted); }
+    .tag {
+      display: inline-block; padding: 6px 12px; border-radius: 999px;
+      background: rgba(6,182,212,0.18); color: #a5f3fc;
+      font-size: 16px; margin: 5px 5px 5px 0;
+      border: 1px solid rgba(6,182,212,0.35);
+    }
+    .tag.purple { background: rgba(168,85,247,0.18); color: #d8b4fe; border-color: rgba(168,85,247,0.35); }
+    .tag.pink { background: rgba(244,114,182,0.18); color: #fbcfe8; border-color: rgba(244,114,182,0.35); }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+    .grid3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+    .grid4 { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; }
+    .card {
+      background: linear-gradient(180deg, rgba(17,28,46,0.96), rgba(11,18,32,0.96));
+      border: 1px solid var(--line); border-radius: 16px;
+      padding: 20px; box-shadow: 0 16px 36px rgba(0,0,0,0.22);
+      margin-bottom: 16px;
+    }
+    .card p, .card li { font-size: 19px; }
+    .activity { border-left: 6px solid var(--accent); }
+    .teacherOnly {
+      border-left: 6px solid var(--warn);
+      background: linear-gradient(180deg, rgba(120,53,15,0.55), rgba(11,18,32,0.96));
+      display: none;
+    }
+    body.teacherMode .teacherOnly { display: block; }
+    body.teacherMode .teacherOnly::before {
+      content: "👨‍🏫 教師提示";
+      display: block; font-weight: 700; color: #fcd34d;
+      font-size: 16px; margin-bottom: 8px;
+    }
+    .ref { border-left: 6px solid var(--accent2); }
+    .highlight { color: #67e8f9; font-weight: 700; }
+    .good { color: #86efac; font-weight: 700; }
+    .warn { color: #fbbf24; font-weight: 700; }
+    .bad { color: #fca5a5; font-weight: 700; }
+    .eq {
+      font-size: 27px; text-align: center; margin: 14px 0;
+      padding: 16px; border-radius: 14px;
+      background: rgba(15,23,42,0.72); border: 1px solid var(--line);
+      letter-spacing: 0.5px;
+    }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 18px; }
+    th, td { border: 1px solid var(--line); padding: 10px; vertical-align: top; }
+    th { background: rgba(6,182,212,0.18); color: #cffafe; }
+    td { background: rgba(15,23,42,0.45); }
+    .controls {
+      position: fixed; left: 0; right: 0; bottom: 0; height: 64px;
+      background: rgba(2,6,23,0.92); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 24px; border-top: 1px solid var(--line); z-index: 20;
+    }
+    button {
+      cursor: pointer; border: 0; border-radius: 10px;
+      padding: 10px 16px; font-size: 16px;
+      background: #2563eb; color: white; margin: 2px;
+      transition: filter 0.15s;
+    }
+    button:hover { filter: brightness(1.12); }
+    button.secondary { background: #334155; }
+    button.goodBtn { background: #16a34a; }
+    button.badBtn { background: #dc2626; }
+    button.warnBtn { background: #d97706; }
+    button.purpleBtn { background: #7c3aed; }
+    .choice {
+      display: block; width: 100%; text-align: left;
+      background: rgba(30,41,59,0.95); border: 1px solid var(--line);
+      margin: 6px 0; padding: 12px 16px; white-space: normal;
+      font-size: 18px;
+    }
+    .choice.selected { background: rgba(37,99,235,0.85); outline: 2px solid #93c5fd; }
+    .choice.correct { background: rgba(22,163,74,0.85); outline: 2px solid #86efac; }
+    .choice.wrong { background: rgba(220,38,38,0.75); outline: 2px solid #fca5a5; }
+    textarea, input {
+      width: 100%; border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(15,23,42,0.88); color: var(--text);
+      padding: 10px; font-size: 16px; margin: 4px 0 12px;
+      font-family: inherit;
+    }
+    textarea { min-height: 80px; resize: vertical; }
+    .resultBox {
+      margin-top: 8px; padding: 12px; border-radius: 10px;
+      background: rgba(15,23,42,0.75); border: 1px solid var(--line);
+      font-size: 18px;
+    }
+    .progress {
+      position: fixed; left: 0; top: 0; height: 5px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+      width: 0%; z-index: 30; transition: width 0.3s;
+    }
+    .slideNo { color: var(--muted); font-size: 16px; }
+    .modeSwitch {
+      position: fixed; top: 12px; right: 16px; z-index: 25;
+      display: flex; gap: 6px;
+    }
+    .modeSwitch button {
+      padding: 6px 12px; font-size: 14px; border-radius: 999px;
+      background: rgba(15,23,42,0.85); border: 1px solid var(--line);
+    }
+    .modeSwitch button.active { background: var(--accent); color: #042f2e; font-weight: 700; }
+    .emSpectrum {
+      height: 70px; border-radius: 12px;
+      background: linear-gradient(90deg, #7c3aed, #2563eb, #06b6d4, #16a34a, #facc15, #f97316, #ef4444);
+      display: flex; align-items: center; justify-content: space-around;
+      color: white; font-weight: 800; margin: 18px 0;
+      border: 1px solid rgba(255,255,255,0.25); font-size: 16px;
+    }
+    .specBox {
+      background: #0a0f1c; border: 1px solid var(--line);
+      border-radius: 12px; padding: 14px; margin: 12px 0;
+    }
+    .specBox svg { width: 100%; height: auto; display: block; }
+    .legend {
+      display: flex; gap: 14px; font-size: 16px; flex-wrap: wrap;
+      margin-top: 8px; color: var(--muted);
+    }
+    .legend span::before {
+      content: "■"; margin-right: 4px;
+    }
+    .sizebar {
+      position: relative; height: 64px; border-radius: 10px;
+      background: linear-gradient(90deg, rgba(244,114,182,0.6) 0%, rgba(168,85,247,0.6) 25%, rgba(6,182,212,0.6) 65%, rgba(34,197,94,0.6) 100%);
+      margin: 14px 0;
+    }
+    .sizebar .label { position: absolute; top: 6px; font-size: 14px; color: white; font-weight: 700; }
+    .sizebar .scale { position: absolute; bottom: 4px; font-size: 13px; color: white; opacity: 0.85; }
+    .pill {
+      display: inline-block; padding: 4px 10px; border-radius: 999px;
+      font-size: 14px; font-weight: 700; margin: 3px;
+    }
+    .pill.cyan { background: #155e75; color: #cffafe; }
+    .pill.purple { background: #5b21b6; color: #ede9fe; }
+    .pill.pink { background: #9d174d; color: #fce7f3; }
+    .pill.green { background: #166534; color: #dcfce7; }
+    .pill.amber { background: #92400e; color: #fef3c7; }
+    .scoreBoard {
+      position: fixed; top: 12px; left: 16px; z-index: 25;
+      background: rgba(15,23,42,0.85); padding: 6px 12px;
+      border-radius: 999px; font-size: 14px; color: var(--muted);
+      border: 1px solid var(--line);
+    }
+    .scoreBoard .num { color: #67e8f9; font-weight: 700; font-size: 16px; }
+    details {
+      background: rgba(15,23,42,0.55); padding: 10px 14px;
+      border-radius: 10px; border: 1px solid var(--line);
+      margin: 8px 0;
+    }
+    details summary { cursor: pointer; font-weight: 700; font-size: 18px; color: #a5f3fc; }
+    details[open] summary { margin-bottom: 8px; }
+    .citation {
+      font-size: 14px; color: #94a3b8; font-style: italic;
+      border-left: 3px solid #475569; padding-left: 8px; margin: 6px 0;
+    }
+    .twoCol {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start;
+    }
+    @media print {
+      body { overflow: visible; background: white; color: black; }
+      .slide { display: block !important; height: auto; page-break-after: always; color: black; background: white; padding: 28px; }
+      .controls, .progress, .modeSwitch, .scoreBoard { display: none !important; }
+      h1, h2, h3, p, li, small, td, th { color: black; }
+      .card { background: white; color: black; box-shadow: none; border: 1px solid #888; }
+      .eq { background: #f5f5f5; color: black; }
+      .teacherDeck { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+  <div class="scoreBoard">已完成互動：<span class="num" id="scoreCount">0</span> / <span id="scoreTotal">0</span></div>
+  <div class="modeSwitch">
+    <button id="btnStudent" class="active" onclick="switchMode('student')">學生版</button>
+    <button id="btnTeacher" onclick="switchMode('teacher')">教師版</button>
+  </div>
+
+  <!-- ============== 學生版投影片 ============== -->
+  <main class="deck studentDeck activeDeck" id="studentDeck">
+
+    <!-- S1 封面 -->
+    <section class="slide active">
+      <h1>食品中微塑膠檢測<br/><span style="color:#a5f3fc;font-size:38px;">微塑膠分析的五大儀器技術</span></h1>
+      <p class="subtitle">3 小時互動式課程 ｜ NIR・FTIR・Raman・Py-GC-MS・LC-MS</p>
+      <div>
+        <span class="tag">微塑膠 MP</span>
+        <span class="tag">奈米塑膠 NP</span>
+        <span class="tag purple">振動光譜</span>
+        <span class="tag purple">熱裂解質譜</span>
+        <span class="tag pink">食品安全</span>
+      </div>
+      <div class="card">
+        <h3>今天你會學到</h3>
+        <ul>
+          <li>食品中微塑膠的來源、種類與健康疑慮</li>
+          <li>NIR / FTIR / Raman 三種振動光譜各自的<span class="highlight">偵測極限</span>與應用場景</li>
+          <li>Py-GC-MS、TED-GC-MS 如何進行<span class="highlight">質量定量</span></li>
+          <li>LC-MS 在塑化劑、寡聚物、添加劑分析的角色</li>
+          <li>如何依樣品特性與目標<span class="highlight">選擇正確方法</span></li>
+        </ul>
+      </div>
+      <p class="mini">右上角可切換學生版 / 教師版（含教學提示與參考答案）</p>
+    </section>
+
+    <!-- S2 課程地圖 -->
+    <section class="slide">
+      <h2>課程地圖（180 分鐘）</h2>
+      <table>
+        <tr><th style="width:90px">時間</th><th>模組</th><th>主題</th><th>互動形式</th></tr>
+        <tr><td>0–10</td><td>M0</td><td>引言與暖身投票</td><td>投票、自由作答</td></tr>
+        <tr><td>10–35</td><td>M1</td><td>微塑膠 101：定義、來源、前處理</td><td>選擇題、配對</td></tr>
+        <tr><td>35–85</td><td>M2</td><td>振動光譜：NIR、FTIR、Raman</td><td>圖譜辨識、是非題</td></tr>
+        <tr><td>85–95</td><td>—</td><td>休息</td><td>—</td></tr>
+        <tr><td>95–155</td><td>M3</td><td>質譜技術：Py-GC-MS、LC-MS</td><td>裂解產物配對、情境決策</td></tr>
+        <tr><td>155–170</td><td>M4</td><td>方法整合與決策樹</td><td>實驗設計、文獻案例</td></tr>
+        <tr><td>170–180</td><td>M5</td><td>總結與 Exit Ticket</td><td>短答回饋</td></tr>
+      </table>
+      <div class="card ref">
+        <p class="mini"><strong>核心參考文獻：</strong>Käppler et al. (2016) <em>Anal Bioanal Chem</em>; Primpke et al. (2020) <em>Appl Spectrosc</em>; Ribeiro et al. (2020) <em>Environ Sci Technol</em>; Cowger et al. (2020) <em>Appl Spectrosc</em>; Schwaferts et al. (2019) <em>TrAC</em>; La Nasa et al. (2020) <em>J Hazard Mater</em>.</p>
+      </div>
+    </section>
+
+    <!-- S3 暖身投票 -->
+    <section class="slide">
+      <h2>暖身：你覺得「成年人每週平均吃進」多少微塑膠？</h2>
+      <div class="card activity">
+        <h3>請選擇你的猜測</h3>
+        <button class="choice" onclick="selectChoice(this,'q_warmup','A')">A. 幾乎沒有（&lt; 0.01 g）</button>
+        <button class="choice" onclick="selectChoice(this,'q_warmup','B')">B. 約 1 g（一張提款卡的塑膠粉末）</button>
+        <button class="choice" onclick="selectChoice(this,'q_warmup','C')">C. 約 5 g（一張信用卡的塑膠粉末）</button>
+        <button class="choice" onclick="selectChoice(this,'q_warmup','D')">D. 約 50 g（一支牙刷的塑膠粉末）</button>
+        <div class="resultBox" id="q_warmup_result">選完後告訴旁邊同學你的理由。</div>
+      </div>
+      <details>
+        <summary>提示：研究報告怎麼說？</summary>
+        <p>WWF 委託紐卡索大學 Senathirajah et al. (2021) 的系統性回顧估計：成年人<span class="highlight">每週可能攝入 0.1–5 g</span>（中位數約 0.7 g/週）微塑膠，相當於信用卡等級的數量級。實際攝入量隨飲水習慣（瓶裝水比自來水高 3–4 倍）、貝類食用量、海鹽使用量等差異甚大。</p>
+        <p class="citation">Senathirajah K. et al. (2021) <em>J Hazard Mater</em> 404:124004.</p>
+      </details>
+    </section>
+
+    <!-- S4 微塑膠定義 -->
+    <section class="slide">
+      <h2>什麼是微塑膠？</h2>
+      <div class="card">
+        <p><span class="highlight">微塑膠 (Microplastics, MP)</span>：粒徑 &lt; 5 mm 的塑膠顆粒（由 NOAA / GESAMP 定義；歐盟提案 1 μm – 5 mm）。</p>
+        <p><span class="highlight">奈米塑膠 (Nanoplastics, NP)</span>：粒徑 &lt; 1 μm（或 &lt; 100 nm 嚴格定義），來自微塑膠的進一步破碎或產品中的奈米添加。</p>
+      </div>
+      <div class="sizebar">
+        <span class="label" style="left:4%;top:20px">NP &lt; 1 μm</span>
+        <span class="label" style="left:30%;top:20px">小 MP 1–100 μm</span>
+        <span class="label" style="left:55%;top:20px">大 MP 100 μm–5 mm</span>
+        <span class="label" style="left:84%;top:20px">塑膠碎片 &gt; 5 mm</span>
+        <span class="scale" style="left:2%">10 nm</span>
+        <span class="scale" style="left:25%">1 μm</span>
+        <span class="scale" style="left:55%">100 μm</span>
+        <span class="scale" style="left:82%">5 mm</span>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <h3>原生 (Primary) MP</h3>
+          <p>製造時就以微小顆粒形式生產：去角質磨砂膏、牙膏、工業樹脂粒、車輛輪胎屑、化妝品。</p>
+        </div>
+        <div class="card">
+          <h3>次生 (Secondary) MP</h3>
+          <p>大塑膠在環境中受光、熱、機械力分解：保特瓶碎片、漁網碎屑、農膜降解、衣物纖維洗滌脫落。</p>
+        </div>
+      </div>
+      <p class="citation">Cole M. et al. (2011) Microplastics as contaminants in the marine environment: a review. <em>Mar Pollut Bull</em> 62:2588–2597.</p>
+    </section>
+
+    <!-- S5 常見塑膠類型 -->
+    <section class="slide">
+      <h2>食品中最常被檢出的塑膠類型</h2>
+      <table>
+        <tr><th>縮寫</th><th>名稱</th><th>密度 (g/cm³)</th><th>食品場景</th><th>特徵指紋</th></tr>
+        <tr><td><span class="pill cyan">PE</span></td><td>聚乙烯</td><td>0.91–0.96</td><td>食品袋、保鮮膜、瓶蓋</td><td>FTIR: 2915/2848/1463/720</td></tr>
+        <tr><td><span class="pill purple">PP</span></td><td>聚丙烯</td><td>0.90–0.91</td><td>微波容器、優格杯、茶包</td><td>FTIR: 2950/1455/1377/998</td></tr>
+        <tr><td><span class="pill pink">PET</span></td><td>聚對苯二甲酸乙二酯</td><td>1.37</td><td>瓶裝水、即飲茶、油瓶</td><td>FTIR: 1715/1240/1090/720</td></tr>
+        <tr><td><span class="pill green">PS</span></td><td>聚苯乙烯</td><td>1.04–1.10</td><td>免洗餐具、發泡盒、優格杯</td><td>FTIR: 3025/1601/1493/696</td></tr>
+        <tr><td><span class="pill amber">PVC</span></td><td>聚氯乙烯</td><td>1.16–1.45</td><td>保鮮膜（部分）、輸送管</td><td>FTIR: 1426/1330/690 (C-Cl)</td></tr>
+        <tr><td><span class="pill cyan">PA</span></td><td>耐隆 (Nylon)</td><td>1.13–1.15</td><td>茶包、烹飪袋、漁網碎屑</td><td>Py-GC-MS: 己內醯胺 (PA6)</td></tr>
+        <tr><td><span class="pill purple">PC</span></td><td>聚碳酸酯</td><td>1.20</td><td>奶瓶、5 號桶</td><td>LC-MS: BPA 寡聚物</td></tr>
+      </table>
+      <p class="mini">密度資訊很重要：將決定後續<span class="highlight">密度浮選</span>使用哪種鹽溶液（NaCl 1.2、NaI 1.6、ZnCl₂ 1.7、NaBr 1.4）。</p>
+    </section>
+
+    <!-- S6 來源與暴露途徑 -->
+    <section class="slide">
+      <h2>食品中微塑膠的暴露途徑</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>水與飲料</h3>
+          <ul>
+            <li>瓶裝水：325 顆/L（中位數，Mason 2018）</li>
+            <li>自來水：5.5 顆/L</li>
+            <li>啤酒、即飲茶亦有偵測</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>海鹽與調味料</h3>
+          <ul>
+            <li>海鹽：550–681 顆/kg（Yang 2015）</li>
+            <li>湖鹽、岩鹽含量較低</li>
+            <li>主要為 PET、PE、PP</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>海鮮與貝類</h3>
+          <ul>
+            <li>淡菜：0.36 顆/g 軟組織</li>
+            <li>牡蠣、蛤蜊吸收水中懸浮 MP</li>
+            <li>多數位於消化道</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>包裝遷移與沖泡</h3>
+          <ul>
+            <li>塑膠茶包（PA / PET）：每杯釋出 ~11.6 億顆 NP（Hernandez 2019）</li>
+            <li>嬰兒奶瓶（PP）80°C 沖泡：1.6 × 10⁶ 顆/L（Li 2020）</li>
+          </ul>
+        </div>
+      </div>
+      <p class="citation">Hernandez LM. et al. (2019) Plastic Teabags Release Billions of Microparticles and Nanoparticles into Tea. <em>Environ Sci Technol</em> 53:12300–12310.</p>
+    </section>
+
+    <!-- S7 健康疑慮 -->
+    <section class="slide">
+      <h2>為什麼食品分析師要在乎？</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>顆粒本身效應</h3>
+          <ul>
+            <li>奈米塑膠可<span class="warn">跨越腸壁</span>，在血液、胎盤、肝、腎被檢出</li>
+            <li>細胞層級：氧化壓力、發炎反應、粒線體功能改變</li>
+            <li>Leslie HA. et al. (2022) 首次在人類血液檢出 MP</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>化學物質帶入</h3>
+          <ul>
+            <li><span class="warn">塑化劑</span>：鄰苯二甲酸酯類（DEHP、DBP）— LC-MS 分析</li>
+            <li><span class="warn">雙酚 A (BPA)</span>：內分泌干擾</li>
+            <li><span class="warn">抗氧化劑、紫外光穩定劑</span>：苯酚類添加物</li>
+            <li>環境吸附的多氯聯苯 (PCBs)、農藥殘留可被 MP 載運</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card teacherOnly">
+        <h3>🎯 課程定位</h3>
+        <p>本課程聚焦於<span class="highlight">分析化學技術</span>本身，毒理學與風險評估只做背景說明。我們的目標是讓學生能在實驗室真正執行分析、判讀光譜、選擇方法。</p>
+      </div>
+      <p class="citation">Leslie HA. et al. (2022) Discovery and quantification of plastic particle pollution in human blood. <em>Environ Int</em> 163:107199.</p>
+    </section>
+
+    <!-- S8 樣品前處理總覽 -->
+    <section class="slide">
+      <h2>樣品前處理：分析前最關鍵的一步</h2>
+      <div class="card">
+        <p>不論用什麼儀器分析，<span class="highlight">前處理品質決定一切</span>。錯誤的前處理會：① 破壞塑膠本身、② 引入背景污染、③ 干擾光譜判讀。</p>
+      </div>
+      <table>
+        <tr><th>步驟</th><th>目的</th><th>常用方法</th><th>注意事項</th></tr>
+        <tr><td>1. 取樣</td><td>避免空氣污染</td><td>玻璃容器、鋁箔覆蓋、無棉質實驗衣</td><td>全程設<span class="bad">程序空白組</span></td></tr>
+        <tr><td>2. 有機物消化</td><td>移除蛋白、油脂</td><td>KOH 10%、H₂O₂ 30%、Fenton、酵素</td><td>避免高溫破壞 PA、PET</td></tr>
+        <tr><td>3. 密度分離</td><td>分離塑膠與礦物</td><td>NaCl(1.2)、NaI(1.6)、ZnCl₂(1.7)</td><td>NaCl 無法浮起 PET/PVC</td></tr>
+        <tr><td>4. 過濾</td><td>收集顆粒於濾膜</td><td>Anodisc、Si filter、Au-coated</td><td>濾膜材質須相容後續儀器</td></tr>
+        <tr><td>5. 鑑定/定量</td><td>得到化學身份</td><td>FTIR / Raman / Py-GC-MS</td><td>定量單位：顆數 vs 質量</td></tr>
+      </table>
+      <p class="citation">Prata JC. et al. (2019) Methods for sampling and detection of microplastics in water and sediment: A critical review. <em>TrAC</em> 110:150–159.</p>
+    </section>
+
+    <!-- S9 互動：消化方法 -->
+    <section class="slide">
+      <h2>互動：消化方法的選擇</h2>
+      <div class="card activity">
+        <h3>情境：你要分析 100 g 鮮魚消化道內的微塑膠，哪種消化方法最適合？</h3>
+        <button class="choice" onclick="checkMCQ(this,'q_digest','A',false)">A. 濃硝酸 (HNO₃) 加熱迴流</button>
+        <button class="choice" onclick="checkMCQ(this,'q_digest','B',true)">B. 10% KOH，40°C，24–48 小時</button>
+        <button class="choice" onclick="checkMCQ(this,'q_digest','C',false)">C. 直接用蒸餾水浸泡</button>
+        <button class="choice" onclick="checkMCQ(this,'q_digest','D',false)">D. 30% H₂O₂ 加熱至 80°C 持續 24 h</button>
+        <div class="resultBox" id="q_digest_result">點選一個答案。</div>
+      </div>
+      <details>
+        <summary>為什麼？</summary>
+        <ul>
+          <li><span class="bad">A 不行</span>：濃硝酸會強烈破壞 PA、PS 等塑膠，<span class="warn">使顆粒變色、變形甚至溶解</span>，扭曲後續鑑定結果。</li>
+          <li><span class="good">B 最佳</span>：10% KOH 在 40°C 對魚組織有良好消化效率（&gt; 90%），且對 PE、PP、PET、PS 等常見塑膠相對溫和。Karami et al. (2017) 的標準操作流程之一。</li>
+          <li><span class="bad">C 無效</span>：水無法消化蛋白與油脂。</li>
+          <li><span class="warn">D 有疑慮</span>：高溫 H₂O₂ 會使 PA 變色、PET 機械強度下降；若需 H₂O₂ 建議室溫長時間消化。</li>
+        </ul>
+        <p class="citation">Karami A. et al. (2017) A high-performance protocol for extraction of microplastics in fish. <em>Sci Total Environ</em> 578:485–494.</p>
+      </details>
+    </section>
+
+    <!-- S10 密度分離 -->
+    <section class="slide">
+      <h2>密度分離溶液的選擇</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>常用浮選鹽溶液</h3>
+          <table>
+            <tr><th>溶液</th><th>密度 g/cm³</th><th>可浮塑膠</th></tr>
+            <tr><td>NaCl 飽和</td><td>1.20</td><td>PE、PP、PS</td></tr>
+            <tr><td>NaBr 飽和</td><td>1.40</td><td>+ PA、PMMA</td></tr>
+            <tr><td>NaI 飽和</td><td>1.60</td><td>+ PET、ABS</td></tr>
+            <tr><td>ZnCl₂ 飽和</td><td>1.70</td><td>+ PVC、POM</td></tr>
+            <tr><td>ZnBr₂ 飽和</td><td>1.71</td><td>幾乎全部</td></tr>
+            <tr><td>多鎢酸鈉</td><td>1.40–3.10</td><td>可調，價格高</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h3>選擇邏輯</h3>
+          <ul>
+            <li>只關心 PE/PP/PS：<span class="highlight">NaCl 經濟實惠</span>，但會漏掉 PET、PVC</li>
+            <li>分析完整塑膠譜：建議 <span class="highlight">NaI 或 ZnCl₂</span></li>
+            <li>ZnCl₂ 廢液有<span class="bad">重金屬</span>處理成本</li>
+            <li>奈米塑膠：密度分離效率差，常需<span class="highlight">場流分餾 (AF4)</span> 或<span class="highlight">超離心</span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="citation">Schwaferts C. et al. (2019) Methods for the analysis of submicrometer- and nanoplastic particles in the environment. <em>TrAC</em> 112:52–65.</p>
+    </section>
+
+    <!-- S11 振動光譜原理 -->
+    <section class="slide">
+      <h2>振動光譜原理：分子在「跳什麼舞」？</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>能量階層</h3>
+          <p>分子吸收紅外光，<span class="highlight">振動能階</span>從基態升到激發態。每種化學鍵（C–H、C=O、C–O、C–Cl）有特徵頻率。</p>
+          <div class="eq">ν̃ (cm⁻¹) = 1/λ</div>
+          <p class="mini">中紅外區 (MIR) 約 4000–400 cm⁻¹；近紅外 (NIR) 約 12500–4000 cm⁻¹。</p>
+        </div>
+        <div class="card">
+          <h3>選律：吸收 vs 散射</h3>
+          <ul>
+            <li><span class="highlight">IR 活性</span>：振動造成<span class="warn">偶極矩變化</span> → C=O、O–H 強</li>
+            <li><span class="highlight">Raman 活性</span>：振動造成<span class="warn">極化率變化</span> → C=C、芳香環強</li>
+            <li>對稱中心分子兩者互補（<em>mutual exclusion</em>）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="emSpectrum">
+        <span>γ</span><span>X</span><span>UV</span><span>Vis</span><span style="background:rgba(0,0,0,0.3);padding:4px 8px;border-radius:8px">NIR</span><span style="background:rgba(0,0,0,0.3);padding:4px 8px;border-radius:8px">MIR/FTIR</span><span style="background:rgba(0,0,0,0.3);padding:4px 8px;border-radius:8px">Raman</span><span>μ波</span><span>RF</span>
+      </div>
+    </section>
+
+    <!-- S12 NIR -->
+    <section class="slide">
+      <h2>近紅外光譜 (NIR)：快速篩選的好朋友</h2>
+      <div class="twoCol">
+        <div>
+          <div class="card">
+            <h3>原理</h3>
+            <p>NIR 涵蓋 <span class="highlight">12500–4000 cm⁻¹</span>（800–2500 nm），主要記錄 C–H、O–H、N–H 鍵的<span class="warn">倍頻 (overtone)</span> 與<span class="warn">組合頻 (combination)</span>。</p>
+            <p>峰寬大、訊號弱、解析度低 → 需<span class="highlight">化學計量學</span>（PCA、PLS、SIMCA）建模辨識。</p>
+          </div>
+          <div class="card">
+            <h3>食品微塑膠中的角色</h3>
+            <ul>
+              <li>大尺寸塑膠 (&gt; 1 mm) <span class="highlight">分選回收線</span>主流技術</li>
+              <li>大顆粒篩選：HSI (Hyperspectral Imaging) 1000–2500 nm</li>
+              <li><span class="bad">不適合</span> &lt; 500 μm MP 分析</li>
+              <li>食品基質干擾大（水、油的 O–H、C–H 強吸收）</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="specBox">
+            <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+              <!-- axes -->
+              <line x1="40" y1="190" x2="380" y2="190" stroke="#94a3b8" stroke-width="1"/>
+              <line x1="40" y1="20" x2="40" y2="190" stroke="#94a3b8" stroke-width="1"/>
+              <text x="210" y="212" fill="#cbd5e1" font-size="13" text-anchor="middle">Wavelength (nm)</text>
+              <text x="60" y="210" fill="#94a3b8" font-size="11">1000</text>
+              <text x="210" y="210" fill="#94a3b8" font-size="11">1700</text>
+              <text x="360" y="210" fill="#94a3b8" font-size="11">2500</text>
+              <text x="20" y="100" fill="#cbd5e1" font-size="13" transform="rotate(-90,20,100)">Absorbance</text>
+              <!-- PE NIR (broad bumps near 1210, 1410, 1730, 2310) -->
+              <path d="M 40 180 Q 80 175 100 160 Q 120 140 130 130 Q 150 145 170 150 Q 200 110 220 100 Q 240 130 260 150 Q 280 60 310 50 Q 340 110 380 150"
+                    fill="none" stroke="#06b6d4" stroke-width="2.2"/>
+              <text x="270" y="40" fill="#06b6d4" font-size="13" font-weight="700">PE (NIR)</text>
+              <text x="180" y="95" fill="#cbd5e1" font-size="11">1730</text>
+              <text x="280" y="45" fill="#cbd5e1" font-size="11">2310 (C-H 組合頻)</text>
+            </svg>
+          </div>
+          <p class="mini">PE 在 NIR 的特徵：1210、1410、1730 nm（C–H 倍頻），2310 nm（C–H 組合頻）。峰寬 → 必須與標準品比對。</p>
+        </div>
+      </div>
+      <p class="citation">Serranti S. et al. (2018) The utilization of hyperspectral imaging for impurities detection in secondary plastics. <em>Open Waste Manag J</em>.</p>
+    </section>
+
+    <!-- S13 互動：NIR 適用情境 -->
+    <section class="slide">
+      <h2>互動：NIR 適合哪一種情境？</h2>
+      <div class="card activity">
+        <h3>請從以下情境選出 NIR 最合適的應用（可能不只一個正確答案，請選最佳）</h3>
+        <button class="choice" onclick="checkMCQ(this,'q_nir','A',false)">A. 偵測自來水中 5 μm 的奈米級 PE 顆粒</button>
+        <button class="choice" onclick="checkMCQ(this,'q_nir','B',true)">B. 工廠回收線高速分選 2 cm 大小的 PET 與 HDPE 瓶片</button>
+        <button class="choice" onclick="checkMCQ(this,'q_nir','C',false)">C. 鑑定海鹽中 50 μm 的塑膠纖維</button>
+        <button class="choice" onclick="checkMCQ(this,'q_nir','D',false)">D. 偵測魚肉裡 0.5 μg 的 PS</button>
+        <div class="resultBox" id="q_nir_result">點選一個答案。</div>
+      </div>
+      <details>
+        <summary>解析</summary>
+        <p>NIR 的核心優勢是<span class="highlight">快、無樣品破壞、可線上監測</span>，但解析度與靈敏度都不如 FTIR / Raman。它最適合<span class="highlight">大型塑膠（mm 以上）的分選與成分篩選</span>，例如回收業以高光譜成像 (HSI) 線上分選 PET、HDPE、PP。對於 ≤ 100 μm 的微塑膠或質量極低的樣本，NIR 的靈敏度不足。</p>
+      </details>
+    </section>
+
+    <!-- S14 FTIR 原理 -->
+    <section class="slide">
+      <h2>傅立葉轉換紅外光譜 (FTIR)：微塑膠分析的「主力」</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>關鍵原理</h3>
+          <ul>
+            <li>光源（globar）→ <span class="highlight">麥克生干涉儀</span> → 樣品 → 偵測器</li>
+            <li>記錄<span class="highlight">干涉圖 (interferogram)</span></li>
+            <li>傅立葉轉換 → 得到吸收光譜</li>
+            <li>同時量測所有波數 → <span class="highlight">Fellgett 多路訊噪比優勢</span></li>
+            <li>解析度可達 0.5 cm⁻¹</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>四種採樣模式</h3>
+          <table>
+            <tr><th>模式</th><th>適用</th><th>限制</th></tr>
+            <tr><td>透射</td><td>濾膜上小顆粒</td><td>濾膜須透 IR (Si/Anodisc)</td></tr>
+            <tr><td>ATR</td><td>大顆粒 &gt; 100 μm</td><td>需<span class="warn">接觸晶體</span></td></tr>
+            <tr><td>反射</td><td>金屬塗布濾膜</td><td>厚樣品有 RAB</td></tr>
+            <tr><td>顯微 FTIR</td><td>10 μm – mm 個別顆粒</td><td>慢、需聚焦</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- S15 FTIR 偵測極限與化學成像 -->
+    <section class="slide">
+      <h2>FTIR 的偵測極限與化學成像</h2>
+      <div class="card">
+        <h3>顯微 FTIR (μ-FTIR) 與化學成像</h3>
+        <p>傳統單點顯微 FTIR：偵測極限約 <span class="highlight">10–20 μm</span>（受 IR 繞射極限限制）。</p>
+        <p>使用 <span class="highlight">FPA 偵測器（Focal Plane Array）</span>可一次拍下 64 × 64 像素的化學影像，整個濾膜可自動掃描並進行<span class="highlight">化學分類</span>（搭配 siMPle、PRIMPKE 等 open-source 軟體）。</p>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <h3>QCL-IR：下一代技術</h3>
+          <ul>
+            <li>量子級聯雷射光源 (Quantum Cascade Laser)</li>
+            <li>強度高、可<span class="highlight">快速掃描</span>，1 cm² 濾膜在 30 分鐘內完成</li>
+            <li>偵測極限可達 ~5 μm</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>O-PTIR (光熱紅外)</h3>
+          <ul>
+            <li>結合 IR 光源與可見光探針</li>
+            <li>突破繞射極限，可達 <span class="highlight">~ 500 nm 空間解析度</span></li>
+            <li>同時可量 Raman，但儀器昂貴</li>
+          </ul>
+        </div>
+      </div>
+      <p class="citation">Primpke S. et al. (2020) Critical assessment of analytical methods for the harmonized and cost-efficient analysis of microplastics. <em>Appl Spectrosc</em> 74:1012–1047.</p>
+    </section>
+
+    <!-- S16 FTIR 特徵峰對照 -->
+    <section class="slide">
+      <h2>FTIR 五大常見塑膠的特徵峰</h2>
+      <div class="specBox">
+        <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg">
+          <line x1="50" y1="240" x2="580" y2="240" stroke="#94a3b8"/>
+          <line x1="50" y1="20" x2="50" y2="240" stroke="#94a3b8"/>
+          <text x="315" y="265" fill="#cbd5e1" font-size="13" text-anchor="middle">Wavenumber (cm⁻¹)</text>
+          <text x="55" y="258" fill="#94a3b8" font-size="11">4000</text>
+          <text x="265" y="258" fill="#94a3b8" font-size="11">2000</text>
+          <text x="565" y="258" fill="#94a3b8" font-size="11">400</text>
+          <text x="15" y="130" fill="#cbd5e1" font-size="13" transform="rotate(-90,15,130)">Transmittance</text>
+          <!-- PE: dips at 2915,2848,1463,720 -->
+          <path d="M 50 50 L 130 48 L 180 35 L 210 38 L 285 45 L 340 30 L 380 48 L 480 47 L 530 32 L 570 48"
+                fill="none" stroke="#06b6d4" stroke-width="2"/>
+          <text x="475" y="80" fill="#06b6d4" font-size="13" font-weight="700">PE</text>
+          <!-- PP: dips at 2950,1455,1377,998 -->
+          <path d="M 50 100 L 130 98 L 175 85 L 215 95 L 290 100 L 330 78 L 360 88 L 400 80 L 430 97 L 510 100 L 570 99"
+                fill="none" stroke="#a855f7" stroke-width="2"/>
+          <text x="380" y="125" fill="#a855f7" font-size="13" font-weight="700">PP</text>
+          <!-- PET: dips at 1715, 1240, 1090, 720 (aromatic) -->
+          <path d="M 50 150 L 200 148 L 235 138 L 280 100 L 310 145 L 340 130 L 380 120 L 430 145 L 530 130 L 570 148"
+                fill="none" stroke="#f472b6" stroke-width="2"/>
+          <text x="290" y="92" fill="#f472b6" font-size="13" font-weight="700">PET (1715 C=O)</text>
+          <!-- PS: dips at 3025, 1601, 1493, 696 -->
+          <path d="M 50 200 L 100 198 L 130 188 L 175 197 L 270 198 L 315 185 L 345 195 L 380 188 L 430 198 L 535 175 L 570 197"
+                fill="none" stroke="#22c55e" stroke-width="2"/>
+          <text x="125" y="180" fill="#22c55e" font-size="13" font-weight="700">PS (芳香)</text>
+        </svg>
+        <div class="legend">
+          <span style="color:#06b6d4">PE</span>
+          <span style="color:#a855f7">PP</span>
+          <span style="color:#f472b6">PET</span>
+          <span style="color:#22c55e">PS</span>
+        </div>
+      </div>
+      <p class="mini">注意：實際儀器圖譜為吸光度模式（dips 朝上為 peaks）。本示意圖以「穿透率下降 = 吸收」呈現，特徵峰位置標示為主。</p>
+      <table>
+        <tr><th>塑膠</th><th>關鍵特徵峰 cm⁻¹</th><th>歸屬</th></tr>
+        <tr><td><span class="pill cyan">PE</span></td><td>2915, 2848, 1463, 720</td><td>C–H 伸縮、CH₂ 變角、CH₂ 搖動</td></tr>
+        <tr><td><span class="pill purple">PP</span></td><td>2950, 1455, 1377, 998, 840</td><td>CH₃ 不對稱、對稱變角，骨架</td></tr>
+        <tr><td><span class="pill pink">PET</span></td><td>1715, 1240, 1090, 720</td><td>C=O、C–O、芳香 C–H 變角</td></tr>
+        <tr><td><span class="pill green">PS</span></td><td>3025, 1601, 1493, 696</td><td>芳香 C–H、苯環骨架</td></tr>
+        <tr><td><span class="pill amber">PVC</span></td><td>1426, 1330, 690</td><td>CH₂、CH–Cl 變角、C–Cl 伸縮</td></tr>
+      </table>
+    </section>
+
+    <!-- S17 互動：FTIR 圖譜辨識 1 -->
+    <section class="slide">
+      <h2>互動：FTIR 圖譜辨識（一）</h2>
+      <div class="card activity">
+        <h3>下方為某未知塑膠的 FTIR 圖譜，主要吸收峰在 2915、2848、1463、720 cm⁻¹。請判斷塑膠類型：</h3>
+        <div class="specBox" style="background:#fff">
+          <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+            <line x1="50" y1="170" x2="580" y2="170" stroke="#334155"/>
+            <line x1="50" y1="20" x2="50" y2="170" stroke="#334155"/>
+            <text x="315" y="190" fill="#334155" font-size="12" text-anchor="middle">Wavenumber (cm⁻¹)</text>
+            <text x="55" y="186" fill="#334155" font-size="10">4000</text>
+            <text x="565" y="186" fill="#334155" font-size="10">400</text>
+            <!-- baseline with sharp dips at PE positions -->
+            <!-- 2915 (~x=187), 2848 (~x=205), 1463 (~x=358), 720 (~x=502) -->
+            <path d="M 50 40 L 170 38 L 185 130 L 200 50 L 215 130 L 230 50 L 350 48 L 370 100 L 390 50 L 470 50 L 495 130 L 515 50 L 580 48"
+                  fill="none" stroke="#0c4a6e" stroke-width="2"/>
+            <text x="190" y="148" fill="#dc2626" font-size="11">2915/2848</text>
+            <text x="360" y="118" fill="#dc2626" font-size="11">1463</text>
+            <text x="490" y="148" fill="#dc2626" font-size="11">720</text>
+          </svg>
+        </div>
+        <button class="choice" onclick="checkMCQ(this,'q_ftir1','PE',true)">A. 聚乙烯 (PE)</button>
+        <button class="choice" onclick="checkMCQ(this,'q_ftir1','PP',false)">B. 聚丙烯 (PP)</button>
+        <button class="choice" onclick="checkMCQ(this,'q_ftir1','PET',false)">C. 聚對苯二甲酸乙二酯 (PET)</button>
+        <button class="choice" onclick="checkMCQ(this,'q_ftir1','PS',false)">D. 聚苯乙烯 (PS)</button>
+        <div class="resultBox" id="q_ftir1_result">點選一個答案。</div>
+      </div>
+      <details>
+        <summary>判讀邏輯</summary>
+        <ul>
+          <li><span class="good">PE 正解</span>：2915（CH₂ 不對稱伸縮）+ 2848（CH₂ 對稱伸縮）+ 1463（CH₂ 剪式變角）+ <span class="highlight">720</span>（CH₂ 搖動雙峰，分裂為 730/720 是 HDPE 結晶特徵）— 這是 PE 的「四特徵峰」。</li>
+          <li><span class="bad">不是 PP</span>：PP 一定要看到 1377 cm⁻¹（CH₃ 對稱變角）與 998/974/840 cm⁻¹ 三個骨架峰。</li>
+          <li><span class="bad">不是 PET</span>：缺少 1715 cm⁻¹ 強烈的 C=O 吸收。</li>
+          <li><span class="bad">不是 PS</span>：缺少 3025 cm⁻¹ 芳香 C–H、1601/1493 苯環、696 cm⁻¹。</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- S18 互動：FTIR 圖譜辨識 2 -->
+    <section class="slide">
+      <h2>互動：FTIR 圖譜辨識（二）</h2>
+      <div class="card activity">
+        <h3>某海鹽樣品中分離出一顆 80 μm 透明顆粒，μ-FTIR 結果顯示強烈吸收於 1715、1240、1090 cm⁻¹，以及 720 cm⁻¹。請判斷：</h3>
+        <div class="specBox" style="background:#fff">
+          <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+            <line x1="50" y1="170" x2="580" y2="170" stroke="#334155"/>
+            <line x1="50" y1="20" x2="50" y2="170" stroke="#334155"/>
+            <text x="315" y="190" fill="#334155" font-size="12" text-anchor="middle">Wavenumber (cm⁻¹)</text>
+            <text x="55" y="186" fill="#334155" font-size="10">4000</text>
+            <text x="565" y="186" fill="#334155" font-size="10">400</text>
+            <!-- 1715 (~x=300), 1240 (~x=395), 1090 (~x=435), 720 (~x=502) -->
+            <path d="M 50 45 L 270 42 L 295 145 L 320 50 L 380 50 L 397 130 L 415 60 L 432 135 L 450 55 L 490 55 L 503 110 L 520 55 L 580 50"
+                  fill="none" stroke="#0c4a6e" stroke-width="2"/>
+            <text x="285" y="158" fill="#dc2626" font-size="11">1715 (C=O)</text>
+            <text x="380" y="148" fill="#dc2626" font-size="11">1240</text>
+            <text x="425" y="148" fill="#dc2626" font-size="11">1090</text>
+            <text x="495" y="128" fill="#dc2626" font-size="11">720</text>
+          </svg>
+        </div>
+        <button class="choice" onclick="checkMCQ(this,'q_ftir2','PE',false)">A. 聚乙烯 (PE)</button>
+        <button class="choice" onclick="checkMCQ(this,'q_ftir2','PVC',false)">B. 聚氯乙烯 (PVC)</button>
+        <button class="choice" onclick="checkMCQ(this,'q_ftir2','PET',true)">C. 聚對苯二甲酸乙二酯 (PET)</button>
+        <button class="choice" onclick="checkMCQ(this,'q_ftir2','PA',false)">D. 耐隆 (PA / Nylon)</button>
+        <div class="resultBox" id="q_ftir2_result">點選一個答案。</div>
+      </div>
+      <details>
+        <summary>判讀邏輯</summary>
+        <ul>
+          <li><span class="good">PET 正解</span>：1715 cm⁻¹ 是<span class="highlight">酯類 C=O 強吸收</span>的標記；1240（C–O–C 不對稱伸縮）+ 1090（C–O 對稱伸縮）+ 720（對位取代苯 C–H 變角）構成 PET 的標準四峰群。</li>
+          <li>PA (Nylon) 雖然也有 C=O，但是醯胺類 C=O 約在 <span class="highlight">1640 cm⁻¹</span>（amide I），且伴隨 3300 cm⁻¹ 寬 N–H 峰，與 PET 不同。</li>
+          <li>PVC 的標誌是 690 cm⁻¹ 強 C–Cl 伸縮，本譜沒看到。</li>
+          <li>來自海鹽的這顆顆粒可能來自<span class="warn">海洋環境中的保特瓶碎片</span>，符合 Yang et al. (2015) 在中國市售食鹽中發現以 PET 為主的觀察。</li>
+        </ul>
+        <p class="citation">Yang D. et al. (2015) Microplastic Pollution in Table Salts from China. <em>Environ Sci Technol</em> 49:13622–13627.</p>
+      </details>
+    </section>
+
+    <!-- S19 Raman 原理 -->
+    <section class="slide">
+      <h2>拉曼光譜 (Raman)：散射的力量</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>關鍵原理</h3>
+          <ul>
+            <li>單色雷射照射樣品 (常用 532、633、785、1064 nm)</li>
+            <li>多數光發生<span class="highlight">瑞利散射</span>（彈性，波長不變）</li>
+            <li>極少數發生<span class="highlight">拉曼散射</span>（非彈性，波長變化等於分子振動能量）</li>
+            <li>Stokes 線 ν₀ – νᵥ；anti-Stokes 線 ν₀ + νᵥ</li>
+          </ul>
+          <div class="eq">Δν̃ = (1/λ₀) − (1/λₛ)</div>
+        </div>
+        <div class="card">
+          <h3>vs. FTIR 的互補性</h3>
+          <table>
+            <tr><th>項目</th><th>FTIR</th><th>Raman</th></tr>
+            <tr><td>選律</td><td>偶極變化</td><td>極化率變化</td></tr>
+            <tr><td>水訊號</td><td>強烈干擾</td><td>幾乎無</td></tr>
+            <tr><td>偵測極限</td><td>~10–20 μm</td><td>~1 μm</td></tr>
+            <tr><td>螢光干擾</td><td>無</td><td>常見問題</td></tr>
+            <tr><td>對稱鍵 (C=C)</td><td>弱</td><td>強</td></tr>
+            <tr><td>分析時間</td><td>數秒/顆</td><td>數十秒/顆</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- S20 Raman 特徵 -->
+    <section class="slide">
+      <h2>Raman 五大塑膠特徵位移 (cm⁻¹)</h2>
+      <div class="specBox">
+        <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
+          <line x1="50" y1="220" x2="580" y2="220" stroke="#94a3b8"/>
+          <line x1="50" y1="20" x2="50" y2="220" stroke="#94a3b8"/>
+          <text x="315" y="245" fill="#cbd5e1" font-size="13" text-anchor="middle">Raman shift (cm⁻¹)</text>
+          <text x="55" y="240" fill="#94a3b8" font-size="11">200</text>
+          <text x="305" y="240" fill="#94a3b8" font-size="11">1500</text>
+          <text x="565" y="240" fill="#94a3b8" font-size="11">3200</text>
+          <text x="15" y="120" fill="#cbd5e1" font-size="13" transform="rotate(-90,15,120)">Intensity</text>
+          <!-- PE: peaks at 1130,1296,1440,2848,2882 -->
+          <path d="M 50 60 L 220 58 L 235 30 L 248 56 L 275 56 L 282 18 L 292 56 L 320 35 L 330 55 L 470 53 L 478 22 L 488 25 L 498 53 L 580 53"
+                fill="none" stroke="#06b6d4" stroke-width="2"/>
+          <text x="475" y="15" fill="#06b6d4" font-size="13" font-weight="700">PE</text>
+          <!-- PP: peaks at 808, 973, 1152, 2880, 2950 -->
+          <path d="M 50 110 L 170 108 L 178 70 L 188 106 L 220 75 L 232 105 L 260 80 L 268 105 L 290 105 L 470 103 L 478 50 L 490 70 L 500 105 L 580 105"
+                fill="none" stroke="#a855f7" stroke-width="2"/>
+          <text x="170" y="60" fill="#a855f7" font-size="13" font-weight="700">PP</text>
+          <!-- PS: 621, 1001 (strong), 1031, 1602, 3050 -->
+          <path d="M 50 160 L 130 158 L 138 130 L 148 155 L 240 155 L 250 80 L 260 155 L 268 130 L 280 155 L 340 155 L 350 100 L 362 155 L 540 155 L 550 110 L 560 155 L 580 155"
+                fill="none" stroke="#22c55e" stroke-width="2"/>
+          <text x="250" y="70" fill="#22c55e" font-size="13" font-weight="700">PS (1001)</text>
+          <!-- PET: 632, 859, 1117, 1614, 1726, 3082 -->
+          <path d="M 50 210 L 130 208 L 138 178 L 148 205 L 200 205 L 210 175 L 220 205 L 280 205 L 292 175 L 300 205 L 340 205 L 350 165 L 360 175 L 372 205 L 540 205 L 550 165 L 560 200 L 580 200"
+                fill="none" stroke="#f472b6" stroke-width="2"/>
+          <text x="345" y="155" fill="#f472b6" font-size="13" font-weight="700">PET</text>
+        </svg>
+        <div class="legend">
+          <span style="color:#06b6d4">PE</span>
+          <span style="color:#a855f7">PP</span>
+          <span style="color:#22c55e">PS (1001 強)</span>
+          <span style="color:#f472b6">PET</span>
+        </div>
+      </div>
+      <p class="mini"><span class="highlight">PS 在 1001 cm⁻¹</span>（單取代苯環的呼吸模式）強度極高，是最容易辨識的特徵。Raman 對芳香環、C=C、C–S、C–Cl 等對稱鍵特別敏感。</p>
+    </section>
+
+    <!-- S21 互動：Raman 圖譜辨識 -->
+    <section class="slide">
+      <h2>互動：Raman 圖譜辨識</h2>
+      <div class="card activity">
+        <h3>從免洗杯刮下的一顆 30 μm 透明顆粒，Raman 結果顯示主要峰位於 <span class="highlight">621、1001、1031、1602、3050 cm⁻¹</span>。請判斷：</h3>
+        <button class="choice" onclick="checkMCQ(this,'q_raman1','PE',false)">A. PE</button>
+        <button class="choice" onclick="checkMCQ(this,'q_raman1','PP',false)">B. PP</button>
+        <button class="choice" onclick="checkMCQ(this,'q_raman1','PS',true)">C. PS</button>
+        <button class="choice" onclick="checkMCQ(this,'q_raman1','PVC',false)">D. PVC</button>
+        <div class="resultBox" id="q_raman1_result">點選一個答案。</div>
+      </div>
+      <details>
+        <summary>判讀邏輯</summary>
+        <ul>
+          <li><span class="good">PS 正解</span>：<span class="highlight">1001 cm⁻¹ 是單取代苯環呼吸模式</span>，PS 的招牌指紋；伴隨 621（C–C 變角）、1031（C–H 平面內變角）、1602（C=C 苯環骨架）、3050（芳香 C–H 伸縮）。</li>
+          <li>PE/PP 無芳香環，沒有 1001 或 1602 峰。</li>
+          <li>PVC 的拉曼指紋為 638、696 cm⁻¹（C–Cl 伸縮）與 2920。</li>
+          <li>免洗杯材料以 PS 為主，符合常識。若用發泡杯，會額外看到發泡劑訊號。</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- S22 螢光干擾與 SERS -->
+    <section class="slide">
+      <h2>Raman 的兩個常見痛點</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>痛點 1：螢光干擾</h3>
+          <p>食品基質、有色顆粒、有添加劑的塑膠，在可見光雷射激發下會產生強烈<span class="bad">螢光背景</span>，淹沒拉曼訊號。</p>
+          <h3>對策</h3>
+          <ul>
+            <li>改用 <span class="highlight">785 nm 或 1064 nm</span> 雷射（光子能量低，較少激發螢光）</li>
+            <li>樣品<span class="highlight">前漂白</span>（H₂O₂ + UV）</li>
+            <li>SERDS (Shifted Excitation Raman Difference Spectroscopy)</li>
+            <li>數學基線校正（asymmetric least squares）</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>痛點 2：奈米塑膠太小</h3>
+          <p>常規 Raman 無法看到 &lt; 1 μm 顆粒。</p>
+          <h3>對策</h3>
+          <ul>
+            <li><span class="highlight">SERS</span> (Surface-Enhanced Raman)：將樣品吸附於 Au/Ag 奈米基板上，訊號增強 10⁶–10¹⁰ 倍，可看到單分子</li>
+            <li><span class="highlight">TERS</span> (Tip-Enhanced)：結合 AFM 探針，解析度 ~20 nm</li>
+            <li>O-PTIR：可看到 500 nm，且能與 Raman 同時收訊</li>
+          </ul>
+        </div>
+      </div>
+      <p class="citation">Xu G. et al. (2020) Surface-Enhanced Raman Spectroscopy facilitates the detection of microplastics &lt;1 μm in the environment. <em>Environ Sci Technol</em> 54:15594–15603.</p>
+    </section>
+
+    <!-- S23 模組二整合是非題 -->
+    <section class="slide">
+      <h2>模組二整合測驗：是非題（連續 5 題）</h2>
+      <div class="card activity">
+        <h3>請判斷下列敘述是否正確：</h3>
+        <p><strong>1.</strong> FTIR 在 1715 cm⁻¹ 的強吸收是辨識 PET 的關鍵指標。</p>
+        <button class="choice" onclick="checkMCQ(this,'q_tf1','T',true)">✓ 正確</button>
+        <button class="choice" onclick="checkMCQ(this,'q_tf1','F',false)">✗ 錯誤</button>
+        <div class="resultBox" id="q_tf1_result">—</div>
+      </div>
+      <div class="card activity">
+        <p><strong>2.</strong> Raman 光譜法在水溶液中表現極差，所以無法分析水裡的微塑膠。</p>
+        <button class="choice" onclick="checkMCQ(this,'q_tf2','T',false)">✓ 正確</button>
+        <button class="choice" onclick="checkMCQ(this,'q_tf2','F',true)">✗ 錯誤</button>
+        <div class="resultBox" id="q_tf2_result">—</div>
+      </div>
+      <div class="card activity">
+        <p><strong>3.</strong> 顯微 FTIR 受紅外光繞射極限限制，傳統機型偵測下限約為 10–20 μm。</p>
+        <button class="choice" onclick="checkMCQ(this,'q_tf3','T',true)">✓ 正確</button>
+        <button class="choice" onclick="checkMCQ(this,'q_tf3','F',false)">✗ 錯誤</button>
+        <div class="resultBox" id="q_tf3_result">—</div>
+      </div>
+      <div class="card activity">
+        <p><strong>4.</strong> NIR 適合用來分析 5 μm 以下的奈米塑膠。</p>
+        <button class="choice" onclick="checkMCQ(this,'q_tf4','T',false)">✓ 正確</button>
+        <button class="choice" onclick="checkMCQ(this,'q_tf4','F',true)">✗ 錯誤</button>
+        <div class="resultBox" id="q_tf4_result">—</div>
+      </div>
+      <div class="card activity">
+        <p><strong>5.</strong> 改用 785 或 1064 nm 雷射可降低 Raman 的螢光干擾。</p>
+        <button class="choice" onclick="checkMCQ(this,'q_tf5','T',true)">✓ 正確</button>
+        <button class="choice" onclick="checkMCQ(this,'q_tf5','F',false)">✗ 錯誤</button>
+        <div class="resultBox" id="q_tf5_result">—</div>
+      </div>
+      <div class="card teacherOnly">
+        <h3>答案：T, F, T, F, T</h3>
+        <p>第 2 題：Raman 對<span class="highlight">水訊號弱</span>反而是它在水中分析 MP 的優勢，因此 ESL/海水中的微塑膠分析常選 Raman 而非 FTIR-ATR。</p>
+        <p>第 4 題：NIR 解析度與靈敏度都不足以分析 ≤ 5 μm 顆粒，奈米塑膠應走 Raman/SERS、Py-GC-MS 或 O-PTIR。</p>
+      </div>
+    </section>
+
+    <!-- S24 休息 -->
+    <section class="slide">
+      <h2>☕ 休息 10 分鐘</h2>
+      <div class="card">
+        <h3>下半場預告</h3>
+        <ul>
+          <li>為什麼有了 FTIR / Raman 還需要 GC-MS、LC-MS？</li>
+          <li>熱裂解-氣相層析-質譜 (Py-GC-MS)：如何把塑膠「燒開」變成可定量的化學訊號</li>
+          <li>各種塑膠的<span class="highlight">指標裂解產物</span></li>
+          <li>LC-MS 在塑化劑、寡聚物分析的角色</li>
+          <li>方法選擇決策樹</li>
+        </ul>
+      </div>
+      <div class="card activity">
+        <h3>小思考（休息時想一想）</h3>
+        <p>FTIR / Raman 可以告訴你「這是 PET」，但無法直接告訴你「樣品中有多少質量的 PET」。<br/>為什麼？要怎麼解決？</p>
+        <textarea data-key="q_break" placeholder="寫下你的想法..."></textarea>
+      </div>
+    </section>
+
+    <!-- S25 為什麼需要 GC-MS -->
+    <section class="slide">
+      <h2>為什麼需要質譜法？光譜法不夠嗎？</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>光譜法的本質限制</h3>
+          <ul>
+            <li>定量單位是<span class="warn">「顆數 / 濾膜面積」</span>，不是「質量 / 樣品重」</li>
+            <li>奈米塑膠 (&lt; 1 μm) 顆粒太多，個別計數不切實際</li>
+            <li>樣品基質干擾大時，無法成像</li>
+            <li>無法區分塑膠中的<span class="warn">添加劑、寡聚物</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>質譜法補位</h3>
+          <ul>
+            <li><span class="highlight">Py-GC-MS / TED-GC-MS</span>：將塑膠裂解為小分子，用 GC-MS 偵測，得到<span class="highlight">質量定量 (μg)</span></li>
+            <li><span class="highlight">LC-MS</span>：分析塑化劑、抗氧化劑、BPA、寡聚物</li>
+            <li>NP 範圍仍可分析（樣品濃縮即可）</li>
+            <li>食品基質可消化後直接進樣</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card ref">
+        <h3>互補關係</h3>
+        <p><span class="highlight">光譜法</span>回答「<em>它是什麼？有幾顆？</em>」；<span class="highlight">質譜法</span>回答「<em>它有多少質量？帶了什麼化學物？</em>」。完整的微塑膠研究通常<span class="highlight">兩者並行</span>。</p>
+      </div>
+    </section>
+
+    <!-- S26 Py-GC-MS 原理 -->
+    <section class="slide">
+      <h2>Py-GC-MS：熱裂解-氣相層析-質譜</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>原理三步驟</h3>
+          <ol>
+            <li><span class="highlight">熱裂解 (Pyrolysis)</span>：在無氧條件下將樣品加熱至 500–700°C，聚合物斷裂成小分子（單體、寡聚物、副產物）</li>
+            <li><span class="highlight">GC 分離</span>：揮發性裂解產物進入毛細管柱分離</li>
+            <li><span class="highlight">MS 偵測</span>：EI 離子化 (70 eV)，獲得質譜並由 NIST 庫比對</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>關鍵硬體</h3>
+          <ul>
+            <li>裂解器：<span class="highlight">居里點 (Curie Point)</span> 或<span class="highlight">微爐 (Micro-furnace)</span> 兩大主流</li>
+            <li>典型樣品量：<span class="highlight">0.1–50 μg</span> 即可</li>
+            <li>偵測極限：~0.1 μg per polymer</li>
+            <li>分析時間：每樣本約 30–60 分鐘</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <h3>為何「無氧」？</h3>
+        <p>裂解必須在<span class="highlight">惰性氣氛（He）</span>下進行。若混入 O₂，聚合物會發生<span class="warn">氧化裂解</span>，產生大量 CO₂、H₂O 與非特異性氧化產物，破壞「指標化合物」的特異性，無法做定性與定量。</p>
+      </div>
+      <p class="citation">Käppler A. et al. (2018) Analysis of environmental microplastics by vibrational microspectroscopy: FTIR, Raman or both? <em>Anal Bioanal Chem</em> 408:8377–8391.</p>
+    </section>
+
+    <!-- S27 各塑膠指標產物 -->
+    <section class="slide">
+      <h2>各塑膠的指標裂解產物 (Indicator Compounds)</h2>
+      <table>
+        <tr><th>塑膠</th><th>主要指標化合物</th><th>m/z 特徵</th><th>備註</th></tr>
+        <tr>
+          <td><span class="pill cyan">PE</span></td>
+          <td>α,ω-烯-烷雙峰序列（C₅–C₃₃ 三聯體）</td>
+          <td>系列 m/z = 12n+1</td>
+          <td>無唯一單體，依「三聯峰圖型」</td>
+        </tr>
+        <tr>
+          <td><span class="pill purple">PP</span></td>
+          <td><span class="highlight">2,4-dimethyl-1-heptene</span></td>
+          <td>126</td>
+          <td>頭尾連接 PP 三元體的標誌</td>
+        </tr>
+        <tr>
+          <td><span class="pill pink">PET</span></td>
+          <td><span class="highlight">vinyl benzoate</span>、benzoic acid、biphenyl</td>
+          <td>148、122、154</td>
+          <td>常用 vinyl benzoate 定量</td>
+        </tr>
+        <tr>
+          <td><span class="pill green">PS</span></td>
+          <td><span class="highlight">styrene monomer</span>、dimer、trimer</td>
+          <td>104、208、312</td>
+          <td>styrene trimer 特異性最高</td>
+        </tr>
+        <tr>
+          <td><span class="pill amber">PVC</span></td>
+          <td>HCl、benzene、toluene、naphthalene</td>
+          <td>78、92、128</td>
+          <td>HCl 釋出腐蝕儀器，需注意</td>
+        </tr>
+        <tr>
+          <td><span class="pill cyan">PA-6</span></td>
+          <td><span class="highlight">ε-caprolactam</span></td>
+          <td>113</td>
+          <td>PA-6 與 PA-66 各有特徵</td>
+        </tr>
+        <tr>
+          <td><span class="pill purple">PMMA</span></td>
+          <td>methyl methacrylate monomer</td>
+          <td>100</td>
+          <td>幾乎 100% 回收為單體</td>
+        </tr>
+        <tr>
+          <td><span class="pill pink">PC</span></td>
+          <td>bisphenol A、phenol</td>
+          <td>228、94</td>
+          <td>BPA 釋出，可同時與 LC-MS 對照</td>
+        </tr>
+      </table>
+      <p class="mini">定量方法：建立<span class="highlight">指標化合物峰面積 vs 標準聚合物質量</span>的檢量線，未知樣品質量可內插。內標常用 deuterated polystyrene-d5 或 ²H-PE。</p>
+    </section>
+
+    <!-- S28 互動：裂解產物配對 -->
+    <section class="slide">
+      <h2>互動：裂解產物配對</h2>
+      <div class="card activity">
+        <h3>某未知樣品經 Py-GC-MS 分析，色譜圖最強峰質譜為 m/z = 104，伴隨 m/z = 208、312 的較小峰群。請判斷主成分塑膠：</h3>
+        <button class="choice" onclick="checkMCQ(this,'q_pygc1','PE',false)">A. PE</button>
+        <button class="choice" onclick="checkMCQ(this,'q_pygc1','PP',false)">B. PP</button>
+        <button class="choice" onclick="checkMCQ(this,'q_pygc1','PS',true)">C. PS</button>
+        <button class="choice" onclick="checkMCQ(this,'q_pygc1','PET',false)">D. PET</button>
+        <div class="resultBox" id="q_pygc1_result">點選一個答案。</div>
+      </div>
+      <details>
+        <summary>判讀邏輯</summary>
+        <ul>
+          <li><span class="good">PS 正解</span>：m/z 104 是<span class="highlight">苯乙烯單體 (styrene, C₈H₈)</span>；208 是雙聚體 (1,3-diphenylpropane)、312 是三聚體。三者並現是 PS 的招牌。</li>
+          <li>PP 的指標 m/z = 126 (2,4-dimethyl-1-heptene)。</li>
+          <li>PE 主要為烷-烯-雙烯三聯體，由 C₆₊ 起，無單一強峰。</li>
+          <li>PET 為 148 (vinyl benzoate)、122 (benzoic acid)。</li>
+        </ul>
+        <p class="citation">Fischer M. & Scholz-Böttcher BM. (2017) Simultaneous Trace Identification and Quantification of Common Types of Microplastics in Environmental Samples by Pyrolysis-Gas Chromatography-Mass Spectrometry. <em>Environ Sci Technol</em> 51:5052–5060.</p>
+      </details>
+    </section>
+
+    <!-- S29 TED-GC-MS -->
+    <section class="slide">
+      <h2>TED-GC-MS：可處理較大樣品的進階版</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>核心差異</h3>
+          <p>TED = Thermal Extraction Desorption。樣品在<span class="highlight">熱重分析儀 (TGA)</span> 內以受控升溫裂解，產物被<span class="highlight">固體吸附劑 (PDMS 條)</span> 蒐集，再以熱脫附導入 GC-MS。</p>
+          <ul>
+            <li>樣品量可達 <span class="highlight">100 mg</span>（傳統 Py-GC-MS 僅 0.1–50 μg）</li>
+            <li>適合<span class="highlight">複雜基質直接進樣</span>（沉積物、土壤、消化後組織）</li>
+            <li>偵測極限：~1 μg/g matrix</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>vs. Py-GC-MS</h3>
+          <table>
+            <tr><th></th><th>Py-GC-MS</th><th>TED-GC-MS</th></tr>
+            <tr><td>樣品量</td><td>0.1–50 μg</td><td>10–100 mg</td></tr>
+            <tr><td>LOD</td><td>~0.1 μg</td><td>~1 μg/g</td></tr>
+            <tr><td>基質容忍</td><td>低</td><td>高</td></tr>
+            <tr><td>速度</td><td>~30 min/sample</td><td>~3 h/sample</td></tr>
+            <tr><td>儀器成本</td><td>中</td><td>高（TGA+GC-MS）</td></tr>
+          </table>
+        </div>
+      </div>
+      <p class="citation">Dümichen E. et al. (2017) Fast identification of microplastics in complex environmental samples by a thermal degradation method. <em>Chemosphere</em> 174:572–584.</p>
+    </section>
+
+    <!-- S30 互動：方法選擇 1 -->
+    <section class="slide">
+      <h2>互動：情境決策（一）— 海鹽中的微塑膠</h2>
+      <div class="card activity">
+        <h3>背景：你拿到 500 g 商業海鹽，想知道其中 1–500 μm 微塑膠的<span class="highlight">類型與顆粒數</span>。實驗室有 ATR-FTIR、μ-FTIR、Raman、Py-GC-MS。請選最合適的<strong>主要</strong>分析儀器：</h3>
+        <button class="choice" onclick="checkMCQ(this,'q_dec1','ATR',false)">A. ATR-FTIR（一顆一顆量）</button>
+        <button class="choice" onclick="checkMCQ(this,'q_dec1','uFTIR',true)">B. μ-FTIR 化學成像（FPA 偵測器）</button>
+        <button class="choice" onclick="checkMCQ(this,'q_dec1','Raman',false)">C. 顯微 Raman（一顆一顆量）</button>
+        <button class="choice" onclick="checkMCQ(this,'q_dec1','PyGC',false)">D. Py-GC-MS</button>
+        <div class="resultBox" id="q_dec1_result">點選一個答案。</div>
+      </div>
+      <details>
+        <summary>解析</summary>
+        <ul>
+          <li><span class="good">μ-FTIR + FPA 最佳</span>：需要「類型 + 顆粒數」兩個資訊，且粒徑都在 FTIR 偵測極限 (10–20 μm) 以上。FPA 化學成像可整片濾膜一次掃描、自動分類，<span class="highlight">效率最高</span>。</li>
+          <li>ATR-FTIR：適合單顆 &gt; 500 μm 顆粒，逐顆量太慢。</li>
+          <li>Raman：可行但分析時間長（每顆 30–60 秒，海鹽濾膜數百顆需數小時）；且部分海鹽顆粒帶色，螢光干擾。</li>
+          <li>Py-GC-MS：得到「總質量」但失去「顆粒數」資訊，不符問題需求。</li>
+        </ul>
+        <p class="citation">Karami A. et al. (2017) The presence of microplastics in commercial salts from different countries. <em>Sci Rep</em> 7:46173.</p>
+      </details>
+    </section>
+
+    <!-- S31 互動：方法選擇 2 -->
+    <section class="slide">
+      <h2>互動：情境決策（二）— 瓶裝水中的奈米塑膠</h2>
+      <div class="card activity">
+        <h3>背景：法規要求測定 1.5 L 瓶裝水中 100 nm – 1 μm 奈米塑膠的<span class="highlight">總質量濃度</span>（μg/L）。請選最合適的方法組合：</h3>
+        <button class="choice" onclick="checkMCQ(this,'q_dec2','ATR',false)">A. ATR-FTIR 直接量水樣</button>
+        <button class="choice" onclick="checkMCQ(this,'q_dec2','uFTIR',false)">B. μ-FTIR 化學成像</button>
+        <button class="choice" onclick="checkMCQ(this,'q_dec2','SERS',false)">C. 顯微 Raman 一顆一顆量</button>
+        <button class="choice" onclick="checkMCQ(this,'q_dec2','PyGC',true)">D. AF4 場流分餾濃縮後進 Py-GC-MS（或 TED-GC-MS）</button>
+        <div class="resultBox" id="q_dec2_result">點選一個答案。</div>
+      </div>
+      <details>
+        <summary>解析</summary>
+        <ul>
+          <li><span class="good">D 為最佳</span>：100 nm – 1 μm 顆粒已遠低於 FTIR 與常規 Raman 的偵測極限；要的是「質量濃度」而非「顆數」 → <span class="highlight">Py-GC-MS 是首選</span>。前處理用<span class="highlight">場流分餾 (AF4)</span> 或超離心將水中奈米塑膠濃縮。</li>
+          <li>ATR-FTIR：水的 O–H 吸收會淹沒一切。</li>
+          <li>μ-FTIR：解析度極限在 ~10 μm，看不到 100 nm。</li>
+          <li>顯微 Raman：解析度 ~1 μm，邊界情況；數量太多無法計數，且即便用 SERS 也只能定性。</li>
+        </ul>
+        <p class="citation">Schwaferts C. et al. (2019) Methods for the analysis of submicrometer- and nanoplastic particles. <em>TrAC</em> 112:52–65.</p>
+      </details>
+    </section>
+
+    <!-- S32 LC-MS 角色 -->
+    <section class="slide">
+      <h2>LC-MS：分析塑化劑與寡聚物</h2>
+      <div class="card">
+        <p>LC-MS 在微塑膠分析中<span class="highlight">不直接量「塑膠顆粒」</span>，而是測量：</p>
+        <ul>
+          <li><span class="highlight">塑化劑 (Plasticizers)</span>：鄰苯二甲酸酯 (DEHP, DBP, BBP)、檸檬酸酯</li>
+          <li><span class="highlight">內分泌干擾物</span>：BPA、BPS、BPF</li>
+          <li><span class="highlight">寡聚物 (Oligomers)</span>：PET cyclic trimer、PE 蠟質寡聚物</li>
+          <li><span class="highlight">添加劑</span>：抗氧化劑 Irganox 1010、UV 穩定劑 Tinuvin 系列</li>
+        </ul>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <h3>典型流程</h3>
+          <ol>
+            <li>樣品 → 有機溶劑萃取（MeOH、ACN、IPA）</li>
+            <li>固相萃取 SPE 純化 (HLB、MCX)</li>
+            <li>UHPLC C18 管柱分離</li>
+            <li>ESI（+）或（−）離子化</li>
+            <li>三重四極桿 QqQ 做 MRM 定量</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>關鍵離子化選擇</h3>
+          <table>
+            <tr><th>化合物</th><th>離子化</th><th>定量 m/z</th></tr>
+            <tr><td>DEHP</td><td>ESI+</td><td>391 → 149</td></tr>
+            <tr><td>DBP</td><td>ESI+</td><td>279 → 149</td></tr>
+            <tr><td>BPA</td><td>ESI−</td><td>227 → 212</td></tr>
+            <tr><td>BPS</td><td>ESI−</td><td>249 → 108</td></tr>
+            <tr><td>PET 環三聚體</td><td>ESI+</td><td>577 → 193</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- S33 塑化劑與 BPA -->
+    <section class="slide">
+      <h2>塑化劑與 BPA：為什麼食品分析師最在乎這兩類？</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>鄰苯二甲酸酯類 (Phthalates)</h3>
+          <ul>
+            <li>添加於 PVC、PET、PA 中增加柔韌度</li>
+            <li><span class="warn">非共價結合</span> → 容易遷移到食品</li>
+            <li>歐盟法規 (EU) 10/2011 嚴格規範：DEHP &lt; 1.5 mg/kg food</li>
+            <li>台灣食藥署：DEHP、DBP、BBP、DINP、DIDP、DnOP 六種有殘留限量</li>
+            <li>分析法：QuEChERS + GC-MS/MS 或 LC-MS/MS</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>雙酚 A (BPA)</h3>
+          <ul>
+            <li>PC 奶瓶、罐頭內襯環氧樹脂的單體</li>
+            <li>內分泌干擾，<span class="warn">歐盟 2024 起禁用於食品接觸材料</span>（Reg (EU) 2024/3190）</li>
+            <li>替代品 BPS、BPF 也具類似活性，需一併監測</li>
+            <li>分析法：水樣經 SPE → UHPLC-MS/MS (ESI−)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card teacherOnly">
+        <h3>🎯 教學提示</h3>
+        <p>學生常混淆「微塑膠分析」與「塑化劑分析」。建議在課程中明確區分：<span class="highlight">微塑膠顆粒分析 → 光譜法 + Py-GC-MS</span>；<span class="highlight">塑膠衍生化學物分析 → LC-MS</span>。兩者目標、樣品前處理、儀器設定完全不同。</p>
+      </div>
+      <p class="citation">Cao XL. (2010) Phthalate esters in foods: sources, occurrence, and analytical methods. <em>Compr Rev Food Sci Food Saf</em> 9:21–43.</p>
+    </section>
+
+    <!-- S34 五大技術綜合比較 -->
+    <section class="slide">
+      <h2>五大技術綜合比較表</h2>
+      <table>
+        <tr>
+          <th></th><th>NIR</th><th>FTIR</th><th>Raman</th><th>Py-GC-MS</th><th>LC-MS</th>
+        </tr>
+        <tr>
+          <td><strong>偵測極限</strong></td>
+          <td>~ mm</td>
+          <td>10–20 μm</td>
+          <td>1 μm</td>
+          <td>0.1 μg</td>
+          <td>ng/L</td>
+        </tr>
+        <tr>
+          <td><strong>定量單位</strong></td>
+          <td>分類</td>
+          <td>顆數</td>
+          <td>顆數</td>
+          <td>質量</td>
+          <td>濃度</td>
+        </tr>
+        <tr>
+          <td><strong>樣品破壞</strong></td>
+          <td>否</td>
+          <td>否</td>
+          <td>否</td>
+          <td><span class="bad">是</span></td>
+          <td><span class="bad">是（萃取）</span></td>
+        </tr>
+        <tr>
+          <td><strong>分析時間</strong></td>
+          <td>秒</td>
+          <td>分</td>
+          <td>分–時</td>
+          <td>30–60 min</td>
+          <td>30 min</td>
+        </tr>
+        <tr>
+          <td><strong>水樣容忍</strong></td>
+          <td><span class="bad">差</span></td>
+          <td><span class="bad">差</span></td>
+          <td><span class="good">佳</span></td>
+          <td>佳（樣品乾燥後）</td>
+          <td><span class="good">佳</span></td>
+        </tr>
+        <tr>
+          <td><strong>主要應用</strong></td>
+          <td>分選</td>
+          <td>常規鑑定</td>
+          <td>NP 邊界 / 補 FTIR</td>
+          <td>定量、混合物</td>
+          <td>塑化劑、寡聚物</td>
+        </tr>
+        <tr>
+          <td><strong>儀器成本</strong></td>
+          <td>低</td>
+          <td>中</td>
+          <td>中</td>
+          <td>高</td>
+          <td>高</td>
+        </tr>
+      </table>
+      <p class="mini">完整微塑膠研究通常採<span class="highlight">「光譜法 + 質譜法」雙軌</span>：FTIR/Raman 給顆粒類型與數量，Py-GC-MS 給總質量，LC-MS 給化學遷移物。</p>
+    </section>
+
+    <!-- S35 決策樹 -->
+    <section class="slide">
+      <h2>方法選擇決策樹</h2>
+      <div class="specBox">
+        <svg viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg">
+          <style>
+            .node { fill: #1e293b; stroke: #67e8f9; stroke-width: 1.5; rx: 10; }
+            .ans { fill: #064e3b; stroke: #86efac; stroke-width: 1.5; }
+            .qtext { fill: #cffafe; font-size: 14px; }
+            .atext { fill: #d1fae5; font-size: 13px; font-weight: 700; }
+            .lbl { fill: #94a3b8; font-size: 12px; }
+            .arrow { fill: none; stroke: #94a3b8; stroke-width: 1.5; marker-end: url(#ah); }
+          </style>
+          <defs>
+            <marker id="ah" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L9,3 z" fill="#94a3b8"/>
+            </marker>
+          </defs>
+          <!-- root -->
+          <rect class="node" x="280" y="20" width="240" height="50"/>
+          <text class="qtext" x="400" y="50" text-anchor="middle">你要回答什麼問題？</text>
+
+          <!-- branch: 顆數/類型 vs 質量/化學物 -->
+          <path class="arrow" d="M 380 70 L 160 110"/>
+          <text class="lbl" x="220" y="92">顆粒類型/數量</text>
+          <path class="arrow" d="M 420 70 L 640 110"/>
+          <text class="lbl" x="510" y="92">質量/化學遷移</text>
+
+          <rect class="node" x="40" y="115" width="240" height="50"/>
+          <text class="qtext" x="160" y="145" text-anchor="middle">顆粒大小？</text>
+
+          <rect class="node" x="520" y="115" width="240" height="50"/>
+          <text class="qtext" x="640" y="138" text-anchor="middle">塑膠本體質量</text>
+          <text class="qtext" x="640" y="158" text-anchor="middle">vs 添加劑/塑化劑？</text>
+
+          <!-- left side: size -->
+          <path class="arrow" d="M 90 165 L 50 200"/>
+          <text class="lbl" x="40" y="190">&gt; 500 μm</text>
+          <path class="arrow" d="M 160 165 L 160 200"/>
+          <text class="lbl" x="165" y="190">10–500 μm</text>
+          <path class="arrow" d="M 230 165 L 280 200"/>
+          <text class="lbl" x="270" y="190">&lt; 10 μm</text>
+
+          <rect class="ans" x="10" y="200" width="100" height="60"/>
+          <text class="atext" x="60" y="225" text-anchor="middle">ATR-FTIR</text>
+          <text class="atext" x="60" y="245" text-anchor="middle">/ NIR 分選</text>
+
+          <rect class="ans" x="120" y="200" width="100" height="60"/>
+          <text class="atext" x="170" y="225" text-anchor="middle">μ-FTIR (FPA)</text>
+          <text class="atext" x="170" y="245" text-anchor="middle">/ Raman</text>
+
+          <rect class="ans" x="230" y="200" width="100" height="60"/>
+          <text class="atext" x="280" y="225" text-anchor="middle">Raman / SERS</text>
+          <text class="atext" x="280" y="245" text-anchor="middle">/ O-PTIR</text>
+
+          <!-- right side: mass vs additive -->
+          <path class="arrow" d="M 580 165 L 540 200"/>
+          <text class="lbl" x="540" y="190">塑膠質量</text>
+          <path class="arrow" d="M 700 165 L 740 200"/>
+          <text class="lbl" x="740" y="190">化學遷移</text>
+
+          <rect class="ans" x="490" y="200" width="120" height="60"/>
+          <text class="atext" x="550" y="225" text-anchor="middle">Py-GC-MS</text>
+          <text class="atext" x="550" y="245" text-anchor="middle">/ TED-GC-MS</text>
+
+          <rect class="ans" x="650" y="200" width="120" height="60"/>
+          <text class="atext" x="710" y="225" text-anchor="middle">LC-MS/MS</text>
+          <text class="atext" x="710" y="245" text-anchor="middle">(QqQ MRM)</text>
+
+          <!-- bottom hints -->
+          <rect class="node" x="40" y="310" width="720" height="50"/>
+          <text class="qtext" x="400" y="335" text-anchor="middle">複雜樣品（魚消化道、瓶裝水）：建議「光譜法 + Py-GC-MS」雙軌並行</text>
+
+          <rect class="node" x="40" y="380" width="720" height="50"/>
+          <text class="qtext" x="400" y="405" text-anchor="middle">奈米塑膠 (NP)：AF4 / 超離心濃縮 → Py-GC-MS (定量) + SERS / O-PTIR (定性)</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- S36 質量 vs 顆粒 -->
+    <section class="slide">
+      <h2>質量化 vs 顆粒化：報數據時要注意什麼？</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>顆粒化 (Particle-based)</h3>
+          <ul>
+            <li>單位：<span class="highlight">顆數 / L、顆數 / g 樣品</span></li>
+            <li>來源：FTIR、Raman 化學成像</li>
+            <li>優點：直觀、可分尺寸分布、可顯示形貌</li>
+            <li>缺點：<span class="warn">隨儀器解析度而變</span>（同一樣本，5 μm 截止 vs 20 μm 截止結果差 10–100 倍）</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>質量化 (Mass-based)</h3>
+          <ul>
+            <li>單位：<span class="highlight">μg/L、μg/g 樣品</span></li>
+            <li>來源：Py-GC-MS、TED-GC-MS</li>
+            <li>優點：與毒理研究單位接軌、可在不同實驗室間比較</li>
+            <li>缺點：失去顆粒尺寸、形貌資訊</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card ref">
+        <h3>Cowger et al. (2020) 報告指引</h3>
+        <p>建議論文同時報告：① 偵測下限粒徑、② 顆數濃度（每升或每克）、③ 質量濃度（若可得）、④ 鑑定方法（FTIR/Raman/Py-GC-MS）、⑤ 比對庫名稱、⑥ 空白控制組數據、⑦ 回收率（spike-recovery）。</p>
+      </div>
+      <p class="citation">Cowger W. et al. (2020) Reporting Guidelines to Increase the Reproducibility and Comparability of Research on Microplastics. <em>Appl Spectrosc</em> 74:1066–1077.</p>
+    </section>
+
+    <!-- S37 文獻案例：海鹽 -->
+    <section class="slide">
+      <h2>文獻案例（一）：Yang et al. 中國市售食鹽</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>研究設計</h3>
+          <ul>
+            <li>採購 15 種中國市售食鹽（海鹽、湖鹽、岩鹽）</li>
+            <li>每樣本 250 g，去離子水溶解 → 1.6 μm 玻璃纖維濾膜</li>
+            <li>顯微鏡計數 + μ-FTIR 鑑定 (45–4500 μm 範圍)</li>
+          </ul>
+          <h3>關鍵結果</h3>
+          <ul>
+            <li>海鹽：550–681 顆/kg（最高）</li>
+            <li>湖鹽：43–364 顆/kg</li>
+            <li>岩鹽：7–204 顆/kg</li>
+            <li>主要塑膠：<span class="highlight">PET、PE、cellophane</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>方法選擇邏輯</h3>
+          <ul>
+            <li><span class="highlight">μ-FTIR 是合理選擇</span>：粒徑 &gt; 45 μm，可逐顆鑑定</li>
+            <li>空白：每天 3 個程序空白濾膜，扣除背景</li>
+            <li>計數規範：纖維與碎片分開計數</li>
+          </ul>
+          <h3>對食品分析師的啟示</h3>
+          <ul>
+            <li>不要用真空玻璃乾燥器之外的塑膠容器處理樣品</li>
+            <li>實驗衣應使用純棉</li>
+            <li>空氣中纖維是主要污染源（含 polyester、cotton）</li>
+          </ul>
+        </div>
+      </div>
+      <p class="citation">Yang D. et al. (2015) Microplastic Pollution in Table Salts from China. <em>Environ Sci Technol</em> 49:13622–13627. https://doi.org/10.1021/acs.est.5b03163</p>
+    </section>
+
+    <!-- S38 文獻案例：茶包 -->
+    <section class="slide">
+      <h2>文獻案例（二）：Hernandez et al. 塑膠茶包釋出奈米塑膠</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>研究設計</h3>
+          <ul>
+            <li>四款市售「網狀」茶包（材質為 PA / PET）</li>
+            <li>剪空茶葉、洗淨後浸入 95°C 水中 5 分鐘</li>
+            <li>掃描電鏡 (SEM) 觀察形貌</li>
+            <li><span class="highlight">μ-FTIR + μ-Raman</span> 鑑定材質</li>
+            <li>奈米追蹤分析 (NTA) 計數</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>震撼結果</h3>
+          <ul>
+            <li>每杯（一個茶包）釋出：<br/>～<span class="bad">11.6 億顆 MP</span> + <span class="bad">31 億顆 NP</span></li>
+            <li>釋出顆粒材質確認為 <span class="highlight">PA + PET</span>（與茶包本體一致）</li>
+            <li>水蚤暴露實驗：行為與發育異常</li>
+          </ul>
+          <h3>方法亮點</h3>
+          <ul>
+            <li>FTIR 用於大顆粒、Raman 用於 1–10 μm 顆粒，<span class="highlight">兩者互補</span></li>
+            <li>NTA 解決奈米計數問題（但無化學身份）</li>
+          </ul>
+        </div>
+      </div>
+      <p class="citation">Hernandez LM. et al. (2019) Plastic Teabags Release Billions of Microparticles and Nanoparticles into Tea. <em>Environ Sci Technol</em> 53:12300–12310. https://doi.org/10.1021/acs.est.9b02540</p>
+    </section>
+
+    <!-- S39 文獻案例：海鮮 -->
+    <section class="slide">
+      <h2>文獻案例（三）：Ribeiro et al. 海鮮中的 Py-GC-MS 定量</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>研究設計</h3>
+          <ul>
+            <li>五種澳洲高商業價值海鮮：野生牡蠣、養殖蝦、養殖花蟹、養殖鮭魚、野生沙丁魚</li>
+            <li>10% KOH 消化、過濾、乾燥</li>
+            <li><span class="highlight">Double-shot Py-GC-MS</span>：先 350°C 趕除小分子，再 700°C 裂解聚合物</li>
+            <li>5 種塑膠同時定量：PE、PP、PVC、PS、PMMA</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>結果（每克可食組織）</h3>
+          <ul>
+            <li>沙丁魚：<span class="warn">0.3 mg/g</span>（最高，主要為 PVC）</li>
+            <li>牡蠣：0.04 mg/g</li>
+            <li>蝦：0.07 mg/g</li>
+            <li>花蟹：0.03 mg/g</li>
+            <li>鮭魚：&lt; 偵測極限</li>
+          </ul>
+          <h3>方法亮點</h3>
+          <ul>
+            <li>定量單位是<span class="highlight">μg/g</span>，可直接與每日攝入評估接軌</li>
+            <li>使用<span class="highlight">¹³C-PS 內標</span>校正基質效應</li>
+            <li>回收率 80–110%</li>
+          </ul>
+        </div>
+      </div>
+      <p class="citation">Ribeiro F. et al. (2020) Quantitative Analysis of Selected Plastics in High-Commercial-Value Australian Seafood by Pyrolysis Gas Chromatography Mass Spectrometry. <em>Environ Sci Technol</em> 54:9408–9417. https://doi.org/10.1021/acs.est.0c02337</p>
+    </section>
+
+    <!-- S40 互動：實驗設計題 -->
+    <section class="slide">
+      <h2>互動：實驗設計題（綜合應用）</h2>
+      <div class="card activity">
+        <h3>情境：你是檢驗單位研究員，被要求分析「市售嬰兒奶瓶 (PP 製) 在 80°C 沖泡奶粉時，是否釋放微塑膠到沖泡液中」。請設計實驗流程，並回答下列問題：</h3>
+        <p><strong>(1)</strong> 你會選擇什麼<span class="highlight">主要儀器</span>？為什麼？</p>
+        <textarea data-key="q_design_1" placeholder="例：FTIR + Py-GC-MS 雙軌..."></textarea>
+
+        <p><strong>(2)</strong> 你會如何設計<span class="highlight">空白組與對照組</span>？</p>
+        <textarea data-key="q_design_2" placeholder="例：玻璃奶瓶當對照、空氣沉降空白..."></textarea>
+
+        <p><strong>(3)</strong> 沖泡液要如何<span class="highlight">前處理</span>才能上機？</p>
+        <textarea data-key="q_design_3" placeholder="例：過濾濾膜選擇、消化方式..."></textarea>
+
+        <p><strong>(4)</strong> 你會如何<span class="highlight">驗證準確度</span>？</p>
+        <textarea data-key="q_design_4" placeholder="例：spike-recovery、平行樣本..."></textarea>
+      </div>
+      <details>
+        <summary>參考答案（Li et al. 2020 真實研究）</summary>
+        <ol>
+          <li><strong>主要儀器</strong>：μ-FTIR 化學成像（鑑定 1–500 μm 顆粒類型與計數）+ Py-GC-MS（總質量定量）。NP 補 SEM + EDS。</li>
+          <li><strong>空白組</strong>：① 玻璃奶瓶（材質對照）；② 空氣沉降空白（同時開蓋暴露於空氣 30 分鐘）；③ 程序空白（試劑、容器、過濾全程序）。</li>
+          <li><strong>前處理</strong>：先 Ar 流氣下冷藏靜置 30 min 沉澱大顆粒 → 過濾 1.2 μm Anodisc 濾膜 → 不進行化學消化（沖泡液乾淨）→ 直接顯微鏡掃描。</li>
+          <li><strong>驗證</strong>：spike 已知數量 5、10、50 μm PP 顆粒回收率 (recovery 80–120%)；平行三重複；參與國際循環比對（如 BAM、JRC）。</li>
+        </ol>
+        <p class="citation">Li D. et al. (2020) Microplastic release from the degradation of polypropylene feeding bottles during infant formula preparation. <em>Nat Food</em> 1:746–754.</p>
+      </details>
+    </section>
+
+    <!-- S41 進階閱讀 -->
+    <section class="slide">
+      <h2>進階閱讀：方法學重點文獻</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>方法綜論</h3>
+          <ul>
+            <li>Primpke S. et al. (2020) Critical assessment of analytical methods. <em>Appl Spectrosc</em> 74:1012.</li>
+            <li>Schwaferts C. et al. (2019) Nano- and submicrometer particles. <em>TrAC</em> 112:52.</li>
+            <li>La Nasa J. et al. (2020) Challenges and developments. <em>J Hazard Mater</em> 401:123379.</li>
+            <li>Mariano S. et al. (2021) Identification: classic and innovative techniques. <em>Front Toxicol</em> 3:636640.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>振動光譜</h3>
+          <ul>
+            <li>Käppler A. et al. (2016) FTIR, Raman or both? <em>Anal Bioanal Chem</em> 408:8377.</li>
+            <li>Xu G. et al. (2020) SERS for &lt;1 μm. <em>Environ Sci Technol</em> 54:15594.</li>
+            <li>Anger PM. et al. (2018) Raman microspectroscopy. <em>TrAC</em> 109:214.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>質譜技術</h3>
+          <ul>
+            <li>Fischer M. & Scholz-Böttcher BM. (2017) Py-GC-MS quantification. <em>Environ Sci Technol</em> 51:5052.</li>
+            <li>Dümichen E. et al. (2017) TED-GC-MS. <em>Chemosphere</em> 174:572.</li>
+            <li>Ribeiro F. et al. (2020) Seafood Py-GC-MS. <em>Environ Sci Technol</em> 54:9408.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>報告與標準化</h3>
+          <ul>
+            <li>Cowger W. et al. (2020) Reporting Guidelines. <em>Appl Spectrosc</em> 74:1066.</li>
+            <li>ISO/TR 21960:2020 — Plastics — Environmental aspects — State of knowledge and methodologies.</li>
+            <li>EU Drinking Water Directive 2020/2184 — Annex III 微塑膠監測方法草案</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- S42 課程總結 -->
+    <section class="slide">
+      <h2>課程總結：你今天帶走了什麼？</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>知識面</h3>
+          <ul>
+            <li>微塑膠 (MP) vs 奈米塑膠 (NP) 的定義與來源</li>
+            <li>5 種食品常見塑膠 (PE/PP/PET/PS/PVC) 的 FTIR 與 Raman 特徵峰</li>
+            <li>NIR / FTIR / Raman / Py-GC-MS / LC-MS 的<span class="highlight">原理、極限、定量單位</span></li>
+            <li>樣品前處理：消化、密度分離、過濾的注意事項</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>技能面</h3>
+          <ul>
+            <li>能<span class="highlight">判讀 FTIR / Raman / Py-GC-MS 結果</span>並推斷塑膠類型</li>
+            <li>能根據樣品<span class="highlight">尺寸、目標、基質</span>選擇正確方法</li>
+            <li>能<span class="highlight">設計空白組與品保流程</span>避免污染</li>
+            <li>能引用代表性文獻支持研究設計</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card ref">
+        <h3>三句口訣</h3>
+        <ol>
+          <li><strong>FTIR 看顆粒，Py-GC-MS 看質量。</strong></li>
+          <li><strong>大顆粒選 ATR，小顆粒選 μ-FTIR/Raman，奈米級選 Py-GC-MS + SERS。</strong></li>
+          <li><strong>空白組是命脈，未做空白的數據不可採信。</strong></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- S43 Exit Ticket -->
+    <section class="slide">
+      <h2>Exit Ticket：3 分鐘回饋</h2>
+      <div class="card activity">
+        <h3>1. 用一句話總結今天最重要的學習</h3>
+        <textarea data-key="exit_1" placeholder="例：我終於理解為什麼 Py-GC-MS 在奈米塑膠分析比 FTIR 更重要..."></textarea>
+      </div>
+      <div class="card activity">
+        <h3>2. 哪個概念你還不確定，希望老師再講一次？</h3>
+        <textarea data-key="exit_2" placeholder="例：密度分離溶液的選擇邏輯..."></textarea>
+      </div>
+      <div class="card activity">
+        <h3>3. 如果讓你選一個技術深入學習，你會選？為什麼？</h3>
+        <textarea data-key="exit_3" placeholder="例：μ-FTIR，因為實驗室有此設備且我想做海洋樣品..."></textarea>
+      </div>
+      <div class="card">
+        <h3>📤 提交你的作答</h3>
+        <p>點下方按鈕匯出 TSV，或截圖傳給授課老師。</p>
+        <button onclick="exportAnswers()">📋 匯出今日作答</button>
+        <p class="mini">作答已自動儲存於瀏覽器 localStorage，下次開啟仍可看到。</p>
+      </div>
+    </section>
+
+    <!-- S44 致謝 -->
+    <section class="slide">
+      <h2>致謝與聲明</h2>
+      <div class="card">
+        <h3>本教材</h3>
+        <ul>
+          <li>內容綜整自下列同行評審文獻（見「進階閱讀」）與 Nielsen《Food Analysis 6/e》框架</li>
+          <li>所有<span class="highlight">光譜示意圖為教學用 SVG</span>，數據點位置基於公開文獻常見值，<span class="warn">不可作為標準圖譜使用</span></li>
+          <li>互動題之「正解」反映目前主流文獻共識，實驗室實際操作可能因儀器、樣品、SOP 而異</li>
+          <li>歡迎用於非營利教學，請保留原始引用</li>
+        </ul>
+      </div>
+      <div class="card ref">
+        <h3>授課老師</h3>
+        <p>本教材由 Claude Code 協助製作，提供大學食品分析課程使用。教師可依需求自行修改、增刪題目，或從右上角切換「教師版」查看教學提示與展開所有解答。</p>
+        <p class="mini">部署位置：GitHub Pages（見隨附部署網址）。原始 HTML 可在 GitHub repo 下載並二次編輯。</p>
+      </div>
+      <h1 style="text-align:center;margin-top:40px;">謝謝大家！</h1>
+    </section>
+
+
+  <!-- ============== 控制列 ============== -->
+  <div class="controls">
+    <div>
+      <button class="secondary" onclick="goSlide(0)">⏮ 首頁</button>
+      <button onclick="prevSlide()">◀ 上一頁</button>
+      <button onclick="nextSlide()">下一頁 ▶</button>
+      <button class="secondary" onclick="window.print()">🖨 列印 / PDF</button>
+    </div>
+    <div class="slideNo">
+      <span id="slideNow">1</span> / <span id="slideTotal">1</span>
+    </div>
+    <div>
+      <button class="secondary" onclick="exportAnswers()">📋 匯出作答</button>
+      <button class="warnBtn" onclick="resetAll()">🔄 重置</button>
+    </div>
+  </div>
+
+<script>
+  const state = {
+    mode: 'student',
+    answers: JSON.parse(localStorage.getItem('mp_answers') || '{}'),
+    scored: new Set(JSON.parse(localStorage.getItem('mp_scored') || '[]'))
+  };
+
+  function getDeck() {
+    return document.getElementById('studentDeck');
+  }
+
+  function getSlides() {
+    return getDeck().querySelectorAll('.slide');
+  }
+
+  function currentIdx() {
+    const slides = Array.from(getSlides());
+    return slides.findIndex(s => s.classList.contains('active'));
+  }
+
+  function showSlide(idx) {
+    const slides = Array.from(getSlides());
+    if (idx < 0 || idx >= slides.length) return;
+    slides.forEach(s => s.classList.remove('active'));
+    slides[idx].classList.add('active');
+    slides[idx].scrollTop = 0;
+    document.getElementById('slideNow').textContent = idx + 1;
+    document.getElementById('slideTotal').textContent = slides.length;
+    document.getElementById('progress').style.width = ((idx + 1) / slides.length * 100) + '%';
+  }
+
+  function nextSlide() { showSlide(currentIdx() + 1); }
+  function prevSlide() { showSlide(currentIdx() - 1); }
+  function goSlide(i) { showSlide(i); }
+
+  function switchMode(mode) {
+    state.mode = mode;
+    document.body.classList.toggle('teacherMode', mode === 'teacher');
+    document.getElementById('btnStudent').classList.toggle('active', mode === 'student');
+    document.getElementById('btnTeacher').classList.toggle('active', mode === 'teacher');
+    document.querySelectorAll('details').forEach(d => d.open = (mode === 'teacher'));
+  }
+
+  function persist() {
+    localStorage.setItem('mp_answers', JSON.stringify(state.answers));
+    localStorage.setItem('mp_scored', JSON.stringify(Array.from(state.scored)));
+    updateScoreBoard();
+  }
+
+  function updateScoreBoard() {
+    document.getElementById('scoreCount').textContent = state.scored.size;
+    const totalInteractives = document.querySelectorAll('.activity').length;
+    document.getElementById('scoreTotal').textContent = totalInteractives;
+  }
+
+  function selectChoice(btn, key, value) {
+    const group = btn.parentElement.querySelectorAll('.choice');
+    group.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    state.answers[key] = value;
+    state.scored.add(key);
+    const result = document.getElementById(key + '_result');
+    if (result) result.innerHTML = '✅ 已記錄你的選擇：<strong>' + value + '</strong>。';
+    persist();
+  }
+
+  function checkMCQ(btn, key, value, isCorrect) {
+    const group = btn.parentElement.querySelectorAll('.choice');
+    group.forEach(b => { b.classList.remove('selected','correct','wrong'); });
+    btn.classList.add('selected');
+    btn.classList.add(isCorrect ? 'correct' : 'wrong');
+    state.answers[key] = { value, correct: isCorrect };
+    state.scored.add(key);
+    const result = document.getElementById(key + '_result');
+    if (result) {
+      result.innerHTML = isCorrect
+        ? '🎉 <strong style="color:#86efac">正確！</strong>請繼續閱讀下方解析理解原因。'
+        : '🤔 <strong style="color:#fca5a5">這不是最佳答案</strong>，請展開「解析」看為什麼。';
+    }
+    persist();
+  }
+
+  function saveText(el, key) {
+    state.answers[key] = el.value;
+    if (el.value.trim().length > 5) state.scored.add(key);
+    persist();
+  }
+
+  function exportAnswers() {
+    const lines = Object.entries(state.answers).map(([k,v]) => {
+      const val = typeof v === 'object' ? JSON.stringify(v) : v;
+      return k + '\t' + val;
+    });
+    const blob = new Blob(['鍵\t作答\n' + lines.join('\n')], {type:'text/tab-separated-values'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'microplastic_quiz_' + new Date().toISOString().slice(0,10) + '.tsv';
+    a.click();
+  }
+
+  function resetAll() {
+    if (!confirm('確定要清除所有作答紀錄嗎？')) return;
+    state.answers = {}; state.scored.clear();
+    localStorage.removeItem('mp_answers'); localStorage.removeItem('mp_scored');
+    location.reload();
+  }
+
+  // 還原暫存作答
+  function restoreAnswers() {
+    Object.entries(state.answers).forEach(([key, val]) => {
+      const result = document.getElementById(key + '_result');
+      const value = typeof val === 'object' ? val.value : val;
+      const correct = typeof val === 'object' ? val.correct : null;
+      // textarea
+      const ta = document.querySelector('[data-key="' + key + '"]');
+      if (ta) ta.value = value;
+      // choices
+      if (result) {
+        if (correct === true) result.innerHTML = '🎉 <strong style="color:#86efac">正確！</strong>已記錄。';
+        else if (correct === false) result.innerHTML = '🤔 <strong style="color:#fca5a5">非最佳答案</strong>，請看解析。';
+        else result.innerHTML = '✅ 已記錄你的選擇：<strong>' + value + '</strong>。';
+      }
+    });
+  }
+
+  // 鍵盤翻頁
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prevSlide(); }
+    if (e.key === 'Home') { e.preventDefault(); goSlide(0); }
+    if (e.key === 'End') { e.preventDefault(); const slides = getSlides(); goSlide(slides.length - 1); }
+  });
+
+  // textarea autosave
+  document.addEventListener('input', e => {
+    if (e.target.tagName === 'TEXTAREA' && e.target.dataset.key) {
+      saveText(e.target, e.target.dataset.key);
+    }
+  });
+
+  // 初始化
+  window.addEventListener('DOMContentLoaded', () => {
+    showSlide(0);
+    updateScoreBoard();
+    restoreAnswers();
+  });
+</script>
+</body>
+</html>
