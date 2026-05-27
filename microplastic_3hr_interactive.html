@@ -6,198 +6,204 @@
   <title>食品中微塑膠檢測｜3 小時互動課程（NIR・FTIR・Raman・GC-MS・LC-MS）</title>
   <style>
     :root {
-      --bg: #0b1220;
-      --card: #111c2e;
-      --accent: #06b6d4;
-      --accent2: #a855f7;
-      --accent3: #f472b6;
-      --text: #f8fafc;
-      --muted: #cbd5e1;
-      --good: #22c55e;
-      --warn: #f59e0b;
-      --bad: #ef4444;
-      --line: rgba(255,255,255,0.16);
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --accent: #0ea5e9;   /* sky blue */
+      --accent2: #6366f1;  /* indigo */
+      --accent3: #ec4899;  /* pink */
+      --text: #0f172a;
+      --muted: #475569;
+      --good: #15803d;
+      --warn: #b45309;
+      --bad: #b91c1c;
+      --line: #e2e8f0;
+      --line-strong: #cbd5e1;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", Arial, sans-serif;
-      background: radial-gradient(circle at top left, #1e3a8a 0, var(--bg) 45%);
+      background: linear-gradient(135deg, #e0f2fe 0%, #f8fafc 40%, #fef3c7 100%);
       color: var(--text);
       overflow: hidden;
     }
     .deck { width: 100vw; height: 100vh; position: relative; }
-    .studentDeck, .teacherDeck { display: none; }
-    .activeDeck { display: block; }
     .slide {
       display: none;
       width: 100vw; height: 100vh;
       padding: 48px 64px 96px;
       overflow-y: auto;
+      background: transparent;
     }
     .slide.active { display: block; animation: fade 0.22s ease-in-out; }
     @keyframes fade {
       from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    h1 { font-size: 50px; line-height: 1.18; margin: 0 0 22px; }
-    h2 { font-size: 36px; margin: 0 0 20px; color: #67e8f9; }
-    h3 { font-size: 24px; margin: 16px 0 10px; color: #a5f3fc; }
-    p, li { font-size: 21px; line-height: 1.55; }
+    h1 { font-size: 50px; line-height: 1.18; margin: 0 0 22px; color: #0f172a; }
+    h2 { font-size: 36px; margin: 0 0 20px; color: #075985; }
+    h3 { font-size: 24px; margin: 16px 0 10px; color: #1e40af; }
+    p, li { font-size: 21px; line-height: 1.55; color: #1e293b; }
     small, .mini { color: var(--muted); font-size: 16px; }
-    .subtitle { font-size: 25px; color: var(--muted); }
+    .subtitle { font-size: 25px; color: #475569; }
     .tag {
       display: inline-block; padding: 6px 12px; border-radius: 999px;
-      background: rgba(6,182,212,0.18); color: #a5f3fc;
+      background: #e0f2fe; color: #075985;
       font-size: 16px; margin: 5px 5px 5px 0;
-      border: 1px solid rgba(6,182,212,0.35);
+      border: 1px solid #7dd3fc; font-weight: 600;
     }
-    .tag.purple { background: rgba(168,85,247,0.18); color: #d8b4fe; border-color: rgba(168,85,247,0.35); }
-    .tag.pink { background: rgba(244,114,182,0.18); color: #fbcfe8; border-color: rgba(244,114,182,0.35); }
+    .tag.purple { background: #ede9fe; color: #4c1d95; border-color: #c4b5fd; }
+    .tag.pink { background: #fce7f3; color: #831843; border-color: #f9a8d4; }
     .grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
     .grid3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
     .grid4 { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; }
     .card {
-      background: linear-gradient(180deg, rgba(17,28,46,0.96), rgba(11,18,32,0.96));
+      background: #ffffff;
       border: 1px solid var(--line); border-radius: 16px;
-      padding: 20px; box-shadow: 0 16px 36px rgba(0,0,0,0.22);
+      padding: 20px; box-shadow: 0 4px 12px rgba(15,23,42,0.06), 0 2px 4px rgba(15,23,42,0.04);
       margin-bottom: 16px;
     }
     .card p, .card li { font-size: 19px; }
-    .activity { border-left: 6px solid var(--accent); }
-    .teacherOnly {
-      border-left: 6px solid var(--warn);
-      background: linear-gradient(180deg, rgba(120,53,15,0.55), rgba(11,18,32,0.96));
-      display: none;
+    .activity {
+      border-left: 6px solid var(--accent);
+      background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%);
     }
-    body.teacherMode .teacherOnly { display: block; }
-    body.teacherMode .teacherOnly::before {
-      content: "👨‍🏫 教師提示";
-      display: block; font-weight: 700; color: #fcd34d;
+    .teacherTip {
+      border-left: 6px solid #f59e0b;
+      background: linear-gradient(180deg, #fef3c7 0%, #ffffff 100%);
+    }
+    .teacherTip::before {
+      content: "👨‍🏫 教師備課提示";
+      display: block; font-weight: 700; color: #b45309;
       font-size: 16px; margin-bottom: 8px;
     }
-    .ref { border-left: 6px solid var(--accent2); }
-    .highlight { color: #67e8f9; font-weight: 700; }
-    .good { color: #86efac; font-weight: 700; }
-    .warn { color: #fbbf24; font-weight: 700; }
-    .bad { color: #fca5a5; font-weight: 700; }
+    .ref {
+      border-left: 6px solid var(--accent2);
+      background: linear-gradient(180deg, #eef2ff 0%, #ffffff 100%);
+    }
+    .highlight { color: #0369a1; font-weight: 700; }
+    .good { color: #15803d; font-weight: 700; }
+    .warn { color: #b45309; font-weight: 700; }
+    .bad { color: #b91c1c; font-weight: 700; }
     .eq {
       font-size: 27px; text-align: center; margin: 14px 0;
       padding: 16px; border-radius: 14px;
-      background: rgba(15,23,42,0.72); border: 1px solid var(--line);
-      letter-spacing: 0.5px;
+      background: #f1f5f9; border: 1px solid var(--line);
+      letter-spacing: 0.5px; color: #1e293b;
     }
-    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 18px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 18px; background: white; }
     th, td { border: 1px solid var(--line); padding: 10px; vertical-align: top; }
-    th { background: rgba(6,182,212,0.18); color: #cffafe; }
-    td { background: rgba(15,23,42,0.45); }
+    th { background: #e0f2fe; color: #075985; font-weight: 700; }
+    td { background: white; color: #1e293b; }
+    tr:nth-child(even) td { background: #f8fafc; }
     .controls {
       position: fixed; left: 0; right: 0; bottom: 0; height: 64px;
-      background: rgba(2,6,23,0.92); backdrop-filter: blur(8px);
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(8px);
       display: flex; align-items: center; justify-content: space-between;
-      padding: 8px 24px; border-top: 1px solid var(--line); z-index: 20;
+      padding: 8px 24px; border-top: 1px solid var(--line-strong); z-index: 20;
+      box-shadow: 0 -4px 12px rgba(15,23,42,0.06);
     }
     button {
       cursor: pointer; border: 0; border-radius: 10px;
       padding: 10px 16px; font-size: 16px;
-      background: #2563eb; color: white; margin: 2px;
-      transition: filter 0.15s;
+      background: #0ea5e9; color: white; margin: 2px; font-weight: 600;
+      transition: all 0.15s; box-shadow: 0 2px 4px rgba(14,165,233,0.25);
     }
-    button:hover { filter: brightness(1.12); }
-    button.secondary { background: #334155; }
-    button.goodBtn { background: #16a34a; }
-    button.badBtn { background: #dc2626; }
-    button.warnBtn { background: #d97706; }
-    button.purpleBtn { background: #7c3aed; }
+    button:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    button.secondary { background: #64748b; box-shadow: 0 2px 4px rgba(100,116,139,0.25); }
+    button.goodBtn { background: #16a34a; box-shadow: 0 2px 4px rgba(22,163,74,0.25); }
+    button.badBtn { background: #dc2626; box-shadow: 0 2px 4px rgba(220,38,38,0.25); }
+    button.warnBtn { background: #d97706; box-shadow: 0 2px 4px rgba(217,119,6,0.25); }
+    button.purpleBtn { background: #7c3aed; box-shadow: 0 2px 4px rgba(124,58,237,0.25); }
     .choice {
       display: block; width: 100%; text-align: left;
-      background: rgba(30,41,59,0.95); border: 1px solid var(--line);
+      background: #ffffff; border: 1.5px solid var(--line-strong); color: #1e293b;
       margin: 6px 0; padding: 12px 16px; white-space: normal;
-      font-size: 18px;
+      font-size: 18px; box-shadow: 0 1px 2px rgba(15,23,42,0.05);
     }
-    .choice.selected { background: rgba(37,99,235,0.85); outline: 2px solid #93c5fd; }
-    .choice.correct { background: rgba(22,163,74,0.85); outline: 2px solid #86efac; }
-    .choice.wrong { background: rgba(220,38,38,0.75); outline: 2px solid #fca5a5; }
+    .choice:hover { background: #f1f5f9; border-color: var(--accent); }
+    .choice.selected { background: #e0f2fe; border-color: #0ea5e9; outline: 2px solid #38bdf8; color: #075985; font-weight: 600; }
+    .choice.correct { background: #dcfce7; border-color: #16a34a; outline: 2px solid #22c55e; color: #14532d; font-weight: 600; }
+    .choice.wrong { background: #fee2e2; border-color: #dc2626; outline: 2px solid #ef4444; color: #7f1d1d; font-weight: 600; }
     textarea, input {
       width: 100%; border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(15,23,42,0.88); color: var(--text);
+      border: 1.5px solid var(--line-strong);
+      background: #ffffff; color: var(--text);
       padding: 10px; font-size: 16px; margin: 4px 0 12px;
       font-family: inherit;
     }
+    textarea:focus, input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(14,165,233,0.12); }
     textarea { min-height: 80px; resize: vertical; }
     .resultBox {
       margin-top: 8px; padding: 12px; border-radius: 10px;
-      background: rgba(15,23,42,0.75); border: 1px solid var(--line);
-      font-size: 18px;
+      background: #f1f5f9; border: 1px solid var(--line);
+      font-size: 18px; color: #1e293b;
     }
     .progress {
       position: fixed; left: 0; top: 0; height: 5px;
       background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
       width: 0%; z-index: 30; transition: width 0.3s;
     }
-    .slideNo { color: var(--muted); font-size: 16px; }
-    .modeSwitch {
-      position: fixed; top: 12px; right: 16px; z-index: 25;
-      display: flex; gap: 6px;
-    }
-    .modeSwitch button {
-      padding: 6px 12px; font-size: 14px; border-radius: 999px;
-      background: rgba(15,23,42,0.85); border: 1px solid var(--line);
-    }
-    .modeSwitch button.active { background: var(--accent); color: #042f2e; font-weight: 700; }
+    .slideNo { color: var(--muted); font-size: 16px; font-weight: 600; }
     .emSpectrum {
       height: 70px; border-radius: 12px;
       background: linear-gradient(90deg, #7c3aed, #2563eb, #06b6d4, #16a34a, #facc15, #f97316, #ef4444);
       display: flex; align-items: center; justify-content: space-around;
       color: white; font-weight: 800; margin: 18px 0;
       border: 1px solid rgba(255,255,255,0.25); font-size: 16px;
+      box-shadow: 0 4px 12px rgba(15,23,42,0.15);
     }
     .specBox {
-      background: #0a0f1c; border: 1px solid var(--line);
+      background: #ffffff; border: 1px solid var(--line-strong);
       border-radius: 12px; padding: 14px; margin: 12px 0;
+      box-shadow: 0 2px 6px rgba(15,23,42,0.05);
     }
     .specBox svg { width: 100%; height: auto; display: block; }
+    .specBox .spec-title {
+      font-size: 15px; color: #1e293b; font-weight: 600; margin-bottom: 6px;
+    }
+    .specBox .spec-source {
+      font-size: 12px; color: #64748b; margin-top: 6px; font-style: italic;
+    }
     .legend {
       display: flex; gap: 14px; font-size: 16px; flex-wrap: wrap;
-      margin-top: 8px; color: var(--muted);
+      margin-top: 8px; color: #1e293b; font-weight: 600;
     }
-    .legend span::before {
-      content: "■"; margin-right: 4px;
-    }
+    .legend span::before { content: "■"; margin-right: 4px; }
     .sizebar {
       position: relative; height: 64px; border-radius: 10px;
-      background: linear-gradient(90deg, rgba(244,114,182,0.6) 0%, rgba(168,85,247,0.6) 25%, rgba(6,182,212,0.6) 65%, rgba(34,197,94,0.6) 100%);
-      margin: 14px 0;
+      background: linear-gradient(90deg, #ec4899 0%, #8b5cf6 25%, #06b6d4 65%, #22c55e 100%);
+      margin: 14px 0; box-shadow: 0 4px 8px rgba(15,23,42,0.1);
     }
-    .sizebar .label { position: absolute; top: 6px; font-size: 14px; color: white; font-weight: 700; }
-    .sizebar .scale { position: absolute; bottom: 4px; font-size: 13px; color: white; opacity: 0.85; }
+    .sizebar .label { position: absolute; top: 6px; font-size: 14px; color: white; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+    .sizebar .scale { position: absolute; bottom: 4px; font-size: 13px; color: white; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
     .pill {
       display: inline-block; padding: 4px 10px; border-radius: 999px;
       font-size: 14px; font-weight: 700; margin: 3px;
     }
-    .pill.cyan { background: #155e75; color: #cffafe; }
-    .pill.purple { background: #5b21b6; color: #ede9fe; }
-    .pill.pink { background: #9d174d; color: #fce7f3; }
-    .pill.green { background: #166534; color: #dcfce7; }
-    .pill.amber { background: #92400e; color: #fef3c7; }
+    .pill.cyan { background: #cffafe; color: #155e75; border: 1px solid #67e8f9; }
+    .pill.purple { background: #ede9fe; color: #5b21b6; border: 1px solid #c4b5fd; }
+    .pill.pink { background: #fce7f3; color: #9d174d; border: 1px solid #f9a8d4; }
+    .pill.green { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+    .pill.amber { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
     .scoreBoard {
       position: fixed; top: 12px; left: 16px; z-index: 25;
-      background: rgba(15,23,42,0.85); padding: 6px 12px;
+      background: rgba(255,255,255,0.95); padding: 6px 14px;
       border-radius: 999px; font-size: 14px; color: var(--muted);
-      border: 1px solid var(--line);
+      border: 1px solid var(--line-strong); font-weight: 600;
+      box-shadow: 0 2px 6px rgba(15,23,42,0.08);
     }
-    .scoreBoard .num { color: #67e8f9; font-weight: 700; font-size: 16px; }
+    .scoreBoard .num { color: #0ea5e9; font-weight: 700; font-size: 16px; }
     details {
-      background: rgba(15,23,42,0.55); padding: 10px 14px;
+      background: #f8fafc; padding: 10px 14px;
       border-radius: 10px; border: 1px solid var(--line);
       margin: 8px 0;
     }
-    details summary { cursor: pointer; font-weight: 700; font-size: 18px; color: #a5f3fc; }
+    details summary { cursor: pointer; font-weight: 700; font-size: 18px; color: #075985; }
     details[open] summary { margin-bottom: 8px; }
     .citation {
-      font-size: 14px; color: #94a3b8; font-style: italic;
-      border-left: 3px solid #475569; padding-left: 8px; margin: 6px 0;
+      font-size: 14px; color: #64748b; font-style: italic;
+      border-left: 3px solid #cbd5e1; padding-left: 8px; margin: 6px 0;
     }
     .twoCol {
       display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start;
@@ -205,29 +211,23 @@
     @media print {
       body { overflow: visible; background: white; color: black; }
       .slide { display: block !important; height: auto; page-break-after: always; color: black; background: white; padding: 28px; }
-      .controls, .progress, .modeSwitch, .scoreBoard { display: none !important; }
+      .controls, .progress, .scoreBoard { display: none !important; }
       h1, h2, h3, p, li, small, td, th { color: black; }
       .card { background: white; color: black; box-shadow: none; border: 1px solid #888; }
       .eq { background: #f5f5f5; color: black; }
-      .teacherDeck { display: none !important; }
     }
   </style>
 </head>
 <body>
   <div class="progress" id="progress"></div>
-  <div class="scoreBoard">已完成互動：<span class="num" id="scoreCount">0</span> / <span id="scoreTotal">0</span></div>
-  <div class="modeSwitch">
-    <button id="btnStudent" class="active" onclick="switchMode('student')">學生版</button>
-    <button id="btnTeacher" onclick="switchMode('teacher')">教師版</button>
-  </div>
+  <div class="scoreBoard">互動進度：<span class="num" id="scoreCount">0</span> / <span id="scoreTotal">0</span></div>
 
-  <!-- ============== 學生版投影片 ============== -->
-  <main class="deck studentDeck activeDeck" id="studentDeck">
+  <main class="deck" id="studentDeck">
 
     <!-- S1 封面 -->
     <section class="slide active">
-      <h1>食品中微塑膠檢測<br/><span style="color:#a5f3fc;font-size:38px;">微塑膠分析的五大儀器技術</span></h1>
-      <p class="subtitle">3 小時互動式課程 ｜ NIR・FTIR・Raman・Py-GC-MS・LC-MS</p>
+      <h1>食品中微塑膠檢測<br/><span style="color:#0ea5e9;font-size:38px;">微塑膠分析的五大儀器技術</span></h1>
+      <p class="subtitle">3 小時授課簡報 ｜ NIR・FTIR・Raman・Py-GC-MS・LC-MS</p>
       <div>
         <span class="tag">微塑膠 MP</span>
         <span class="tag">奈米塑膠 NP</span>
@@ -245,7 +245,7 @@
           <li>如何依樣品特性與目標<span class="highlight">選擇正確方法</span></li>
         </ul>
       </div>
-      <p class="mini">右上角可切換學生版 / 教師版（含教學提示與參考答案）</p>
+      <p class="mini">本簡報為教師授課用版本：互動題會直接顯示正解回饋；橘色框為教師備課提示；底部可列印為 PDF。</p>
     </section>
 
     <!-- S2 課程地圖 -->
@@ -391,7 +391,7 @@
           </ul>
         </div>
       </div>
-      <div class="card teacherOnly">
+      <div class="card teacherTip">
         <h3>🎯 課程定位</h3>
         <p>本課程聚焦於<span class="highlight">分析化學技術</span>本身，毒理學與風險評估只做背景說明。我們的目標是讓學生能在實驗室真正執行分析、判讀光譜、選擇方法。</p>
       </div>
@@ -512,25 +512,15 @@
           </div>
         </div>
         <div>
-          <div class="specBox">
-            <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
-              <!-- axes -->
-              <line x1="40" y1="190" x2="380" y2="190" stroke="#94a3b8" stroke-width="1"/>
-              <line x1="40" y1="20" x2="40" y2="190" stroke="#94a3b8" stroke-width="1"/>
-              <text x="210" y="212" fill="#cbd5e1" font-size="13" text-anchor="middle">Wavelength (nm)</text>
-              <text x="60" y="210" fill="#94a3b8" font-size="11">1000</text>
-              <text x="210" y="210" fill="#94a3b8" font-size="11">1700</text>
-              <text x="360" y="210" fill="#94a3b8" font-size="11">2500</text>
-              <text x="20" y="100" fill="#cbd5e1" font-size="13" transform="rotate(-90,20,100)">Absorbance</text>
-              <!-- PE NIR (broad bumps near 1210, 1410, 1730, 2310) -->
-              <path d="M 40 180 Q 80 175 100 160 Q 120 140 130 130 Q 150 145 170 150 Q 200 110 220 100 Q 240 130 260 150 Q 280 60 310 50 Q 340 110 380 150"
-                    fill="none" stroke="#06b6d4" stroke-width="2.2"/>
-              <text x="270" y="40" fill="#06b6d4" font-size="13" font-weight="700">PE (NIR)</text>
-              <text x="180" y="95" fill="#cbd5e1" font-size="11">1730</text>
-              <text x="280" y="45" fill="#cbd5e1" font-size="11">2310 (C-H 組合頻)</text>
-            </svg>
-          </div>
-          <p class="mini">PE 在 NIR 的特徵：1210、1410、1730 nm（C–H 倍頻），2310 nm（C–H 組合頻）。峰寬 → 必須與標準品比對。</p>
+          <div class="chart"
+               data-spec="nir_pe_bag1"
+               data-title="塑膠袋 (PE) NIR 光譜 — 真實量測"
+               data-xlabel="Wavelength (nm)"
+               data-ylabel="Absorbance"
+               data-color="#0ea5e9"
+               data-markers="1210,1410,1730,2300"
+               data-source="實驗室 NeoSpectra/InnoSpectra 量測 (bag1_run1, 900–2400 nm)"></div>
+          <p class="mini">PE 在 NIR 的特徵：~1210、1410、1730 nm（C–H 第一倍頻），~2310 nm（C–H 組合頻）。本圖為實驗室自量數據，未做基線校正，因此 2300 nm 以後吸收急遽上升（樣品厚度與儀器響應）。</p>
         </div>
       </div>
       <p class="citation">Serranti S. et al. (2018) The utilization of hyperspectral imaging for impurities detection in secondary plastics. <em>Open Waste Manag J</em>.</p>
@@ -612,40 +602,14 @@
     <!-- S16 FTIR 特徵峰對照 -->
     <section class="slide">
       <h2>FTIR 五大常見塑膠的特徵峰</h2>
-      <div class="specBox">
-        <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg">
-          <line x1="50" y1="240" x2="580" y2="240" stroke="#94a3b8"/>
-          <line x1="50" y1="20" x2="50" y2="240" stroke="#94a3b8"/>
-          <text x="315" y="265" fill="#cbd5e1" font-size="13" text-anchor="middle">Wavenumber (cm⁻¹)</text>
-          <text x="55" y="258" fill="#94a3b8" font-size="11">4000</text>
-          <text x="265" y="258" fill="#94a3b8" font-size="11">2000</text>
-          <text x="565" y="258" fill="#94a3b8" font-size="11">400</text>
-          <text x="15" y="130" fill="#cbd5e1" font-size="13" transform="rotate(-90,15,130)">Transmittance</text>
-          <!-- PE: dips at 2915,2848,1463,720 -->
-          <path d="M 50 50 L 130 48 L 180 35 L 210 38 L 285 45 L 340 30 L 380 48 L 480 47 L 530 32 L 570 48"
-                fill="none" stroke="#06b6d4" stroke-width="2"/>
-          <text x="475" y="80" fill="#06b6d4" font-size="13" font-weight="700">PE</text>
-          <!-- PP: dips at 2950,1455,1377,998 -->
-          <path d="M 50 100 L 130 98 L 175 85 L 215 95 L 290 100 L 330 78 L 360 88 L 400 80 L 430 97 L 510 100 L 570 99"
-                fill="none" stroke="#a855f7" stroke-width="2"/>
-          <text x="380" y="125" fill="#a855f7" font-size="13" font-weight="700">PP</text>
-          <!-- PET: dips at 1715, 1240, 1090, 720 (aromatic) -->
-          <path d="M 50 150 L 200 148 L 235 138 L 280 100 L 310 145 L 340 130 L 380 120 L 430 145 L 530 130 L 570 148"
-                fill="none" stroke="#f472b6" stroke-width="2"/>
-          <text x="290" y="92" fill="#f472b6" font-size="13" font-weight="700">PET (1715 C=O)</text>
-          <!-- PS: dips at 3025, 1601, 1493, 696 -->
-          <path d="M 50 200 L 100 198 L 130 188 L 175 197 L 270 198 L 315 185 L 345 195 L 380 188 L 430 198 L 535 175 L 570 197"
-                fill="none" stroke="#22c55e" stroke-width="2"/>
-          <text x="125" y="180" fill="#22c55e" font-size="13" font-weight="700">PS (芳香)</text>
-        </svg>
-        <div class="legend">
-          <span style="color:#06b6d4">PE</span>
-          <span style="color:#a855f7">PP</span>
-          <span style="color:#f472b6">PET</span>
-          <span style="color:#22c55e">PS</span>
-        </div>
+      <div class="grid">
+        <div class="chart" data-spec="ftir_pe" data-title="PE FTIR" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#0284c7" data-xreverse="1" data-markers="2915,2848,1463,720" data-source="依文獻峰位重建 (Käppler 2018; Jung 2018)"></div>
+        <div class="chart" data-spec="ftir_pp" data-title="PP FTIR" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#7c3aed" data-xreverse="1" data-markers="2917,1455,1377,998" data-source="依文獻峰位重建"></div>
+        <div class="chart" data-spec="ftir_pet" data-title="PET FTIR" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#db2777" data-xreverse="1" data-markers="1715,1240,1090,723" data-source="依文獻峰位重建"></div>
+        <div class="chart" data-spec="ftir_ps" data-title="PS FTIR" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#16a34a" data-xreverse="1" data-markers="3025,1601,1493,696" data-source="依文獻峰位重建"></div>
       </div>
-      <p class="mini">注意：實際儀器圖譜為吸光度模式（dips 朝上為 peaks）。本示意圖以「穿透率下降 = 吸收」呈現，特徵峰位置標示為主。</p>
+      <div class="chart" data-spec="ftir_pvc" data-title="PVC FTIR" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#d97706" data-xreverse="1" data-markers="1426,1255,690,614" data-source="依文獻峰位重建"></div>
+      <p class="mini">X 軸為 Wavenumber（高→低，符合 FTIR 慣例）；Y 軸為穿透率（峰朝下即代表吸收）。峰位置依 Käppler 2018、Jung et al. 2018 文獻重建為合成圖。</p>
       <table>
         <tr><th>塑膠</th><th>關鍵特徵峰 cm⁻¹</th><th>歸屬</th></tr>
         <tr><td><span class="pill cyan">PE</span></td><td>2915, 2848, 1463, 720</td><td>C–H 伸縮、CH₂ 變角、CH₂ 搖動</td></tr>
@@ -661,22 +625,7 @@
       <h2>互動：FTIR 圖譜辨識（一）</h2>
       <div class="card activity">
         <h3>下方為某未知塑膠的 FTIR 圖譜，主要吸收峰在 2915、2848、1463、720 cm⁻¹。請判斷塑膠類型：</h3>
-        <div class="specBox" style="background:#fff">
-          <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
-            <line x1="50" y1="170" x2="580" y2="170" stroke="#334155"/>
-            <line x1="50" y1="20" x2="50" y2="170" stroke="#334155"/>
-            <text x="315" y="190" fill="#334155" font-size="12" text-anchor="middle">Wavenumber (cm⁻¹)</text>
-            <text x="55" y="186" fill="#334155" font-size="10">4000</text>
-            <text x="565" y="186" fill="#334155" font-size="10">400</text>
-            <!-- baseline with sharp dips at PE positions -->
-            <!-- 2915 (~x=187), 2848 (~x=205), 1463 (~x=358), 720 (~x=502) -->
-            <path d="M 50 40 L 170 38 L 185 130 L 200 50 L 215 130 L 230 50 L 350 48 L 370 100 L 390 50 L 470 50 L 495 130 L 515 50 L 580 48"
-                  fill="none" stroke="#0c4a6e" stroke-width="2"/>
-            <text x="190" y="148" fill="#dc2626" font-size="11">2915/2848</text>
-            <text x="360" y="118" fill="#dc2626" font-size="11">1463</text>
-            <text x="490" y="148" fill="#dc2626" font-size="11">720</text>
-          </svg>
-        </div>
+        <div class="chart" data-spec="ftir_pe" data-title="未知塑膠 FTIR 圖譜" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#0c4a6e" data-xreverse="1" data-markers="2915,2848,1463,720" data-source="待學生判讀的測試圖譜"></div>
         <button class="choice" onclick="checkMCQ(this,'q_ftir1','PE',true)">A. 聚乙烯 (PE)</button>
         <button class="choice" onclick="checkMCQ(this,'q_ftir1','PP',false)">B. 聚丙烯 (PP)</button>
         <button class="choice" onclick="checkMCQ(this,'q_ftir1','PET',false)">C. 聚對苯二甲酸乙二酯 (PET)</button>
@@ -699,22 +648,7 @@
       <h2>互動：FTIR 圖譜辨識（二）</h2>
       <div class="card activity">
         <h3>某海鹽樣品中分離出一顆 80 μm 透明顆粒，μ-FTIR 結果顯示強烈吸收於 1715、1240、1090 cm⁻¹，以及 720 cm⁻¹。請判斷：</h3>
-        <div class="specBox" style="background:#fff">
-          <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
-            <line x1="50" y1="170" x2="580" y2="170" stroke="#334155"/>
-            <line x1="50" y1="20" x2="50" y2="170" stroke="#334155"/>
-            <text x="315" y="190" fill="#334155" font-size="12" text-anchor="middle">Wavenumber (cm⁻¹)</text>
-            <text x="55" y="186" fill="#334155" font-size="10">4000</text>
-            <text x="565" y="186" fill="#334155" font-size="10">400</text>
-            <!-- 1715 (~x=300), 1240 (~x=395), 1090 (~x=435), 720 (~x=502) -->
-            <path d="M 50 45 L 270 42 L 295 145 L 320 50 L 380 50 L 397 130 L 415 60 L 432 135 L 450 55 L 490 55 L 503 110 L 520 55 L 580 50"
-                  fill="none" stroke="#0c4a6e" stroke-width="2"/>
-            <text x="285" y="158" fill="#dc2626" font-size="11">1715 (C=O)</text>
-            <text x="380" y="148" fill="#dc2626" font-size="11">1240</text>
-            <text x="425" y="148" fill="#dc2626" font-size="11">1090</text>
-            <text x="495" y="128" fill="#dc2626" font-size="11">720</text>
-          </svg>
-        </div>
+        <div class="chart" data-spec="ftir_pet" data-title="海鹽中分離出的 80 μm 透明顆粒 FTIR" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#0c4a6e" data-xreverse="1" data-markers="1715,1240,1090,723" data-source="待學生判讀的測試圖譜"></div>
         <button class="choice" onclick="checkMCQ(this,'q_ftir2','PE',false)">A. 聚乙烯 (PE)</button>
         <button class="choice" onclick="checkMCQ(this,'q_ftir2','PVC',false)">B. 聚氯乙烯 (PVC)</button>
         <button class="choice" onclick="checkMCQ(this,'q_ftir2','PET',true)">C. 聚對苯二甲酸乙二酯 (PET)</button>
@@ -765,40 +699,14 @@
     <!-- S20 Raman 特徵 -->
     <section class="slide">
       <h2>Raman 五大塑膠特徵位移 (cm⁻¹)</h2>
-      <div class="specBox">
-        <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
-          <line x1="50" y1="220" x2="580" y2="220" stroke="#94a3b8"/>
-          <line x1="50" y1="20" x2="50" y2="220" stroke="#94a3b8"/>
-          <text x="315" y="245" fill="#cbd5e1" font-size="13" text-anchor="middle">Raman shift (cm⁻¹)</text>
-          <text x="55" y="240" fill="#94a3b8" font-size="11">200</text>
-          <text x="305" y="240" fill="#94a3b8" font-size="11">1500</text>
-          <text x="565" y="240" fill="#94a3b8" font-size="11">3200</text>
-          <text x="15" y="120" fill="#cbd5e1" font-size="13" transform="rotate(-90,15,120)">Intensity</text>
-          <!-- PE: peaks at 1130,1296,1440,2848,2882 -->
-          <path d="M 50 60 L 220 58 L 235 30 L 248 56 L 275 56 L 282 18 L 292 56 L 320 35 L 330 55 L 470 53 L 478 22 L 488 25 L 498 53 L 580 53"
-                fill="none" stroke="#06b6d4" stroke-width="2"/>
-          <text x="475" y="15" fill="#06b6d4" font-size="13" font-weight="700">PE</text>
-          <!-- PP: peaks at 808, 973, 1152, 2880, 2950 -->
-          <path d="M 50 110 L 170 108 L 178 70 L 188 106 L 220 75 L 232 105 L 260 80 L 268 105 L 290 105 L 470 103 L 478 50 L 490 70 L 500 105 L 580 105"
-                fill="none" stroke="#a855f7" stroke-width="2"/>
-          <text x="170" y="60" fill="#a855f7" font-size="13" font-weight="700">PP</text>
-          <!-- PS: 621, 1001 (strong), 1031, 1602, 3050 -->
-          <path d="M 50 160 L 130 158 L 138 130 L 148 155 L 240 155 L 250 80 L 260 155 L 268 130 L 280 155 L 340 155 L 350 100 L 362 155 L 540 155 L 550 110 L 560 155 L 580 155"
-                fill="none" stroke="#22c55e" stroke-width="2"/>
-          <text x="250" y="70" fill="#22c55e" font-size="13" font-weight="700">PS (1001)</text>
-          <!-- PET: 632, 859, 1117, 1614, 1726, 3082 -->
-          <path d="M 50 210 L 130 208 L 138 178 L 148 205 L 200 205 L 210 175 L 220 205 L 280 205 L 292 175 L 300 205 L 340 205 L 350 165 L 360 175 L 372 205 L 540 205 L 550 165 L 560 200 L 580 200"
-                fill="none" stroke="#f472b6" stroke-width="2"/>
-          <text x="345" y="155" fill="#f472b6" font-size="13" font-weight="700">PET</text>
-        </svg>
-        <div class="legend">
-          <span style="color:#06b6d4">PE</span>
-          <span style="color:#a855f7">PP</span>
-          <span style="color:#22c55e">PS (1001 強)</span>
-          <span style="color:#f472b6">PET</span>
-        </div>
+      <div class="grid">
+        <div class="chart" data-spec="raman_hdpe" data-title="HDPE Raman（KU Leuven 公開資料）" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#0284c7" data-markers="1296,1440,2848,2882" data-source="KU Leuven RDR doi:10.48804/FZNZMH"></div>
+        <div class="chart" data-spec="raman_pp" data-title="PP Raman" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#7c3aed" data-markers="808,973,2884,2953" data-source="KU Leuven RDR"></div>
+        <div class="chart" data-spec="raman_ps" data-title="PS Raman（注意 1001 招牌峰）" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#16a34a" data-markers="621,1001,1602,3050" data-source="KU Leuven RDR"></div>
+        <div class="chart" data-spec="raman_pet" data-title="PET Raman" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#db2777" data-markers="1117,1613,1726,3082" data-source="KU Leuven RDR"></div>
       </div>
-      <p class="mini"><span class="highlight">PS 在 1001 cm⁻¹</span>（單取代苯環的呼吸模式）強度極高，是最容易辨識的特徵。Raman 對芳香環、C=C、C–S、C–Cl 等對稱鍵特別敏感。</p>
+      <div class="chart" data-spec="raman_pvc" data-title="PVC Raman（C–Cl 638/696）" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#d97706" data-markers="638,696,2913" data-source="KU Leuven RDR"></div>
+      <p class="mini"><span class="highlight">PS 在 1001 cm⁻¹</span>（單取代苯環的呼吸模式）強度極高，是最容易辨識的招牌指紋；HDPE 的 2848/2882 cm⁻¹ 雙峰、PVC 的 638/696 C–Cl 也都非常容易與其他塑膠區分。<br/>數據來源：KU Leuven RDR (doi:10.48804/FZNZMH)，EXIMIOUS 計畫 HPU Raman 光譜庫。</p>
     </section>
 
     <!-- S21 互動：Raman 圖譜辨識 -->
@@ -886,7 +794,7 @@
         <button class="choice" onclick="checkMCQ(this,'q_tf5','F',false)">✗ 錯誤</button>
         <div class="resultBox" id="q_tf5_result">—</div>
       </div>
-      <div class="card teacherOnly">
+      <div class="card teacherTip">
         <h3>答案：T, F, T, F, T</h3>
         <p>第 2 題：Raman 對<span class="highlight">水訊號弱</span>反而是它在水中分析 MP 的優勢，因此 ESL/海水中的微塑膠分析常選 Raman 而非 FTIR-ATR。</p>
         <p>第 4 題：NIR 解析度與靈敏度都不足以分析 ≤ 5 μm 顆粒，奈米塑膠應走 Raman/SERS、Py-GC-MS 或 O-PTIR。</p>
@@ -1186,7 +1094,7 @@
           </ul>
         </div>
       </div>
-      <div class="card teacherOnly">
+      <div class="card teacherTip">
         <h3>🎯 教學提示</h3>
         <p>學生常混淆「微塑膠分析」與「塑化劑分析」。建議在課程中明確區分：<span class="highlight">微塑膠顆粒分析 → 光譜法 + Py-GC-MS</span>；<span class="highlight">塑膠衍生化學物分析 → LC-MS</span>。兩者目標、樣品前處理、儀器設定完全不同。</p>
       </div>
@@ -1633,6 +1541,7 @@
     </div>
   </div>
 
+<script type="application/json" id="specdata">{"nir_pe_bag1": {"x": [900.0, 910.0, 920.0, 930.0, 940.0, 950.0, 960.0, 970.0, 980.0, 990.0, 1000.0, 1010.0, 1020.0, 1030.0, 1040.0, 1050.0, 1060.0, 1070.0, 1080.0, 1090.0, 1100.0, 1110.0, 1120.0, 1130.0, 1140.0, 1150.0, 1160.0, 1170.0, 1180.0, 1190.0, 1200.0, 1210.0, 1220.0, 1230.0, 1240.0, 1250.0, 1260.0, 1270.0, 1280.0, 1290.0, 1300.0, 1310.0, 1320.0, 1330.0, 1340.0, 1350.0, 1360.0, 1370.0, 1380.0, 1390.0, 1400.0, 1410.0, 1420.0, 1430.0, 1440.0, 1450.0, 1460.0, 1470.0, 1480.0, 1490.0, 1500.0, 1510.0, 1520.0, 1530.0, 1540.0, 1550.0, 1560.0, 1570.0, 1580.0, 1590.0, 1600.0, 1610.0, 1620.0, 1630.0, 1640.0, 1650.0, 1660.0, 1670.0, 1680.0, 1690.0, 1700.0, 1710.0, 1720.0, 1730.0, 1740.0, 1750.0, 1760.0, 1770.0, 1780.0, 1790.0, 1800.0, 1810.0, 1820.0, 1830.0, 1840.0, 1850.0, 1860.0, 1870.0, 1880.0, 1890.0, 1900.0, 1910.0, 1920.0, 1930.0, 1940.0, 1950.0, 1960.0, 1970.0, 1980.0, 1990.0, 2000.0, 2010.0, 2020.0, 2030.0, 2040.0, 2050.0, 2060.0, 2070.0, 2080.0, 2090.0, 2100.0, 2110.0, 2120.0, 2130.0, 2140.0, 2150.0, 2160.0, 2170.0, 2180.0, 2190.0, 2200.0, 2210.0, 2220.0, 2230.0, 2240.0, 2250.0, 2260.0, 2270.0, 2280.0, 2290.0, 2300.0, 2310.0, 2320.0, 2330.0, 2340.0, 2350.0, 2360.0, 2370.0, 2380.0, 2390.0, 2400.0], "y": [0.0329, 0.0318, 0.0349, 0.0386, 0.0395, 0.0392, 0.0415, 0.0436, 0.0454, 0.0471, 0.0486, 0.049, 0.0496, 0.0504, 0.0508, 0.0511, 0.0502, 0.0491, 0.0484, 0.0481, 0.0465, 0.0457, 0.0447, 0.0438, 0.0437, 0.0448, 0.0475, 0.0505, 0.0544, 0.0604, 0.0722, 0.0869, 0.0823, 0.0652, 0.0569, 0.0536, 0.0517, 0.0513, 0.0507, 0.051, 0.0508, 0.0506, 0.0505, 0.0504, 0.0506, 0.0509, 0.0522, 0.0547, 0.0606, 0.0719, 0.0699, 0.0715, 0.0739, 0.0717, 0.0694, 0.066, 0.063, 0.0603, 0.0583, 0.0572, 0.0565, 0.0563, 0.0564, 0.0569, 0.0576, 0.0562, 0.0552, 0.0554, 0.0554, 0.0562, 0.0567, 0.0567, 0.0572, 0.0579, 0.0581, 0.0589, 0.0592, 0.0595, 0.0632, 0.0763, 0.1021, 0.1516, 0.221, 0.2631, 0.1984, 0.1562, 0.1703, 0.1561, 0.1281, 0.1212, 0.1234, 0.1234, 0.1207, 0.1154, 0.1091, 0.1019, 0.0949, 0.0918, 0.0915, 0.0922, 0.0947, 0.096, 0.0979, 0.0989, 0.099, 0.099, 0.1004, 0.0999, 0.0991, 0.0997, 0.1016, 0.1048, 0.1023, 0.0998, 0.0989, 0.0996, 0.0976, 0.0937, 0.0906, 0.088, 0.0866, 0.0843, 0.0828, 0.082, 0.0827, 0.0828, 0.0842, 0.0855, 0.0872, 0.091, 0.0939, 0.1001, 0.1074, 0.1195, 0.132, 0.1534, 0.1872, 0.2492, 0.3356, 0.4545, 0.6924, 0.9474, 0.6385, 0.546, 0.6554, 0.8257, 0.7087, 0.7286, 0.7941, 0.8289, 0.8172]}, "raman_hdpe": {"x": [100.8, 108.5, 116.2, 123.9, 131.7, 139.4, 147.1, 154.8, 162.5, 170.2, 177.9, 185.7, 193.4, 201.1, 208.8, 216.5, 224.2, 231.9, 239.6, 247.4, 255.1, 262.8, 270.5, 278.2, 285.9, 293.6, 301.4, 309.1, 316.8, 324.5, 332.2, 339.9, 347.6, 355.4, 363.1, 370.8, 378.5, 386.2, 393.9, 401.6, 409.4, 417.1, 424.8, 432.5, 440.2, 447.9, 455.6, 463.4, 471.1, 478.8, 486.5, 494.2, 501.9, 509.6, 517.3, 525.1, 532.8, 540.5, 548.2, 555.9, 563.6, 571.3, 579.1, 586.8, 594.5, 602.2, 609.9, 617.6, 625.3, 633.1, 640.8, 648.5, 656.2, 663.9, 671.6, 679.3, 687.1, 694.8, 702.5, 710.2, 717.9, 725.6, 733.3, 741.1, 748.8, 756.5, 764.2, 771.9, 779.6, 787.3, 795.0, 802.8, 810.5, 818.2, 825.9, 833.6, 841.3, 849.0, 856.8, 864.5, 872.2, 879.9, 887.6, 895.3, 903.0, 910.8, 918.5, 926.2, 933.9, 941.6, 949.3, 957.0, 964.8, 972.5, 980.2, 987.9, 995.6, 1003.3, 1011.0, 1018.8, 1026.5, 1034.2, 1041.9, 1049.6, 1057.3, 1065.0, 1072.7, 1080.5, 1088.2, 1095.9, 1103.6, 1111.3, 1119.0, 1126.7, 1134.5, 1142.2, 1149.9, 1157.6, 1165.3, 1173.0, 1180.7, 1188.5, 1196.2, 1203.9, 1211.6, 1219.3, 1227.0, 1234.7, 1242.5, 1250.2, 1257.9, 1265.6, 1273.3, 1281.0, 1288.7, 1296.4, 1304.2, 1311.9, 1319.6, 1327.3, 1335.0, 1342.7, 1350.4, 1358.2, 1365.9, 1373.6, 1381.3, 1389.0, 1396.7, 1404.4, 1412.2, 1419.9, 1427.6, 1435.3, 1443.0, 1450.7, 1458.4, 1466.2, 1473.9, 1481.6, 1489.3, 1497.0, 1504.7, 1512.4, 1520.2, 1527.9, 1535.6, 1543.3, 1551.0, 1558.7, 1566.4, 1574.1, 1581.9, 1589.6, 1597.3, 1605.0, 1612.7, 1620.4, 1628.1, 1635.9, 1643.6, 1651.3, 1659.0, 1666.7, 1674.4, 1682.1, 1689.9, 1697.6, 1705.3, 1713.0, 1720.7, 1728.4, 1736.1, 1743.9, 1751.6, 1759.3, 1767.0, 1774.7, 1782.4, 1790.1, 1797.8, 1805.6, 1813.3, 1821.0, 1828.7, 1836.4, 1844.1, 1851.8, 1859.6, 1867.3, 1875.0, 1882.7, 1890.4, 1898.1, 1905.8, 1913.6, 1921.3, 1929.0, 1936.7, 1944.4, 1952.1, 1959.8, 1967.6, 1975.3, 1983.0, 1990.7, 1998.4, 2006.1, 2013.8, 2021.6, 2029.3, 2037.0, 2044.7, 2052.4, 2060.1, 2067.8, 2075.5, 2083.3, 2091.0, 2098.7, 2106.4, 2114.1, 2121.8, 2129.5, 2137.3, 2145.0, 2152.7, 2160.4, 2168.1, 2175.8, 2183.5, 2191.3, 2199.0, 2206.7, 2214.4, 2222.1, 2229.8, 2237.5, 2245.3, 2253.0, 2260.7, 2268.4, 2276.1, 2283.8, 2291.5, 2299.3, 2307.0, 2314.7, 2322.4, 2330.1, 2337.8, 2345.5, 2353.2, 2361.0, 2368.7, 2376.4, 2384.1, 2391.8, 2399.5, 2407.2, 2415.0, 2422.7, 2430.4, 2438.1, 2445.8, 2453.5, 2461.2, 2469.0, 2476.7, 2484.4, 2492.1, 2499.8, 2507.5, 2515.2, 2523.0, 2530.7, 2538.4, 2546.1, 2553.8, 2561.5, 2569.2, 2577.0, 2584.7, 2592.4, 2600.1, 2607.8, 2615.5, 2623.2, 2630.9, 2638.7, 2646.4, 2654.1, 2661.8, 2669.5, 2677.2, 2684.9, 2692.7, 2700.4, 2708.1, 2715.8, 2723.5, 2731.2, 2738.9, 2746.7, 2754.4, 2762.1, 2769.8, 2777.5, 2785.2, 2792.9, 2800.7, 2808.4, 2816.1, 2823.8, 2831.5, 2839.2, 2846.9, 2854.7, 2862.4, 2870.1, 2877.8, 2885.5, 2893.2, 2900.9, 2908.6, 2916.4, 2924.1, 2931.8, 2939.5, 2947.2, 2954.9, 2962.6, 2970.4, 2978.1, 2985.8, 2993.5, 3001.2, 3008.9, 3016.6, 3024.4, 3032.1, 3039.8, 3047.5, 3055.2, 3062.9, 3070.6, 3078.4, 3086.1, 3093.8, 3101.5, 3109.2, 3116.9, 3124.6, 3132.3, 3140.1, 3147.8, 3155.5, 3163.2, 3170.9, 3178.6, 3186.3, 3194.1], "y": [0.0398, 0.0368, 0.0273, 0.0225, 0.0188, 0.0175, 0.0138, 0.0147, 0.0137, 0.0122, 0.0132, 0.0123, 0.013, 0.0117, 0.0122, 0.0116, 0.0102, 0.0084, 0.0074, 0.0063, 0.0063, 0.0059, 0.0064, 0.0051, 0.0057, 0.005, 0.0054, 0.0029, 0.0041, 0.0046, 0.0043, 0.0034, 0.0038, 0.0034, 0.0036, 0.0026, 0.0036, 0.0023, 0.0022, 0.0023, 0.0021, 0.0022, 0.0016, 0.002, 0.0013, 0.0001, 0.0022, 0.0016, 0.0019, 0.0012, 0.0014, 0.0016, 0.0007, 0.0002, 0.0006, 0.0014, 0.0014, 0.0018, 0.0002, 0.0004, 0.001, 0.0009, 0.0013, 0.0008, 0.001, 0.0003, 0.0015, 0.0006, 0.0001, 0.0011, 0.0008, 0.0004, 0.0, 0.0019, 0.0013, 0.002, 0.0005, 0.0021, 0.0022, 0.0019, 0.0037, 0.0042, 0.0035, 0.0033, 0.003, 0.0032, 0.0042, 0.0046, 0.0041, 0.0048, 0.005, 0.0052, 0.0059, 0.0058, 0.0069, 0.0069, 0.0079, 0.008, 0.0087, 0.0097, 0.0102, 0.01, 0.0103, 0.0106, 0.009, 0.0091, 0.0086, 0.0097, 0.0095, 0.0087, 0.0093, 0.009, 0.01, 0.009, 0.0088, 0.0101, 0.0113, 0.0125, 0.0121, 0.0133, 0.0135, 0.0145, 0.0161, 0.0218, 0.0736, 0.075, 0.0289, 0.0278, 0.0256, 0.0214, 0.0221, 0.0233, 0.0341, 0.1204, 0.0434, 0.0205, 0.0188, 0.02, 0.0328, 0.0257, 0.0176, 0.0169, 0.0163, 0.0161, 0.0166, 0.0171, 0.0171, 0.0168, 0.0178, 0.0179, 0.0203, 0.023, 0.0244, 0.0273, 0.0678, 0.1308, 0.0411, 0.0309, 0.0238, 0.0215, 0.0191, 0.0186, 0.0169, 0.0188, 0.0251, 0.0218, 0.0173, 0.0166, 0.0169, 0.0195, 0.0474, 0.0407, 0.0527, 0.1321, 0.1186, 0.0788, 0.091, 0.0773, 0.0404, 0.0275, 0.0208, 0.0186, 0.0186, 0.0181, 0.0172, 0.0181, 0.0168, 0.0172, 0.0165, 0.0171, 0.016, 0.0166, 0.0156, 0.0155, 0.0162, 0.016, 0.0158, 0.0163, 0.015, 0.0156, 0.0159, 0.0155, 0.0156, 0.015, 0.0141, 0.0148, 0.0153, 0.0156, 0.0159, 0.0154, 0.016, 0.0163, 0.0166, 0.0171, 0.0175, 0.0173, 0.0159, 0.0172, 0.0163, 0.0173, 0.0172, 0.0178, 0.0177, 0.0169, 0.0167, 0.0175, 0.0184, 0.0182, 0.0184, 0.0187, 0.0198, 0.0191, 0.0201, 0.021, 0.0211, 0.0204, 0.0207, 0.0209, 0.0217, 0.0224, 0.0231, 0.0236, 0.0241, 0.0248, 0.0246, 0.026, 0.0253, 0.0267, 0.0267, 0.0276, 0.0284, 0.0292, 0.0291, 0.0295, 0.03, 0.0315, 0.0318, 0.032, 0.0326, 0.0336, 0.033, 0.0326, 0.0351, 0.0353, 0.0345, 0.0353, 0.0358, 0.0351, 0.0371, 0.0396, 0.0422, 0.0395, 0.0369, 0.0367, 0.036, 0.0362, 0.0376, 0.0371, 0.0376, 0.0401, 0.039, 0.0373, 0.0381, 0.0385, 0.0374, 0.0374, 0.0367, 0.0346, 0.0355, 0.0352, 0.0335, 0.0327, 0.0318, 0.0322, 0.0324, 0.0317, 0.0316, 0.0316, 0.0314, 0.0306, 0.0309, 0.0305, 0.032, 0.0297, 0.0294, 0.0291, 0.0282, 0.0291, 0.0283, 0.0292, 0.0289, 0.0284, 0.0277, 0.0301, 0.0265, 0.0268, 0.0286, 0.0301, 0.0287, 0.029, 0.0324, 0.032, 0.0353, 0.0359, 0.0362, 0.0369, 0.037, 0.0362, 0.0359, 0.0381, 0.0409, 0.0428, 0.0397, 0.0415, 0.0417, 0.0441, 0.0502, 0.0587, 0.0723, 0.0901, 0.0935, 0.0711, 0.0547, 0.0456, 0.0427, 0.0435, 0.0413, 0.0422, 0.0433, 0.0448, 0.0489, 0.0537, 0.0651, 0.0923, 0.1914, 0.5241, 0.9276, 0.6752, 0.5062, 0.4874, 1.0, 0.8597, 0.5509, 0.4741, 0.3667, 0.3024, 0.2908, 0.2581, 0.1805, 0.0963, 0.0648, 0.0547, 0.0456, 0.0441, 0.0417, 0.0394, 0.0378, 0.0345, 0.0336, 0.0311, 0.0314, 0.0288, 0.0297, 0.0269, 0.026, 0.026, 0.0252, 0.0251, 0.0222, 0.0194, 0.0197, 0.0189, 0.0185, 0.0187, 0.0176, 0.0172, 0.0166, 0.0171, 0.0164, 0.0184, 0.0168, 0.0167]}, "raman_ldpe": {"x": [100.8, 108.5, 116.2, 123.9, 131.7, 139.4, 147.1, 154.8, 162.5, 170.2, 177.9, 185.7, 193.4, 201.1, 208.8, 216.5, 224.2, 231.9, 239.6, 247.4, 255.1, 262.8, 270.5, 278.2, 285.9, 293.6, 301.4, 309.1, 316.8, 324.5, 332.2, 339.9, 347.6, 355.4, 363.1, 370.8, 378.5, 386.2, 393.9, 401.6, 409.4, 417.1, 424.8, 432.5, 440.2, 447.9, 455.6, 463.4, 471.1, 478.8, 486.5, 494.2, 501.9, 509.6, 517.3, 525.1, 532.8, 540.5, 548.2, 555.9, 563.6, 571.3, 579.1, 586.8, 594.5, 602.2, 609.9, 617.6, 625.3, 633.1, 640.8, 648.5, 656.2, 663.9, 671.6, 679.3, 687.1, 694.8, 702.5, 710.2, 717.9, 725.6, 733.3, 741.1, 748.8, 756.5, 764.2, 771.9, 779.6, 787.3, 795.0, 802.8, 810.5, 818.2, 825.9, 833.6, 841.3, 849.0, 856.8, 864.5, 872.2, 879.9, 887.6, 895.3, 903.0, 910.8, 918.5, 926.2, 933.9, 941.6, 949.3, 957.0, 964.8, 972.5, 980.2, 987.9, 995.6, 1003.3, 1011.0, 1018.8, 1026.5, 1034.2, 1041.9, 1049.6, 1057.3, 1065.0, 1072.7, 1080.5, 1088.2, 1095.9, 1103.6, 1111.3, 1119.0, 1126.7, 1134.5, 1142.2, 1149.9, 1157.6, 1165.3, 1173.0, 1180.7, 1188.5, 1196.2, 1203.9, 1211.6, 1219.3, 1227.0, 1234.7, 1242.5, 1250.2, 1257.9, 1265.6, 1273.3, 1281.0, 1288.7, 1296.4, 1304.2, 1311.9, 1319.6, 1327.3, 1335.0, 1342.7, 1350.4, 1358.2, 1365.9, 1373.6, 1381.3, 1389.0, 1396.7, 1404.4, 1412.2, 1419.9, 1427.6, 1435.3, 1443.0, 1450.7, 1458.4, 1466.2, 1473.9, 1481.6, 1489.3, 1497.0, 1504.7, 1512.4, 1520.2, 1527.9, 1535.6, 1543.3, 1551.0, 1558.7, 1566.4, 1574.1, 1581.9, 1589.6, 1597.3, 1605.0, 1612.7, 1620.4, 1628.1, 1635.9, 1643.6, 1651.3, 1659.0, 1666.7, 1674.4, 1682.1, 1689.9, 1697.6, 1705.3, 1713.0, 1720.7, 1728.4, 1736.1, 1743.9, 1751.6, 1759.3, 1767.0, 1774.7, 1782.4, 1790.1, 1797.8, 1805.6, 1813.3, 1821.0, 1828.7, 1836.4, 1844.1, 1851.8, 1859.6, 1867.3, 1875.0, 1882.7, 1890.4, 1898.1, 1905.8, 1913.6, 1921.3, 1929.0, 1936.7, 1944.4, 1952.1, 1959.8, 1967.6, 1975.3, 1983.0, 1990.7, 1998.4, 2006.1, 2013.8, 2021.6, 2029.3, 2037.0, 2044.7, 2052.4, 2060.1, 2067.8, 2075.5, 2083.3, 2091.0, 2098.7, 2106.4, 2114.1, 2121.8, 2129.5, 2137.3, 2145.0, 2152.7, 2160.4, 2168.1, 2175.8, 2183.5, 2191.3, 2199.0, 2206.7, 2214.4, 2222.1, 2229.8, 2237.5, 2245.3, 2253.0, 2260.7, 2268.4, 2276.1, 2283.8, 2291.5, 2299.3, 2307.0, 2314.7, 2322.4, 2330.1, 2337.8, 2345.5, 2353.2, 2361.0, 2368.7, 2376.4, 2384.1, 2391.8, 2399.5, 2407.2, 2415.0, 2422.7, 2430.4, 2438.1, 2445.8, 2453.5, 2461.2, 2469.0, 2476.7, 2484.4, 2492.1, 2499.8, 2507.5, 2515.2, 2523.0, 2530.7, 2538.4, 2546.1, 2553.8, 2561.5, 2569.2, 2577.0, 2584.7, 2592.4, 2600.1, 2607.8, 2615.5, 2623.2, 2630.9, 2638.7, 2646.4, 2654.1, 2661.8, 2669.5, 2677.2, 2684.9, 2692.7, 2700.4, 2708.1, 2715.8, 2723.5, 2731.2, 2738.9, 2746.7, 2754.4, 2762.1, 2769.8, 2777.5, 2785.2, 2792.9, 2800.7, 2808.4, 2816.1, 2823.8, 2831.5, 2839.2, 2846.9, 2854.7, 2862.4, 2870.1, 2877.8, 2885.5, 2893.2, 2900.9, 2908.6, 2916.4, 2924.1, 2931.8, 2939.5, 2947.2, 2954.9, 2962.6, 2970.4, 2978.1, 2985.8, 2993.5, 3001.2, 3008.9, 3016.6, 3024.4, 3032.1, 3039.8, 3047.5, 3055.2, 3062.9, 3070.6, 3078.4, 3086.1, 3093.8, 3101.5, 3109.2, 3116.9, 3124.6, 3132.3, 3140.1, 3147.8, 3155.5, 3163.2, 3170.9, 3178.6, 3186.3, 3194.1], "y": [0.0359, 0.0294, 0.0227, 0.0184, 0.0155, 0.0135, 0.0124, 0.012, 0.0114, 0.0106, 0.0099, 0.0105, 0.0101, 0.0102, 0.0103, 0.0085, 0.0067, 0.0065, 0.0063, 0.0057, 0.0063, 0.0039, 0.0036, 0.0038, 0.0037, 0.0027, 0.0032, 0.003, 0.0012, 0.0036, 0.0024, 0.0026, 0.0021, 0.003, 0.0021, 0.003, 0.0029, 0.003, 0.0032, 0.0025, 0.0022, 0.0016, 0.0034, 0.0028, 0.003, 0.0029, 0.0026, 0.0018, 0.0, 0.0024, 0.0021, 0.0019, 0.0025, 0.0024, 0.0014, 0.0021, 0.0021, 0.0026, 0.0017, 0.0015, 0.0016, 0.0006, 0.0019, 0.0018, 0.0011, 0.002, 0.0032, 0.0027, 0.0021, 0.0023, 0.0022, 0.002, 0.0016, 0.002, 0.001, 0.0012, 0.0028, 0.0016, 0.0038, 0.0033, 0.0051, 0.0058, 0.0039, 0.0045, 0.0048, 0.0058, 0.0066, 0.0052, 0.0053, 0.0065, 0.0071, 0.0076, 0.0072, 0.0089, 0.009, 0.0098, 0.0107, 0.0101, 0.0111, 0.0114, 0.0131, 0.0119, 0.0143, 0.0135, 0.0121, 0.01, 0.0104, 0.0105, 0.0102, 0.0091, 0.0087, 0.0085, 0.0095, 0.0095, 0.0114, 0.0102, 0.0107, 0.0119, 0.0126, 0.0141, 0.0143, 0.016, 0.0179, 0.023, 0.065, 0.0677, 0.0288, 0.0309, 0.0277, 0.0211, 0.0223, 0.0233, 0.0343, 0.0922, 0.0383, 0.0233, 0.0191, 0.019, 0.025, 0.021, 0.0165, 0.0158, 0.0149, 0.0157, 0.0153, 0.017, 0.015, 0.0159, 0.0169, 0.0192, 0.0204, 0.0243, 0.0274, 0.031, 0.0647, 0.1311, 0.0537, 0.0418, 0.034, 0.0284, 0.0254, 0.026, 0.0265, 0.0284, 0.0354, 0.0318, 0.0288, 0.0284, 0.0304, 0.0334, 0.0529, 0.0632, 0.0728, 0.142, 0.1335, 0.1074, 0.1109, 0.0958, 0.0645, 0.0523, 0.0502, 0.0494, 0.0488, 0.0501, 0.0528, 0.0528, 0.0537, 0.0578, 0.0568, 0.0581, 0.0592, 0.0649, 0.0641, 0.0677, 0.07, 0.0728, 0.0744, 0.0763, 0.0793, 0.0811, 0.0851, 0.0894, 0.0908, 0.0952, 0.0993, 0.1035, 0.1069, 0.112, 0.1144, 0.1191, 0.1271, 0.1301, 0.1357, 0.1432, 0.1503, 0.1528, 0.1589, 0.1664, 0.1736, 0.1782, 0.1892, 0.193, 0.2027, 0.2114, 0.2175, 0.2282, 0.2364, 0.2409, 0.2514, 0.2635, 0.2698, 0.2769, 0.2856, 0.2951, 0.3049, 0.3118, 0.3252, 0.3345, 0.3458, 0.3557, 0.3679, 0.3823, 0.3956, 0.4065, 0.4226, 0.4319, 0.449, 0.4641, 0.4755, 0.4937, 0.5168, 0.5266, 0.5462, 0.5629, 0.5852, 0.5927, 0.608, 0.6266, 0.636, 0.6518, 0.6628, 0.6774, 0.685, 0.6915, 0.703, 0.7085, 0.7106, 0.7122, 0.7085, 0.7125, 0.7083, 0.7018, 0.6914, 0.6844, 0.673, 0.6671, 0.658, 0.6454, 0.6381, 0.619, 0.611, 0.5921, 0.579, 0.5649, 0.5545, 0.5379, 0.5232, 0.5139, 0.4984, 0.4838, 0.4697, 0.4629, 0.4525, 0.4443, 0.4294, 0.4235, 0.4135, 0.4021, 0.3982, 0.3909, 0.3842, 0.3756, 0.3697, 0.3641, 0.3564, 0.3537, 0.3475, 0.338, 0.3358, 0.3335, 0.3312, 0.3221, 0.3188, 0.3135, 0.308, 0.3057, 0.2984, 0.2984, 0.2928, 0.2874, 0.2863, 0.2862, 0.2818, 0.2789, 0.2766, 0.2739, 0.2685, 0.2642, 0.2636, 0.2574, 0.2635, 0.2593, 0.2523, 0.2519, 0.2525, 0.2532, 0.2555, 0.2543, 0.2695, 0.2786, 0.2795, 0.2598, 0.2426, 0.2341, 0.2295, 0.2264, 0.2218, 0.2231, 0.2237, 0.2194, 0.2205, 0.2263, 0.2294, 0.2487, 0.3176, 0.5944, 0.9285, 0.7476, 0.6128, 0.6088, 1.0, 0.8494, 0.657, 0.5932, 0.5062, 0.4544, 0.4402, 0.4115, 0.3441, 0.2602, 0.2311, 0.2143, 0.2017, 0.1915, 0.1868, 0.1829, 0.1814, 0.1769, 0.1798, 0.1789, 0.174, 0.1743, 0.1749, 0.1739, 0.1717, 0.1747, 0.1778, 0.1766, 0.1755, 0.1778, 0.1769, 0.1799, 0.1811, 0.1826, 0.1831, 0.1865, 0.1888, 0.191, 0.1932, 0.1956, 0.1989, 0.1995]}, "raman_pp": {"x": [100.8, 108.5, 116.2, 123.9, 131.7, 139.4, 147.1, 154.8, 162.5, 170.2, 177.9, 185.7, 193.4, 201.1, 208.8, 216.5, 224.2, 231.9, 239.6, 247.4, 255.1, 262.8, 270.5, 278.2, 285.9, 293.6, 301.4, 309.1, 316.8, 324.5, 332.2, 339.9, 347.6, 355.4, 363.1, 370.8, 378.5, 386.2, 393.9, 401.6, 409.4, 417.1, 424.8, 432.5, 440.2, 447.9, 455.6, 463.4, 471.1, 478.8, 486.5, 494.2, 501.9, 509.6, 517.3, 525.1, 532.8, 540.5, 548.2, 555.9, 563.6, 571.3, 579.1, 586.8, 594.5, 602.2, 609.9, 617.6, 625.3, 633.1, 640.8, 648.5, 656.2, 663.9, 671.6, 679.3, 687.1, 694.8, 702.5, 710.2, 717.9, 725.6, 733.3, 741.1, 748.8, 756.5, 764.2, 771.9, 779.6, 787.3, 795.0, 802.8, 810.5, 818.2, 825.9, 833.6, 841.3, 849.0, 856.8, 864.5, 872.2, 879.9, 887.6, 895.3, 903.0, 910.8, 918.5, 926.2, 933.9, 941.6, 949.3, 957.0, 964.8, 972.5, 980.2, 987.9, 995.6, 1003.3, 1011.0, 1018.8, 1026.5, 1034.2, 1041.9, 1049.6, 1057.3, 1065.0, 1072.7, 1080.5, 1088.2, 1095.9, 1103.6, 1111.3, 1119.0, 1126.7, 1134.5, 1142.2, 1149.9, 1157.6, 1165.3, 1173.0, 1180.7, 1188.5, 1196.2, 1203.9, 1211.6, 1219.3, 1227.0, 1234.7, 1242.5, 1250.2, 1257.9, 1265.6, 1273.3, 1281.0, 1288.7, 1296.4, 1304.2, 1311.9, 1319.6, 1327.3, 1335.0, 1342.7, 1350.4, 1358.2, 1365.9, 1373.6, 1381.3, 1389.0, 1396.7, 1404.4, 1412.2, 1419.9, 1427.6, 1435.3, 1443.0, 1450.7, 1458.4, 1466.2, 1473.9, 1481.6, 1489.3, 1497.0, 1504.7, 1512.4, 1520.2, 1527.9, 1535.6, 1543.3, 1551.0, 1558.7, 1566.4, 1574.1, 1581.9, 1589.6, 1597.3, 1605.0, 1612.7, 1620.4, 1628.1, 1635.9, 1643.6, 1651.3, 1659.0, 1666.7, 1674.4, 1682.1, 1689.9, 1697.6, 1705.3, 1713.0, 1720.7, 1728.4, 1736.1, 1743.9, 1751.6, 1759.3, 1767.0, 1774.7, 1782.4, 1790.1, 1797.8, 1805.6, 1813.3, 1821.0, 1828.7, 1836.4, 1844.1, 1851.8, 1859.6, 1867.3, 1875.0, 1882.7, 1890.4, 1898.1, 1905.8, 1913.6, 1921.3, 1929.0, 1936.7, 1944.4, 1952.1, 1959.8, 1967.6, 1975.3, 1983.0, 1990.7, 1998.4, 2006.1, 2013.8, 2021.6, 2029.3, 2037.0, 2044.7, 2052.4, 2060.1, 2067.8, 2075.5, 2083.3, 2091.0, 2098.7, 2106.4, 2114.1, 2121.8, 2129.5, 2137.3, 2145.0, 2152.7, 2160.4, 2168.1, 2175.8, 2183.5, 2191.3, 2199.0, 2206.7, 2214.4, 2222.1, 2229.8, 2237.5, 2245.3, 2253.0, 2260.7, 2268.4, 2276.1, 2283.8, 2291.5, 2299.3, 2307.0, 2314.7, 2322.4, 2330.1, 2337.8, 2345.5, 2353.2, 2361.0, 2368.7, 2376.4, 2384.1, 2391.8, 2399.5, 2407.2, 2415.0, 2422.7, 2430.4, 2438.1, 2445.8, 2453.5, 2461.2, 2469.0, 2476.7, 2484.4, 2492.1, 2499.8, 2507.5, 2515.2, 2523.0, 2530.7, 2538.4, 2546.1, 2553.8, 2561.5, 2569.2, 2577.0, 2584.7, 2592.4, 2600.1, 2607.8, 2615.5, 2623.2, 2630.9, 2638.7, 2646.4, 2654.1, 2661.8, 2669.5, 2677.2, 2684.9, 2692.7, 2700.4, 2708.1, 2715.8, 2723.5, 2731.2, 2738.9, 2746.7, 2754.4, 2762.1, 2769.8, 2777.5, 2785.2, 2792.9, 2800.7, 2808.4, 2816.1, 2823.8, 2831.5, 2839.2, 2846.9, 2854.7, 2862.4, 2870.1, 2877.8, 2885.5, 2893.2, 2900.9, 2908.6, 2916.4, 2924.1, 2931.8, 2939.5, 2947.2, 2954.9, 2962.6, 2970.4, 2978.1, 2985.8, 2993.5, 3001.2, 3008.9, 3016.6, 3024.4, 3032.1, 3039.8, 3047.5, 3055.2, 3062.9, 3070.6, 3078.4, 3086.1, 3093.8, 3101.5, 3109.2, 3116.9, 3124.6, 3132.3, 3140.1, 3147.8, 3155.5, 3163.2, 3170.9, 3178.6, 3186.3, 3194.1], "y": [0.0957, 0.0906, 0.0394, 0.0194, 0.0125, 0.0075, 0.0089, 0.0094, 0.0244, 0.041, 0.0385, 0.0186, 0.0101, 0.0072, 0.0072, 0.0055, 0.0065, 0.0088, 0.0133, 0.0209, 0.017, 0.013, 0.0078, 0.0065, 0.0054, 0.0072, 0.0089, 0.0113, 0.0219, 0.0207, 0.0118, 0.0102, 0.0095, 0.0111, 0.0104, 0.0123, 0.0138, 0.0254, 0.088, 0.0842, 0.0309, 0.0228, 0.0188, 0.0198, 0.0211, 0.0316, 0.0438, 0.0286, 0.0166, 0.0167, 0.0157, 0.016, 0.0159, 0.0193, 0.0258, 0.0379, 0.0341, 0.0214, 0.0198, 0.0183, 0.0173, 0.0173, 0.0176, 0.0189, 0.019, 0.0163, 0.0196, 0.0195, 0.0197, 0.0203, 0.0182, 0.0193, 0.0208, 0.0191, 0.0184, 0.0201, 0.0204, 0.021, 0.0234, 0.0224, 0.0239, 0.023, 0.0236, 0.0261, 0.0271, 0.0258, 0.029, 0.0263, 0.0315, 0.0358, 0.0494, 0.1121, 0.1929, 0.0609, 0.0624, 0.0903, 0.1766, 0.0634, 0.044, 0.0399, 0.0368, 0.0336, 0.034, 0.047, 0.044, 0.0337, 0.0333, 0.035, 0.044, 0.0599, 0.0408, 0.0373, 0.0502, 0.1132, 0.0491, 0.0414, 0.0781, 0.0544, 0.0404, 0.0404, 0.0459, 0.0738, 0.0669, 0.0461, 0.0387, 0.0369, 0.0366, 0.0359, 0.036, 0.038, 0.0437, 0.036, 0.0367, 0.0391, 0.0401, 0.0638, 0.1407, 0.1025, 0.1132, 0.0674, 0.0366, 0.0339, 0.0374, 0.0386, 0.0525, 0.083, 0.0461, 0.0346, 0.0354, 0.0434, 0.0412, 0.0332, 0.0349, 0.0348, 0.0438, 0.0551, 0.0581, 0.0468, 0.0695, 0.1728, 0.0915, 0.0513, 0.0508, 0.0942, 0.0588, 0.0529, 0.0382, 0.0304, 0.0282, 0.0255, 0.0256, 0.0287, 0.0428, 0.1131, 0.0829, 0.1371, 0.2251, 0.1143, 0.0467, 0.032, 0.0282, 0.0244, 0.0215, 0.02, 0.0191, 0.0209, 0.0208, 0.0187, 0.021, 0.0181, 0.0176, 0.0174, 0.0168, 0.0197, 0.0183, 0.0178, 0.0164, 0.0172, 0.0176, 0.0176, 0.0174, 0.0185, 0.0165, 0.0179, 0.018, 0.0173, 0.0186, 0.0184, 0.0149, 0.018, 0.0173, 0.0171, 0.0176, 0.0165, 0.0133, 0.0146, 0.0132, 0.0145, 0.0141, 0.0159, 0.0131, 0.0138, 0.0132, 0.0163, 0.0154, 0.014, 0.0128, 0.014, 0.0157, 0.0152, 0.0153, 0.0155, 0.0166, 0.0146, 0.0156, 0.0152, 0.0146, 0.0165, 0.0166, 0.0135, 0.0153, 0.0158, 0.0163, 0.0149, 0.0173, 0.0177, 0.017, 0.018, 0.0158, 0.0159, 0.0175, 0.019, 0.0175, 0.018, 0.017, 0.019, 0.0178, 0.0187, 0.0196, 0.0166, 0.0201, 0.0176, 0.0195, 0.0186, 0.0174, 0.0183, 0.0196, 0.0183, 0.0158, 0.0177, 0.0161, 0.0183, 0.0176, 0.0196, 0.0164, 0.0164, 0.0186, 0.0191, 0.021, 0.0196, 0.0186, 0.0195, 0.019, 0.0213, 0.0232, 0.0227, 0.0208, 0.0209, 0.0239, 0.0193, 0.0203, 0.0184, 0.0185, 0.017, 0.0148, 0.0171, 0.0161, 0.016, 0.0154, 0.0152, 0.0146, 0.013, 0.0135, 0.0142, 0.0113, 0.0127, 0.0132, 0.0107, 0.0111, 0.0117, 0.0117, 0.0107, 0.011, 0.0122, 0.0109, 0.0105, 0.0114, 0.0123, 0.0116, 0.0127, 0.0122, 0.0129, 0.0157, 0.0174, 0.0155, 0.0158, 0.0143, 0.0144, 0.0152, 0.0163, 0.0261, 0.0284, 0.0274, 0.0244, 0.0249, 0.0224, 0.0256, 0.0318, 0.0496, 0.0637, 0.0854, 0.0559, 0.042, 0.0327, 0.0276, 0.0213, 0.0166, 0.0175, 0.0198, 0.0214, 0.0252, 0.0334, 0.0453, 0.0717, 0.18, 0.4825, 0.3292, 0.2301, 0.4749, 0.6958, 0.8445, 1.0, 0.7405, 0.7391, 0.6767, 0.5091, 0.5533, 0.4063, 0.2492, 0.3851, 0.5216, 0.4678, 0.29, 0.1239, 0.065, 0.0404, 0.0257, 0.0216, 0.0172, 0.0125, 0.0081, 0.0077, 0.0073, 0.0069, 0.0063, 0.0043, 0.0027, 0.0011, 0.002, 0.0009, 0.0011, 0.0, 0.0014, 0.0003, 0.0012, 0.001, 0.0004, 0.0007, 0.0003, 0.0005, 0.0014, 0.0015]}, "raman_pet": {"x": [100.8, 108.5, 116.2, 123.9, 131.7, 139.4, 147.1, 154.8, 162.5, 170.2, 177.9, 185.7, 193.4, 201.1, 208.8, 216.5, 224.2, 231.9, 239.6, 247.4, 255.1, 262.8, 270.5, 278.2, 285.9, 293.6, 301.4, 309.1, 316.8, 324.5, 332.2, 339.9, 347.6, 355.4, 363.1, 370.8, 378.5, 386.2, 393.9, 401.6, 409.4, 417.1, 424.8, 432.5, 440.2, 447.9, 455.6, 463.4, 471.1, 478.8, 486.5, 494.2, 501.9, 509.6, 517.3, 525.1, 532.8, 540.5, 548.2, 555.9, 563.6, 571.3, 579.1, 586.8, 594.5, 602.2, 609.9, 617.6, 625.3, 633.1, 640.8, 648.5, 656.2, 663.9, 671.6, 679.3, 687.1, 694.8, 702.5, 710.2, 717.9, 725.6, 733.3, 741.1, 748.8, 756.5, 764.2, 771.9, 779.6, 787.3, 795.0, 802.8, 810.5, 818.2, 825.9, 833.6, 841.3, 849.0, 856.8, 864.5, 872.2, 879.9, 887.6, 895.3, 903.0, 910.8, 918.5, 926.2, 933.9, 941.6, 949.3, 957.0, 964.8, 972.5, 980.2, 987.9, 995.6, 1003.3, 1011.0, 1018.8, 1026.5, 1034.2, 1041.9, 1049.6, 1057.3, 1065.0, 1072.7, 1080.5, 1088.2, 1095.9, 1103.6, 1111.3, 1119.0, 1126.7, 1134.5, 1142.2, 1149.9, 1157.6, 1165.3, 1173.0, 1180.7, 1188.5, 1196.2, 1203.9, 1211.6, 1219.3, 1227.0, 1234.7, 1242.5, 1250.2, 1257.9, 1265.6, 1273.3, 1281.0, 1288.7, 1296.4, 1304.2, 1311.9, 1319.6, 1327.3, 1335.0, 1342.7, 1350.4, 1358.2, 1365.9, 1373.6, 1381.3, 1389.0, 1396.7, 1404.4, 1412.2, 1419.9, 1427.6, 1435.3, 1443.0, 1450.7, 1458.4, 1466.2, 1473.9, 1481.6, 1489.3, 1497.0, 1504.7, 1512.4, 1520.2, 1527.9, 1535.6, 1543.3, 1551.0, 1558.7, 1566.4, 1574.1, 1581.9, 1589.6, 1597.3, 1605.0, 1612.7, 1620.4, 1628.1, 1635.9, 1643.6, 1651.3, 1659.0, 1666.7, 1674.4, 1682.1, 1689.9, 1697.6, 1705.3, 1713.0, 1720.7, 1728.4, 1736.1, 1743.9, 1751.6, 1759.3, 1767.0, 1774.7, 1782.4, 1790.1, 1797.8, 1805.6, 1813.3, 1821.0, 1828.7, 1836.4, 1844.1, 1851.8, 1859.6, 1867.3, 1875.0, 1882.7, 1890.4, 1898.1, 1905.8, 1913.6, 1921.3, 1929.0, 1936.7, 1944.4, 1952.1, 1959.8, 1967.6, 1975.3, 1983.0, 1990.7, 1998.4, 2006.1, 2013.8, 2021.6, 2029.3, 2037.0, 2044.7, 2052.4, 2060.1, 2067.8, 2075.5, 2083.3, 2091.0, 2098.7, 2106.4, 2114.1, 2121.8, 2129.5, 2137.3, 2145.0, 2152.7, 2160.4, 2168.1, 2175.8, 2183.5, 2191.3, 2199.0, 2206.7, 2214.4, 2222.1, 2229.8, 2237.5, 2245.3, 2253.0, 2260.7, 2268.4, 2276.1, 2283.8, 2291.5, 2299.3, 2307.0, 2314.7, 2322.4, 2330.1, 2337.8, 2345.5, 2353.2, 2361.0, 2368.7, 2376.4, 2384.1, 2391.8, 2399.5, 2407.2, 2415.0, 2422.7, 2430.4, 2438.1, 2445.8, 2453.5, 2461.2, 2469.0, 2476.7, 2484.4, 2492.1, 2499.8, 2507.5, 2515.2, 2523.0, 2530.7, 2538.4, 2546.1, 2553.8, 2561.5, 2569.2, 2577.0, 2584.7, 2592.4, 2600.1, 2607.8, 2615.5, 2623.2, 2630.9, 2638.7, 2646.4, 2654.1, 2661.8, 2669.5, 2677.2, 2684.9, 2692.7, 2700.4, 2708.1, 2715.8, 2723.5, 2731.2, 2738.9, 2746.7, 2754.4, 2762.1, 2769.8, 2777.5, 2785.2, 2792.9, 2800.7, 2808.4, 2816.1, 2823.8, 2831.5, 2839.2, 2846.9, 2854.7, 2862.4, 2870.1, 2877.8, 2885.5, 2893.2, 2900.9, 2908.6, 2916.4, 2924.1, 2931.8, 2939.5, 2947.2, 2954.9, 2962.6, 2970.4, 2978.1, 2985.8, 2993.5, 3001.2, 3008.9, 3016.6, 3024.4, 3032.1, 3039.8, 3047.5, 3055.2, 3062.9, 3070.6, 3078.4, 3086.1, 3093.8, 3101.5, 3109.2, 3116.9, 3124.6, 3132.3, 3140.1, 3147.8, 3155.5, 3163.2, 3170.9, 3178.6, 3186.3, 3194.1], "y": [0.385, 0.3163, 0.2835, 0.3081, 0.2719, 0.1798, 0.1124, 0.0746, 0.0607, 0.0587, 0.0601, 0.0466, 0.0369, 0.0362, 0.0404, 0.0415, 0.0339, 0.0399, 0.0416, 0.0501, 0.0533, 0.0543, 0.0751, 0.1121, 0.0667, 0.0561, 0.0468, 0.0437, 0.0332, 0.0485, 0.0341, 0.0398, 0.0388, 0.0398, 0.0361, 0.042, 0.0385, 0.0409, 0.0401, 0.0549, 0.0438, 0.0414, 0.0385, 0.0479, 0.0429, 0.0448, 0.04, 0.0417, 0.0547, 0.0365, 0.0361, 0.0439, 0.0437, 0.0404, 0.0461, 0.0428, 0.0429, 0.0392, 0.0399, 0.0322, 0.0443, 0.053, 0.0371, 0.039, 0.0334, 0.0405, 0.0356, 0.0388, 0.0874, 0.1462, 0.0433, 0.0456, 0.0432, 0.0339, 0.0373, 0.0419, 0.0366, 0.044, 0.0843, 0.0426, 0.0309, 0.0425, 0.0339, 0.0301, 0.0289, 0.033, 0.0225, 0.0318, 0.0369, 0.0481, 0.0931, 0.0468, 0.0466, 0.0537, 0.052, 0.0616, 0.0853, 0.1467, 0.3271, 0.1298, 0.0767, 0.0614, 0.0549, 0.0411, 0.0377, 0.0297, 0.0355, 0.0268, 0.0263, 0.025, 0.0278, 0.0301, 0.0362, 0.0387, 0.0285, 0.048, 0.0593, 0.0561, 0.0449, 0.0472, 0.0443, 0.0385, 0.036, 0.041, 0.035, 0.0391, 0.0441, 0.0696, 0.1174, 0.1626, 0.1045, 0.1168, 0.1293, 0.0741, 0.057, 0.0467, 0.0392, 0.0332, 0.0411, 0.0643, 0.0799, 0.0887, 0.0539, 0.0314, 0.0391, 0.0331, 0.0353, 0.0354, 0.0441, 0.0445, 0.0761, 0.0957, 0.1756, 0.2651, 0.2876, 0.206, 0.131, 0.0966, 0.0747, 0.0508, 0.0412, 0.0471, 0.0369, 0.0377, 0.0396, 0.0409, 0.0358, 0.0447, 0.0338, 0.0543, 0.0749, 0.0613, 0.0479, 0.0408, 0.0628, 0.0709, 0.0685, 0.0464, 0.0481, 0.0317, 0.0433, 0.0244, 0.0354, 0.043, 0.026, 0.043, 0.0363, 0.0414, 0.0434, 0.0581, 0.0422, 0.0513, 0.061, 0.0739, 0.1181, 0.3214, 1.0, 0.3036, 0.0932, 0.0703, 0.057, 0.0662, 0.0466, 0.0371, 0.0586, 0.0573, 0.0516, 0.0715, 0.0909, 0.1982, 0.4414, 0.6096, 0.2696, 0.1482, 0.0848, 0.0701, 0.0615, 0.05, 0.054, 0.0436, 0.0405, 0.0435, 0.0381, 0.0406, 0.041, 0.0476, 0.0488, 0.0411, 0.047, 0.0475, 0.0369, 0.0348, 0.0436, 0.0373, 0.0482, 0.0407, 0.0489, 0.0354, 0.0515, 0.0421, 0.0414, 0.0357, 0.0377, 0.0413, 0.0394, 0.049, 0.0358, 0.0411, 0.039, 0.0401, 0.0477, 0.0475, 0.0532, 0.0473, 0.0436, 0.0416, 0.0487, 0.0359, 0.0438, 0.0382, 0.0432, 0.0424, 0.0362, 0.0442, 0.032, 0.0424, 0.0423, 0.0491, 0.043, 0.0406, 0.0452, 0.0504, 0.0356, 0.0426, 0.0478, 0.0358, 0.0387, 0.0443, 0.04, 0.035, 0.0397, 0.0388, 0.0473, 0.0395, 0.0444, 0.0424, 0.0384, 0.0457, 0.0409, 0.0342, 0.0343, 0.0382, 0.0356, 0.0496, 0.0468, 0.0541, 0.0367, 0.0487, 0.0472, 0.0414, 0.0434, 0.0436, 0.0438, 0.0367, 0.037, 0.0412, 0.0459, 0.0471, 0.0469, 0.0407, 0.0462, 0.0382, 0.0444, 0.0495, 0.04, 0.0356, 0.0433, 0.03, 0.0416, 0.0441, 0.0417, 0.0438, 0.045, 0.0424, 0.0428, 0.0472, 0.0372, 0.0447, 0.0434, 0.04, 0.0361, 0.0317, 0.0332, 0.0344, 0.0306, 0.0283, 0.0365, 0.0316, 0.0296, 0.0344, 0.0323, 0.0278, 0.0184, 0.0235, 0.0207, 0.0243, 0.0205, 0.0041, 0.0351, 0.0116, 0.0301, 0.0302, 0.0181, 0.0236, 0.0179, 0.0055, 0.0092, 0.0064, 0.0125, 0.0, 0.0042, 0.0336, 0.021, 0.0429, 0.055, 0.0262, 0.0345, 0.0321, 0.0481, 0.0822, 0.0959, 0.151, 0.1352, 0.0914, 0.0655, 0.0799, 0.1052, 0.0874, 0.0504, 0.0346, 0.0382, 0.0226, 0.0382, 0.0419, 0.0804, 0.1749, 0.3307, 0.2558, 0.1036, 0.0707, 0.0403, 0.048, 0.048, 0.0545, 0.0346, 0.054, 0.046, 0.0477, 0.0392, 0.0534, 0.0465, 0.0432]}, "raman_ps": {"x": [100.8, 108.5, 116.2, 123.9, 131.7, 139.4, 147.1, 154.8, 162.5, 170.2, 177.9, 185.7, 193.4, 201.1, 208.8, 216.5, 224.2, 231.9, 239.6, 247.4, 255.1, 262.8, 270.5, 278.2, 285.9, 293.6, 301.4, 309.1, 316.8, 324.5, 332.2, 339.9, 347.6, 355.4, 363.1, 370.8, 378.5, 386.2, 393.9, 401.6, 409.4, 417.1, 424.8, 432.5, 440.2, 447.9, 455.6, 463.4, 471.1, 478.8, 486.5, 494.2, 501.9, 509.6, 517.3, 525.1, 532.8, 540.5, 548.2, 555.9, 563.6, 571.3, 579.1, 586.8, 594.5, 602.2, 609.9, 617.6, 625.3, 633.1, 640.8, 648.5, 656.2, 663.9, 671.6, 679.3, 687.1, 694.8, 702.5, 710.2, 717.9, 725.6, 733.3, 741.1, 748.8, 756.5, 764.2, 771.9, 779.6, 787.3, 795.0, 802.8, 810.5, 818.2, 825.9, 833.6, 841.3, 849.0, 856.8, 864.5, 872.2, 879.9, 887.6, 895.3, 903.0, 910.8, 918.5, 926.2, 933.9, 941.6, 949.3, 957.0, 964.8, 972.5, 980.2, 987.9, 995.6, 1003.3, 1011.0, 1018.8, 1026.5, 1034.2, 1041.9, 1049.6, 1057.3, 1065.0, 1072.7, 1080.5, 1088.2, 1095.9, 1103.6, 1111.3, 1119.0, 1126.7, 1134.5, 1142.2, 1149.9, 1157.6, 1165.3, 1173.0, 1180.7, 1188.5, 1196.2, 1203.9, 1211.6, 1219.3, 1227.0, 1234.7, 1242.5, 1250.2, 1257.9, 1265.6, 1273.3, 1281.0, 1288.7, 1296.4, 1304.2, 1311.9, 1319.6, 1327.3, 1335.0, 1342.7, 1350.4, 1358.2, 1365.9, 1373.6, 1381.3, 1389.0, 1396.7, 1404.4, 1412.2, 1419.9, 1427.6, 1435.3, 1443.0, 1450.7, 1458.4, 1466.2, 1473.9, 1481.6, 1489.3, 1497.0, 1504.7, 1512.4, 1520.2, 1527.9, 1535.6, 1543.3, 1551.0, 1558.7, 1566.4, 1574.1, 1581.9, 1589.6, 1597.3, 1605.0, 1612.7, 1620.4, 1628.1, 1635.9, 1643.6, 1651.3, 1659.0, 1666.7, 1674.4, 1682.1, 1689.9, 1697.6, 1705.3, 1713.0, 1720.7, 1728.4, 1736.1, 1743.9, 1751.6, 1759.3, 1767.0, 1774.7, 1782.4, 1790.1, 1797.8, 1805.6, 1813.3, 1821.0, 1828.7, 1836.4, 1844.1, 1851.8, 1859.6, 1867.3, 1875.0, 1882.7, 1890.4, 1898.1, 1905.8, 1913.6, 1921.3, 1929.0, 1936.7, 1944.4, 1952.1, 1959.8, 1967.6, 1975.3, 1983.0, 1990.7, 1998.4, 2006.1, 2013.8, 2021.6, 2029.3, 2037.0, 2044.7, 2052.4, 2060.1, 2067.8, 2075.5, 2083.3, 2091.0, 2098.7, 2106.4, 2114.1, 2121.8, 2129.5, 2137.3, 2145.0, 2152.7, 2160.4, 2168.1, 2175.8, 2183.5, 2191.3, 2199.0, 2206.7, 2214.4, 2222.1, 2229.8, 2237.5, 2245.3, 2253.0, 2260.7, 2268.4, 2276.1, 2283.8, 2291.5, 2299.3, 2307.0, 2314.7, 2322.4, 2330.1, 2337.8, 2345.5, 2353.2, 2361.0, 2368.7, 2376.4, 2384.1, 2391.8, 2399.5, 2407.2, 2415.0, 2422.7, 2430.4, 2438.1, 2445.8, 2453.5, 2461.2, 2469.0, 2476.7, 2484.4, 2492.1, 2499.8, 2507.5, 2515.2, 2523.0, 2530.7, 2538.4, 2546.1, 2553.8, 2561.5, 2569.2, 2577.0, 2584.7, 2592.4, 2600.1, 2607.8, 2615.5, 2623.2, 2630.9, 2638.7, 2646.4, 2654.1, 2661.8, 2669.5, 2677.2, 2684.9, 2692.7, 2700.4, 2708.1, 2715.8, 2723.5, 2731.2, 2738.9, 2746.7, 2754.4, 2762.1, 2769.8, 2777.5, 2785.2, 2792.9, 2800.7, 2808.4, 2816.1, 2823.8, 2831.5, 2839.2, 2846.9, 2854.7, 2862.4, 2870.1, 2877.8, 2885.5, 2893.2, 2900.9, 2908.6, 2916.4, 2924.1, 2931.8, 2939.5, 2947.2, 2954.9, 2962.6, 2970.4, 2978.1, 2985.8, 2993.5, 3001.2, 3008.9, 3016.6, 3024.4, 3032.1, 3039.8, 3047.5, 3055.2, 3062.9, 3070.6, 3078.4, 3086.1, 3093.8, 3101.5, 3109.2, 3116.9, 3124.6, 3132.3, 3140.1, 3147.8, 3155.5, 3163.2, 3170.9, 3178.6, 3186.3, 3194.1], "y": [1.0, 0.7293, 0.5259, 0.3795, 0.2864, 0.2243, 0.1852, 0.1667, 0.1554, 0.1401, 0.1279, 0.1164, 0.1095, 0.1172, 0.1306, 0.1465, 0.1441, 0.1071, 0.0611, 0.0323, 0.0201, 0.0166, 0.0143, 0.0121, 0.0105, 0.0045, 0.0028, 0.0035, 0.0035, 0.0046, 0.0052, 0.0046, 0.004, 0.001, 0.0038, 0.0068, 0.0113, 0.0161, 0.0219, 0.0298, 0.0299, 0.0203, 0.0132, 0.0114, 0.0094, 0.0068, 0.0035, 0.0029, 0.0008, 0.0013, 0.0, 0.0023, 0.0025, 0.0036, 0.0036, 0.007, 0.0122, 0.0166, 0.0131, 0.0122, 0.012, 0.0122, 0.0095, 0.0087, 0.008, 0.0089, 0.0167, 0.1146, 0.045, 0.0144, 0.0074, 0.0064, 0.0057, 0.0041, 0.0038, 0.0037, 0.0055, 0.0069, 0.0112, 0.0069, 0.0079, 0.0102, 0.0251, 0.0394, 0.0494, 0.0633, 0.0579, 0.0511, 0.0542, 0.0919, 0.1247, 0.0747, 0.0453, 0.0269, 0.0202, 0.0316, 0.0438, 0.0301, 0.0265, 0.0269, 0.0251, 0.0237, 0.0246, 0.0297, 0.0424, 0.0323, 0.023, 0.0196, 0.0215, 0.0242, 0.0248, 0.0287, 0.0333, 0.0355, 0.0593, 0.1368, 0.523, 0.96, 0.0906, 0.0714, 0.2619, 0.2688, 0.0853, 0.0563, 0.0505, 0.0595, 0.0613, 0.0546, 0.0524, 0.0531, 0.0428, 0.0305, 0.0241, 0.0206, 0.0245, 0.0384, 0.098, 0.1172, 0.0687, 0.09, 0.188, 0.169, 0.2045, 0.175, 0.098, 0.0671, 0.0548, 0.0426, 0.0383, 0.0375, 0.0338, 0.0339, 0.035, 0.0354, 0.0369, 0.0457, 0.051, 0.0542, 0.0666, 0.0743, 0.0639, 0.048, 0.0441, 0.0442, 0.0426, 0.0422, 0.0299, 0.0222, 0.0221, 0.0227, 0.0212, 0.021, 0.0231, 0.0423, 0.0703, 0.086, 0.0367, 0.0242, 0.0214, 0.0224, 0.0243, 0.0242, 0.0216, 0.0195, 0.0214, 0.0229, 0.0224, 0.0228, 0.0241, 0.0267, 0.0313, 0.0488, 0.1492, 0.0768, 0.2319, 0.2358, 0.0581, 0.0403, 0.032, 0.0278, 0.0258, 0.025, 0.024, 0.0233, 0.0248, 0.0279, 0.0246, 0.0243, 0.0232, 0.0238, 0.0235, 0.0223, 0.0253, 0.0262, 0.024, 0.024, 0.0239, 0.0264, 0.0257, 0.0256, 0.0276, 0.0271, 0.0276, 0.0266, 0.0263, 0.0262, 0.0267, 0.0268, 0.0256, 0.0274, 0.0281, 0.028, 0.0285, 0.0275, 0.0289, 0.0296, 0.0298, 0.0314, 0.0304, 0.0302, 0.0321, 0.0313, 0.0306, 0.032, 0.0314, 0.0319, 0.0311, 0.0323, 0.0325, 0.0333, 0.0329, 0.0337, 0.0329, 0.0324, 0.0342, 0.034, 0.0339, 0.0336, 0.0367, 0.0356, 0.037, 0.0347, 0.0352, 0.036, 0.0363, 0.0373, 0.0369, 0.0375, 0.037, 0.0388, 0.0396, 0.0383, 0.0404, 0.0407, 0.037, 0.0421, 0.0389, 0.0399, 0.0409, 0.0411, 0.0435, 0.0432, 0.0428, 0.044, 0.0437, 0.0444, 0.0477, 0.0465, 0.0461, 0.0468, 0.047, 0.047, 0.0492, 0.0497, 0.05, 0.0513, 0.0505, 0.0527, 0.0523, 0.0521, 0.0524, 0.0542, 0.055, 0.0555, 0.0582, 0.0594, 0.0574, 0.0591, 0.0613, 0.0619, 0.0608, 0.0595, 0.0586, 0.0612, 0.0606, 0.059, 0.0614, 0.0643, 0.0663, 0.0698, 0.0671, 0.0705, 0.0718, 0.0729, 0.0739, 0.0754, 0.0733, 0.0755, 0.0726, 0.0722, 0.0746, 0.0748, 0.0744, 0.0732, 0.0744, 0.0754, 0.0765, 0.0754, 0.0771, 0.0763, 0.0782, 0.0791, 0.08, 0.0786, 0.079, 0.0772, 0.0818, 0.085, 0.0854, 0.083, 0.0837, 0.0858, 0.0887, 0.0897, 0.099, 0.1354, 0.2054, 0.2094, 0.1733, 0.1579, 0.1886, 0.242, 0.3091, 0.3626, 0.3602, 0.3247, 0.2783, 0.2389, 0.2082, 0.1661, 0.1497, 0.1426, 0.158, 0.1938, 0.1426, 0.1508, 0.2018, 0.1555, 0.1665, 0.261, 0.3989, 0.4696, 0.7871, 0.9433, 0.8074, 0.4498, 0.2649, 0.2041, 0.1614, 0.151, 0.1407, 0.1298, 0.1227, 0.1216, 0.1244, 0.123, 0.1299, 0.1523, 0.1289, 0.1226, 0.1236, 0.1333]}, "raman_pvc": {"x": [100.8, 108.5, 116.2, 123.9, 131.7, 139.4, 147.1, 154.8, 162.5, 170.2, 177.9, 185.7, 193.4, 201.1, 208.8, 216.5, 224.2, 231.9, 239.6, 247.4, 255.1, 262.8, 270.5, 278.2, 285.9, 293.6, 301.4, 309.1, 316.8, 324.5, 332.2, 339.9, 347.6, 355.4, 363.1, 370.8, 378.5, 386.2, 393.9, 401.6, 409.4, 417.1, 424.8, 432.5, 440.2, 447.9, 455.6, 463.4, 471.1, 478.8, 486.5, 494.2, 501.9, 509.6, 517.3, 525.1, 532.8, 540.5, 548.2, 555.9, 563.6, 571.3, 579.1, 586.8, 594.5, 602.2, 609.9, 617.6, 625.3, 633.1, 640.8, 648.5, 656.2, 663.9, 671.6, 679.3, 687.1, 694.8, 702.5, 710.2, 717.9, 725.6, 733.3, 741.1, 748.8, 756.5, 764.2, 771.9, 779.6, 787.3, 795.0, 802.8, 810.5, 818.2, 825.9, 833.6, 841.3, 849.0, 856.8, 864.5, 872.2, 879.9, 887.6, 895.3, 903.0, 910.8, 918.5, 926.2, 933.9, 941.6, 949.3, 957.0, 964.8, 972.5, 980.2, 987.9, 995.6, 1003.3, 1011.0, 1018.8, 1026.5, 1034.2, 1041.9, 1049.6, 1057.3, 1065.0, 1072.7, 1080.5, 1088.2, 1095.9, 1103.6, 1111.3, 1119.0, 1126.7, 1134.5, 1142.2, 1149.9, 1157.6, 1165.3, 1173.0, 1180.7, 1188.5, 1196.2, 1203.9, 1211.6, 1219.3, 1227.0, 1234.7, 1242.5, 1250.2, 1257.9, 1265.6, 1273.3, 1281.0, 1288.7, 1296.4, 1304.2, 1311.9, 1319.6, 1327.3, 1335.0, 1342.7, 1350.4, 1358.2, 1365.9, 1373.6, 1381.3, 1389.0, 1396.7, 1404.4, 1412.2, 1419.9, 1427.6, 1435.3, 1443.0, 1450.7, 1458.4, 1466.2, 1473.9, 1481.6, 1489.3, 1497.0, 1504.7, 1512.4, 1520.2, 1527.9, 1535.6, 1543.3, 1551.0, 1558.7, 1566.4, 1574.1, 1581.9, 1589.6, 1597.3, 1605.0, 1612.7, 1620.4, 1628.1, 1635.9, 1643.6, 1651.3, 1659.0, 1666.7, 1674.4, 1682.1, 1689.9, 1697.6, 1705.3, 1713.0, 1720.7, 1728.4, 1736.1, 1743.9, 1751.6, 1759.3, 1767.0, 1774.7, 1782.4, 1790.1, 1797.8, 1805.6, 1813.3, 1821.0, 1828.7, 1836.4, 1844.1, 1851.8, 1859.6, 1867.3, 1875.0, 1882.7, 1890.4, 1898.1, 1905.8, 1913.6, 1921.3, 1929.0, 1936.7, 1944.4, 1952.1, 1959.8, 1967.6, 1975.3, 1983.0, 1990.7, 1998.4, 2006.1, 2013.8, 2021.6, 2029.3, 2037.0, 2044.7, 2052.4, 2060.1, 2067.8, 2075.5, 2083.3, 2091.0, 2098.7, 2106.4, 2114.1, 2121.8, 2129.5, 2137.3, 2145.0, 2152.7, 2160.4, 2168.1, 2175.8, 2183.5, 2191.3, 2199.0, 2206.7, 2214.4, 2222.1, 2229.8, 2237.5, 2245.3, 2253.0, 2260.7, 2268.4, 2276.1, 2283.8, 2291.5, 2299.3, 2307.0, 2314.7, 2322.4, 2330.1, 2337.8, 2345.5, 2353.2, 2361.0, 2368.7, 2376.4, 2384.1, 2391.8, 2399.5, 2407.2, 2415.0, 2422.7, 2430.4, 2438.1, 2445.8, 2453.5, 2461.2, 2469.0, 2476.7, 2484.4, 2492.1, 2499.8, 2507.5, 2515.2, 2523.0, 2530.7, 2538.4, 2546.1, 2553.8, 2561.5, 2569.2, 2577.0, 2584.7, 2592.4, 2600.1, 2607.8, 2615.5, 2623.2, 2630.9, 2638.7, 2646.4, 2654.1, 2661.8, 2669.5, 2677.2, 2684.9, 2692.7, 2700.4, 2708.1, 2715.8, 2723.5, 2731.2, 2738.9, 2746.7, 2754.4, 2762.1, 2769.8, 2777.5, 2785.2, 2792.9, 2800.7, 2808.4, 2816.1, 2823.8, 2831.5, 2839.2, 2846.9, 2854.7, 2862.4, 2870.1, 2877.8, 2885.5, 2893.2, 2900.9, 2908.6, 2916.4, 2924.1, 2931.8, 2939.5, 2947.2, 2954.9, 2962.6, 2970.4, 2978.1, 2985.8, 2993.5, 3001.2, 3008.9, 3016.6, 3024.4, 3032.1, 3039.8, 3047.5, 3055.2, 3062.9, 3070.6, 3078.4, 3086.1, 3093.8, 3101.5, 3109.2, 3116.9, 3124.6, 3132.3, 3140.1, 3147.8, 3155.5, 3163.2, 3170.9, 3178.6, 3186.3, 3194.1], "y": [0.2292, 0.1752, 0.1294, 0.1004, 0.0851, 0.0698, 0.0614, 0.059, 0.0489, 0.0319, 0.0195, 0.0159, 0.0075, 0.0085, 0.0037, 0.0022, 0.0063, 0.0, 0.002, 0.0032, 0.0056, 0.003, 0.007, 0.008, 0.0146, 0.0216, 0.0315, 0.038, 0.043, 0.05, 0.0503, 0.0548, 0.069, 0.0929, 0.0974, 0.076, 0.0527, 0.0447, 0.0312, 0.0278, 0.0196, 0.0221, 0.0209, 0.0233, 0.0165, 0.0143, 0.017, 0.0155, 0.0147, 0.019, 0.0193, 0.0211, 0.0188, 0.0219, 0.024, 0.0243, 0.0294, 0.041, 0.0516, 0.0356, 0.0354, 0.0345, 0.0357, 0.0406, 0.0586, 0.1009, 0.1611, 0.1933, 0.2095, 0.2685, 0.2585, 0.1918, 0.1247, 0.0944, 0.1131, 0.1536, 0.1996, 0.213, 0.1852, 0.1327, 0.084, 0.056, 0.0431, 0.0298, 0.0264, 0.0238, 0.0247, 0.0191, 0.0183, 0.0205, 0.0231, 0.0207, 0.0285, 0.0245, 0.032, 0.0327, 0.0326, 0.0302, 0.0307, 0.0272, 0.0297, 0.0247, 0.0235, 0.0218, 0.0238, 0.0249, 0.0273, 0.0203, 0.0243, 0.0209, 0.0226, 0.0303, 0.0335, 0.0313, 0.0273, 0.0276, 0.0492, 0.0715, 0.0297, 0.0261, 0.0336, 0.0331, 0.0186, 0.0168, 0.0214, 0.0232, 0.0295, 0.0381, 0.0417, 0.0464, 0.0491, 0.0452, 0.0576, 0.0412, 0.0146, 0.0082, 0.0057, 0.0107, 0.0334, 0.0383, 0.0454, 0.0374, 0.0347, 0.0241, 0.0159, 0.0058, 0.0094, 0.0108, 0.0171, 0.0201, 0.0293, 0.0275, 0.0346, 0.026, 0.0319, 0.0536, 0.0694, 0.0643, 0.0665, 0.0667, 0.0625, 0.0403, 0.0256, 0.0246, 0.0174, 0.0125, 0.0119, 0.0067, 0.0016, 0.007, 0.0283, 0.0642, 0.1281, 0.1323, 0.0739, 0.0385, 0.0234, 0.0173, 0.0148, 0.0149, 0.0206, 0.0248, 0.0297, 0.0328, 0.0237, 0.0209, 0.0206, 0.018, 0.0128, 0.0208, 0.0178, 0.0194, 0.0265, 0.0224, 0.0298, 0.0369, 0.0252, 0.0214, 0.0293, 0.038, 0.0432, 0.0501, 0.0563, 0.0887, 0.0479, 0.0336, 0.0286, 0.0285, 0.0251, 0.0251, 0.03, 0.0274, 0.0327, 0.0328, 0.0271, 0.0275, 0.0284, 0.0288, 0.0274, 0.0263, 0.0285, 0.0288, 0.0261, 0.0268, 0.0287, 0.0293, 0.0303, 0.0283, 0.0278, 0.0262, 0.0299, 0.0279, 0.0326, 0.0258, 0.0312, 0.0295, 0.0249, 0.0255, 0.0261, 0.0311, 0.0291, 0.0312, 0.0286, 0.0271, 0.0293, 0.0297, 0.0293, 0.0244, 0.0284, 0.029, 0.0301, 0.0275, 0.028, 0.0277, 0.0306, 0.0259, 0.0273, 0.0311, 0.0264, 0.0256, 0.0287, 0.0273, 0.0289, 0.0266, 0.0231, 0.0262, 0.0273, 0.0289, 0.026, 0.0309, 0.0254, 0.0278, 0.0284, 0.0255, 0.0315, 0.0296, 0.0297, 0.0345, 0.0323, 0.0317, 0.0344, 0.0294, 0.0276, 0.0293, 0.0302, 0.0276, 0.0229, 0.0324, 0.029, 0.0297, 0.0317, 0.0279, 0.0226, 0.0309, 0.0285, 0.0303, 0.0291, 0.0293, 0.0293, 0.0291, 0.0341, 0.0278, 0.0245, 0.031, 0.0252, 0.0249, 0.0241, 0.0321, 0.0257, 0.0276, 0.0265, 0.0286, 0.024, 0.0269, 0.0258, 0.0246, 0.0228, 0.0249, 0.0262, 0.0239, 0.0279, 0.0273, 0.0273, 0.0285, 0.0303, 0.0319, 0.0351, 0.0308, 0.0312, 0.0313, 0.0323, 0.0318, 0.033, 0.0354, 0.0383, 0.036, 0.0361, 0.0428, 0.0455, 0.0412, 0.0502, 0.05, 0.0517, 0.0456, 0.0391, 0.0385, 0.0327, 0.036, 0.0316, 0.0326, 0.0381, 0.0464, 0.0643, 0.07, 0.0924, 0.1452, 0.1825, 0.1809, 0.1597, 0.1582, 0.1796, 0.2003, 0.2782, 0.5349, 0.9253, 1.0, 0.7654, 0.6661, 0.638, 0.5339, 0.4065, 0.3461, 0.3751, 0.3139, 0.2239, 0.164, 0.1336, 0.1075, 0.0878, 0.0749, 0.0717, 0.0657, 0.0719, 0.083, 0.0776, 0.0589, 0.0448, 0.0369, 0.0282, 0.0302, 0.0291, 0.0313, 0.0333, 0.0291, 0.0259, 0.0291, 0.0294, 0.027, 0.0285, 0.0267, 0.0271, 0.0307]}, "ftir_pe": {"x": [400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 1032, 1040, 1048, 1056, 1064, 1072, 1080, 1088, 1096, 1104, 1112, 1120, 1128, 1136, 1144, 1152, 1160, 1168, 1176, 1184, 1192, 1200, 1208, 1216, 1224, 1232, 1240, 1248, 1256, 1264, 1272, 1280, 1288, 1296, 1304, 1312, 1320, 1328, 1336, 1344, 1352, 1360, 1368, 1376, 1384, 1392, 1400, 1408, 1416, 1424, 1432, 1440, 1448, 1456, 1464, 1472, 1480, 1488, 1496, 1504, 1512, 1520, 1528, 1536, 1544, 1552, 1560, 1568, 1576, 1584, 1592, 1600, 1608, 1616, 1624, 1632, 1640, 1648, 1656, 1664, 1672, 1680, 1688, 1696, 1704, 1712, 1720, 1728, 1736, 1744, 1752, 1760, 1768, 1776, 1784, 1792, 1800, 1808, 1816, 1824, 1832, 1840, 1848, 1856, 1864, 1872, 1880, 1888, 1896, 1904, 1912, 1920, 1928, 1936, 1944, 1952, 1960, 1968, 1976, 1984, 1992, 2000, 2008, 2016, 2024, 2032, 2040, 2048, 2056, 2064, 2072, 2080, 2088, 2096, 2104, 2112, 2120, 2128, 2136, 2144, 2152, 2160, 2168, 2176, 2184, 2192, 2200, 2208, 2216, 2224, 2232, 2240, 2248, 2256, 2264, 2272, 2280, 2288, 2296, 2304, 2312, 2320, 2328, 2336, 2344, 2352, 2360, 2368, 2376, 2384, 2392, 2400, 2408, 2416, 2424, 2432, 2440, 2448, 2456, 2464, 2472, 2480, 2488, 2496, 2504, 2512, 2520, 2528, 2536, 2544, 2552, 2560, 2568, 2576, 2584, 2592, 2600, 2608, 2616, 2624, 2632, 2640, 2648, 2656, 2664, 2672, 2680, 2688, 2696, 2704, 2712, 2720, 2728, 2736, 2744, 2752, 2760, 2768, 2776, 2784, 2792, 2800, 2808, 2816, 2824, 2832, 2840, 2848, 2856, 2864, 2872, 2880, 2888, 2896, 2904, 2912, 2920, 2928, 2936, 2944, 2952, 2960, 2968, 2976, 2984, 2992, 3000, 3008, 3016, 3024, 3032, 3040, 3048, 3056, 3064, 3072, 3080, 3088, 3096, 3104, 3112, 3120, 3128, 3136, 3144, 3152, 3160, 3168, 3176, 3184, 3192, 3200, 3208, 3216, 3224, 3232, 3240, 3248, 3256, 3264, 3272, 3280, 3288, 3296, 3304, 3312, 3320, 3328, 3336, 3344, 3352, 3360, 3368, 3376, 3384, 3392, 3400, 3408, 3416, 3424, 3432, 3440, 3448, 3456, 3464, 3472, 3480, 3488, 3496, 3504, 3512, 3520, 3528, 3536, 3544, 3552, 3560, 3568, 3576, 3584, 3592, 3600, 3608, 3616, 3624, 3632, 3640, 3648, 3656, 3664, 3672, 3680, 3688, 3696, 3704, 3712, 3720, 3728, 3736, 3744, 3752, 3760, 3768, 3776, 3784, 3792, 3800, 3808, 3816, 3824, 3832, 3840, 3848, 3856, 3864, 3872, 3880, 3888, 3896, 3904, 3912, 3920, 3928, 3936, 3944, 3952, 3960, 3968, 3976, 3984, 3992, 4000], "y": [0.9995, 0.9995, 0.9994, 0.9994, 0.9994, 0.9994, 0.9993, 0.9993, 0.9993, 0.9992, 0.9992, 0.9991, 0.9991, 0.999, 0.9989, 0.9989, 0.9988, 0.9987, 0.9986, 0.9985, 0.9983, 0.9981, 0.998, 0.9977, 0.9975, 0.9972, 0.9968, 0.9963, 0.9957, 0.995, 0.994, 0.9927, 0.991, 0.9885, 0.9848, 0.9789, 0.9687, 0.9491, 0.9039, 0.7753, 0.5327, 0.5424, 0.7378, 0.8909, 0.9442, 0.9664, 0.9776, 0.984, 0.9879, 0.9906, 0.9924, 0.9938, 0.9948, 0.9955, 0.9961, 0.9966, 0.997, 0.9973, 0.9976, 0.9978, 0.998, 0.9981, 0.9983, 0.9984, 0.9985, 0.9986, 0.9987, 0.9987, 0.9988, 0.9988, 0.9989, 0.9989, 0.9989, 0.999, 0.999, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.999, 0.999, 0.999, 0.999, 0.999, 0.9989, 0.9989, 0.9989, 0.9988, 0.9988, 0.9987, 0.9987, 0.9986, 0.9986, 0.9985, 0.9984, 0.9983, 0.9982, 0.9981, 0.998, 0.9978, 0.9977, 0.9975, 0.9973, 0.9971, 0.9968, 0.9964, 0.9961, 0.9956, 0.995, 0.9944, 0.9936, 0.9925, 0.9912, 0.9895, 0.9873, 0.9842, 0.9799, 0.9735, 0.9634, 0.9465, 0.9154, 0.8522, 0.7232, 0.5784, 0.5898, 0.7435, 0.8629, 0.9206, 0.9492, 0.965, 0.9744, 0.9805, 0.9847, 0.9876, 0.9898, 0.9914, 0.9927, 0.9937, 0.9945, 0.9951, 0.9957, 0.9961, 0.9965, 0.9968, 0.9971, 0.9973, 0.9975, 0.9977, 0.9979, 0.998, 0.9981, 0.9982, 0.9983, 0.9984, 0.9985, 0.9986, 0.9986, 0.9987, 0.9988, 0.9988, 0.9988, 0.9989, 0.9989, 0.999, 0.999, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.999, 0.999, 0.999, 0.999, 0.999, 0.9989, 0.9989, 0.9989, 0.9989, 0.9988, 0.9988, 0.9988, 0.9988, 0.9987, 0.9987, 0.9987, 0.9986, 0.9986, 0.9985, 0.9985, 0.9985, 0.9984, 0.9984, 0.9983, 0.9983, 0.9982, 0.9981, 0.9981, 0.998, 0.9979, 0.9978, 0.9978, 0.9977, 0.9976, 0.9975, 0.9974, 0.9973, 0.9971, 0.997, 0.9969, 0.9967, 0.9966, 0.9964, 0.9962, 0.996, 0.9958, 0.9955, 0.9953, 0.995, 0.9947, 0.9943, 0.9939, 0.9935, 0.993, 0.9925, 0.9919, 0.9912, 0.9904, 0.9896, 0.9885, 0.9874, 0.986, 0.9844, 0.9824, 0.9801, 0.9773, 0.9737, 0.9692, 0.9633, 0.9556, 0.9448, 0.9294, 0.9062, 0.8692, 0.8062, 0.6958, 0.5246, 0.4062, 0.5046, 0.653, 0.7338, 0.754, 0.7241, 0.6375, 0.4852, 0.3352, 0.3706, 0.5516, 0.7071, 0.8043, 0.8628, 0.8993, 0.9231, 0.9394, 0.951, 0.9596, 0.966, 0.971, 0.975, 0.9782, 0.9808, 0.983, 0.9848, 0.9863, 0.9876, 0.9887, 0.9897, 0.9906, 0.9913, 0.992, 0.9926, 0.9931, 0.9936, 0.994, 0.9944, 0.9947, 0.995, 0.9953, 0.9956, 0.9958, 0.996, 0.9963, 0.9964, 0.9966, 0.9968, 0.9969, 0.9971, 0.9972, 0.9973, 0.9974, 0.9975, 0.9976, 0.9977, 0.9978, 0.9979, 0.998, 0.9981, 0.9981, 0.9982, 0.9983, 0.9983, 0.9984, 0.9984, 0.9985, 0.9985, 0.9986, 0.9986, 0.9987, 0.9987, 0.9987, 0.9988, 0.9988, 0.9988, 0.9989, 0.9989, 0.9989, 0.999, 0.999, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9991, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997]}, "ftir_pp": {"x": [400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 1032, 1040, 1048, 1056, 1064, 1072, 1080, 1088, 1096, 1104, 1112, 1120, 1128, 1136, 1144, 1152, 1160, 1168, 1176, 1184, 1192, 1200, 1208, 1216, 1224, 1232, 1240, 1248, 1256, 1264, 1272, 1280, 1288, 1296, 1304, 1312, 1320, 1328, 1336, 1344, 1352, 1360, 1368, 1376, 1384, 1392, 1400, 1408, 1416, 1424, 1432, 1440, 1448, 1456, 1464, 1472, 1480, 1488, 1496, 1504, 1512, 1520, 1528, 1536, 1544, 1552, 1560, 1568, 1576, 1584, 1592, 1600, 1608, 1616, 1624, 1632, 1640, 1648, 1656, 1664, 1672, 1680, 1688, 1696, 1704, 1712, 1720, 1728, 1736, 1744, 1752, 1760, 1768, 1776, 1784, 1792, 1800, 1808, 1816, 1824, 1832, 1840, 1848, 1856, 1864, 1872, 1880, 1888, 1896, 1904, 1912, 1920, 1928, 1936, 1944, 1952, 1960, 1968, 1976, 1984, 1992, 2000, 2008, 2016, 2024, 2032, 2040, 2048, 2056, 2064, 2072, 2080, 2088, 2096, 2104, 2112, 2120, 2128, 2136, 2144, 2152, 2160, 2168, 2176, 2184, 2192, 2200, 2208, 2216, 2224, 2232, 2240, 2248, 2256, 2264, 2272, 2280, 2288, 2296, 2304, 2312, 2320, 2328, 2336, 2344, 2352, 2360, 2368, 2376, 2384, 2392, 2400, 2408, 2416, 2424, 2432, 2440, 2448, 2456, 2464, 2472, 2480, 2488, 2496, 2504, 2512, 2520, 2528, 2536, 2544, 2552, 2560, 2568, 2576, 2584, 2592, 2600, 2608, 2616, 2624, 2632, 2640, 2648, 2656, 2664, 2672, 2680, 2688, 2696, 2704, 2712, 2720, 2728, 2736, 2744, 2752, 2760, 2768, 2776, 2784, 2792, 2800, 2808, 2816, 2824, 2832, 2840, 2848, 2856, 2864, 2872, 2880, 2888, 2896, 2904, 2912, 2920, 2928, 2936, 2944, 2952, 2960, 2968, 2976, 2984, 2992, 3000, 3008, 3016, 3024, 3032, 3040, 3048, 3056, 3064, 3072, 3080, 3088, 3096, 3104, 3112, 3120, 3128, 3136, 3144, 3152, 3160, 3168, 3176, 3184, 3192, 3200, 3208, 3216, 3224, 3232, 3240, 3248, 3256, 3264, 3272, 3280, 3288, 3296, 3304, 3312, 3320, 3328, 3336, 3344, 3352, 3360, 3368, 3376, 3384, 3392, 3400, 3408, 3416, 3424, 3432, 3440, 3448, 3456, 3464, 3472, 3480, 3488, 3496, 3504, 3512, 3520, 3528, 3536, 3544, 3552, 3560, 3568, 3576, 3584, 3592, 3600, 3608, 3616, 3624, 3632, 3640, 3648, 3656, 3664, 3672, 3680, 3688, 3696, 3704, 3712, 3720, 3728, 3736, 3744, 3752, 3760, 3768, 3776, 3784, 3792, 3800, 3808, 3816, 3824, 3832, 3840, 3848, 3856, 3864, 3872, 3880, 3888, 3896, 3904, 3912, 3920, 3928, 3936, 3944, 3952, 3960, 3968, 3976, 3984, 3992, 4000], "y": [0.9996, 0.9996, 0.9996, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9993, 0.9993, 0.9993, 0.9993, 0.9992, 0.9992, 0.9992, 0.9992, 0.9991, 0.9991, 0.9991, 0.999, 0.999, 0.9989, 0.9989, 0.9988, 0.9987, 0.9987, 0.9986, 0.9985, 0.9984, 0.9983, 0.9981, 0.998, 0.9978, 0.9976, 0.9973, 0.997, 0.9966, 0.996, 0.9953, 0.9943, 0.9928, 0.9904, 0.9861, 0.9778, 0.9576, 0.8974, 0.7971, 0.8968, 0.9565, 0.9761, 0.9838, 0.9873, 0.9888, 0.9892, 0.9889, 0.9878, 0.9858, 0.9824, 0.9768, 0.9668, 0.9465, 0.8967, 0.7505, 0.6274, 0.775, 0.7159, 0.6379, 0.8425, 0.9274, 0.9582, 0.9721, 0.9795, 0.9837, 0.9863, 0.9879, 0.9889, 0.9893, 0.9892, 0.9886, 0.9875, 0.9855, 0.9822, 0.9765, 0.9661, 0.9448, 0.8949, 0.7757, 0.7078, 0.8462, 0.9254, 0.9574, 0.9721, 0.9797, 0.984, 0.9866, 0.9883, 0.9892, 0.9898, 0.99, 0.9899, 0.9895, 0.9889, 0.9879, 0.9865, 0.9845, 0.9818, 0.9778, 0.9719, 0.9625, 0.9465, 0.916, 0.8494, 0.6856, 0.443, 0.6159, 0.8122, 0.8888, 0.9166, 0.9219, 0.9101, 0.8746, 0.7905, 0.6155, 0.494, 0.6721, 0.827, 0.9005, 0.9365, 0.956, 0.9677, 0.9752, 0.9802, 0.9838, 0.9865, 0.9885, 0.9901, 0.9914, 0.9924, 0.9932, 0.9939, 0.9945, 0.995, 0.9954, 0.9958, 0.9961, 0.9964, 0.9966, 0.9968, 0.997, 0.9972, 0.9974, 0.9975, 0.9976, 0.9978, 0.9979, 0.998, 0.9981, 0.9981, 0.9982, 0.9983, 0.9983, 0.9984, 0.9985, 0.9985, 0.9986, 0.9986, 0.9986, 0.9987, 0.9987, 0.9987, 0.9988, 0.9988, 0.9988, 0.9989, 0.9989, 0.9989, 0.9989, 0.9989, 0.9989, 0.999, 0.999, 0.999, 0.999, 0.999, 0.999, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.999, 0.999, 0.999, 0.999, 0.999, 0.999, 0.999, 0.999, 0.999, 0.999, 0.9989, 0.9989, 0.9989, 0.9989, 0.9989, 0.9989, 0.9988, 0.9988, 0.9988, 0.9988, 0.9987, 0.9987, 0.9987, 0.9987, 0.9986, 0.9986, 0.9986, 0.9985, 0.9985, 0.9985, 0.9984, 0.9984, 0.9983, 0.9983, 0.9982, 0.9982, 0.9981, 0.9981, 0.998, 0.9979, 0.9979, 0.9978, 0.9977, 0.9976, 0.9975, 0.9974, 0.9973, 0.9972, 0.9971, 0.997, 0.9968, 0.9967, 0.9965, 0.9964, 0.9962, 0.996, 0.9957, 0.9955, 0.9952, 0.995, 0.9946, 0.9943, 0.9939, 0.9935, 0.993, 0.9925, 0.9919, 0.9912, 0.9904, 0.9895, 0.9885, 0.9873, 0.9858, 0.9841, 0.9821, 0.9796, 0.9764, 0.9724, 0.967, 0.9598, 0.9495, 0.9341, 0.9091, 0.8656, 0.7853, 0.6627, 0.6131, 0.6629, 0.6473, 0.5551, 0.5591, 0.6654, 0.7136, 0.6837, 0.5723, 0.4039, 0.3591, 0.4804, 0.5534, 0.5336, 0.5464, 0.6696, 0.786, 0.8573, 0.8991, 0.9248, 0.9416, 0.9532, 0.9616, 0.9678, 0.9726, 0.9763, 0.9793, 0.9818, 0.9838, 0.9855, 0.9869, 0.9882, 0.9892, 0.9901, 0.991, 0.9917, 0.9923, 0.9928, 0.9933, 0.9938, 0.9942, 0.9945, 0.9949, 0.9952, 0.9954, 0.9957, 0.9959, 0.9961, 0.9963, 0.9965, 0.9967, 0.9968, 0.997, 0.9971, 0.9972, 0.9974, 0.9975, 0.9976, 0.9977, 0.9978, 0.9978, 0.9979, 0.998, 0.9981, 0.9981, 0.9982, 0.9983, 0.9983, 0.9984, 0.9984, 0.9985, 0.9985, 0.9986, 0.9986, 0.9987, 0.9987, 0.9987, 0.9988, 0.9988, 0.9988, 0.9989, 0.9989, 0.9989, 0.999, 0.999, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997]}, "ftir_pet": {"x": [400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 1032, 1040, 1048, 1056, 1064, 1072, 1080, 1088, 1096, 1104, 1112, 1120, 1128, 1136, 1144, 1152, 1160, 1168, 1176, 1184, 1192, 1200, 1208, 1216, 1224, 1232, 1240, 1248, 1256, 1264, 1272, 1280, 1288, 1296, 1304, 1312, 1320, 1328, 1336, 1344, 1352, 1360, 1368, 1376, 1384, 1392, 1400, 1408, 1416, 1424, 1432, 1440, 1448, 1456, 1464, 1472, 1480, 1488, 1496, 1504, 1512, 1520, 1528, 1536, 1544, 1552, 1560, 1568, 1576, 1584, 1592, 1600, 1608, 1616, 1624, 1632, 1640, 1648, 1656, 1664, 1672, 1680, 1688, 1696, 1704, 1712, 1720, 1728, 1736, 1744, 1752, 1760, 1768, 1776, 1784, 1792, 1800, 1808, 1816, 1824, 1832, 1840, 1848, 1856, 1864, 1872, 1880, 1888, 1896, 1904, 1912, 1920, 1928, 1936, 1944, 1952, 1960, 1968, 1976, 1984, 1992, 2000, 2008, 2016, 2024, 2032, 2040, 2048, 2056, 2064, 2072, 2080, 2088, 2096, 2104, 2112, 2120, 2128, 2136, 2144, 2152, 2160, 2168, 2176, 2184, 2192, 2200, 2208, 2216, 2224, 2232, 2240, 2248, 2256, 2264, 2272, 2280, 2288, 2296, 2304, 2312, 2320, 2328, 2336, 2344, 2352, 2360, 2368, 2376, 2384, 2392, 2400, 2408, 2416, 2424, 2432, 2440, 2448, 2456, 2464, 2472, 2480, 2488, 2496, 2504, 2512, 2520, 2528, 2536, 2544, 2552, 2560, 2568, 2576, 2584, 2592, 2600, 2608, 2616, 2624, 2632, 2640, 2648, 2656, 2664, 2672, 2680, 2688, 2696, 2704, 2712, 2720, 2728, 2736, 2744, 2752, 2760, 2768, 2776, 2784, 2792, 2800, 2808, 2816, 2824, 2832, 2840, 2848, 2856, 2864, 2872, 2880, 2888, 2896, 2904, 2912, 2920, 2928, 2936, 2944, 2952, 2960, 2968, 2976, 2984, 2992, 3000, 3008, 3016, 3024, 3032, 3040, 3048, 3056, 3064, 3072, 3080, 3088, 3096, 3104, 3112, 3120, 3128, 3136, 3144, 3152, 3160, 3168, 3176, 3184, 3192, 3200, 3208, 3216, 3224, 3232, 3240, 3248, 3256, 3264, 3272, 3280, 3288, 3296, 3304, 3312, 3320, 3328, 3336, 3344, 3352, 3360, 3368, 3376, 3384, 3392, 3400, 3408, 3416, 3424, 3432, 3440, 3448, 3456, 3464, 3472, 3480, 3488, 3496, 3504, 3512, 3520, 3528, 3536, 3544, 3552, 3560, 3568, 3576, 3584, 3592, 3600, 3608, 3616, 3624, 3632, 3640, 3648, 3656, 3664, 3672, 3680, 3688, 3696, 3704, 3712, 3720, 3728, 3736, 3744, 3752, 3760, 3768, 3776, 3784, 3792, 3800, 3808, 3816, 3824, 3832, 3840, 3848, 3856, 3864, 3872, 3880, 3888, 3896, 3904, 3912, 3920, 3928, 3936, 3944, 3952, 3960, 3968, 3976, 3984, 3992, 4000], "y": [0.9991, 0.999, 0.999, 0.999, 0.9989, 0.9989, 0.9989, 0.9988, 0.9988, 0.9987, 0.9987, 0.9986, 0.9986, 0.9985, 0.9984, 0.9984, 0.9983, 0.9982, 0.9981, 0.998, 0.9978, 0.9977, 0.9975, 0.9973, 0.9971, 0.9968, 0.9965, 0.9961, 0.9957, 0.9951, 0.9943, 0.9933, 0.992, 0.9901, 0.9874, 0.983, 0.9757, 0.9616, 0.93, 0.842, 0.603, 0.6738, 0.8736, 0.9399, 0.9649, 0.9763, 0.9823, 0.9857, 0.9876, 0.9886, 0.989, 0.9887, 0.9878, 0.9861, 0.9829, 0.9769, 0.9646, 0.9345, 0.8444, 0.6943, 0.8441, 0.9338, 0.9634, 0.9753, 0.9809, 0.9836, 0.9848, 0.9851, 0.9847, 0.9835, 0.9815, 0.9783, 0.9732, 0.9647, 0.9488, 0.9152, 0.834, 0.6929, 0.7572, 0.8713, 0.9137, 0.9233, 0.9142, 0.8841, 0.8147, 0.6612, 0.4518, 0.5474, 0.7546, 0.8611, 0.9108, 0.9359, 0.9494, 0.9568, 0.9605, 0.9615, 0.9601, 0.9564, 0.9495, 0.938, 0.919, 0.8862, 0.8261, 0.7096, 0.5016, 0.3416, 0.5015, 0.7093, 0.8255, 0.8852, 0.9172, 0.935, 0.9443, 0.947, 0.9424, 0.9247, 0.875, 0.7637, 0.7646, 0.8776, 0.929, 0.948, 0.9527, 0.9468, 0.924, 0.8607, 0.7472, 0.8051, 0.9055, 0.948, 0.9665, 0.9758, 0.9811, 0.9844, 0.9866, 0.9881, 0.9892, 0.9899, 0.9905, 0.9908, 0.9911, 0.9912, 0.9912, 0.9911, 0.9908, 0.9905, 0.9901, 0.9895, 0.9887, 0.9877, 0.9865, 0.985, 0.983, 0.9805, 0.9772, 0.9728, 0.9667, 0.9582, 0.9457, 0.9265, 0.895, 0.8395, 0.7346, 0.5349, 0.2816, 0.3335, 0.596, 0.768, 0.857, 0.9049, 0.9327, 0.95, 0.9614, 0.9693, 0.975, 0.9792, 0.9824, 0.9849, 0.9869, 0.9885, 0.9899, 0.991, 0.9919, 0.9927, 0.9933, 0.9939, 0.9944, 0.9948, 0.9952, 0.9955, 0.9959, 0.9961, 0.9964, 0.9966, 0.9968, 0.997, 0.9971, 0.9973, 0.9974, 0.9975, 0.9976, 0.9978, 0.9979, 0.9979, 0.998, 0.9981, 0.9982, 0.9983, 0.9983, 0.9984, 0.9984, 0.9985, 0.9985, 0.9986, 0.9986, 0.9987, 0.9987, 0.9988, 0.9988, 0.9988, 0.9989, 0.9989, 0.9989, 0.9989, 0.999, 0.999, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9992, 0.9992, 0.9992, 0.9992, 0.9991, 0.9991, 0.9991, 0.999, 0.999, 0.9989, 0.9989, 0.9988, 0.9987, 0.9986, 0.9985, 0.9984, 0.9982, 0.9981, 0.9979, 0.9976, 0.9973, 0.997, 0.9966, 0.996, 0.9953, 0.9944, 0.9932, 0.9916, 0.9892, 0.9857, 0.9801, 0.9709, 0.9541, 0.9217, 0.8641, 0.8198, 0.8641, 0.9218, 0.9541, 0.9709, 0.9802, 0.9857, 0.9892, 0.9916, 0.9933, 0.9945, 0.9954, 0.9961, 0.9966, 0.9971, 0.9974, 0.9977, 0.9979, 0.9981, 0.9983, 0.9985, 0.9986, 0.9987, 0.9988, 0.9989, 0.999, 0.999, 0.9991, 0.9991, 0.9992, 0.9992, 0.9993, 0.9993, 0.9994, 0.9994, 0.9994, 0.9994, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999]}, "ftir_ps": {"x": [400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 1032, 1040, 1048, 1056, 1064, 1072, 1080, 1088, 1096, 1104, 1112, 1120, 1128, 1136, 1144, 1152, 1160, 1168, 1176, 1184, 1192, 1200, 1208, 1216, 1224, 1232, 1240, 1248, 1256, 1264, 1272, 1280, 1288, 1296, 1304, 1312, 1320, 1328, 1336, 1344, 1352, 1360, 1368, 1376, 1384, 1392, 1400, 1408, 1416, 1424, 1432, 1440, 1448, 1456, 1464, 1472, 1480, 1488, 1496, 1504, 1512, 1520, 1528, 1536, 1544, 1552, 1560, 1568, 1576, 1584, 1592, 1600, 1608, 1616, 1624, 1632, 1640, 1648, 1656, 1664, 1672, 1680, 1688, 1696, 1704, 1712, 1720, 1728, 1736, 1744, 1752, 1760, 1768, 1776, 1784, 1792, 1800, 1808, 1816, 1824, 1832, 1840, 1848, 1856, 1864, 1872, 1880, 1888, 1896, 1904, 1912, 1920, 1928, 1936, 1944, 1952, 1960, 1968, 1976, 1984, 1992, 2000, 2008, 2016, 2024, 2032, 2040, 2048, 2056, 2064, 2072, 2080, 2088, 2096, 2104, 2112, 2120, 2128, 2136, 2144, 2152, 2160, 2168, 2176, 2184, 2192, 2200, 2208, 2216, 2224, 2232, 2240, 2248, 2256, 2264, 2272, 2280, 2288, 2296, 2304, 2312, 2320, 2328, 2336, 2344, 2352, 2360, 2368, 2376, 2384, 2392, 2400, 2408, 2416, 2424, 2432, 2440, 2448, 2456, 2464, 2472, 2480, 2488, 2496, 2504, 2512, 2520, 2528, 2536, 2544, 2552, 2560, 2568, 2576, 2584, 2592, 2600, 2608, 2616, 2624, 2632, 2640, 2648, 2656, 2664, 2672, 2680, 2688, 2696, 2704, 2712, 2720, 2728, 2736, 2744, 2752, 2760, 2768, 2776, 2784, 2792, 2800, 2808, 2816, 2824, 2832, 2840, 2848, 2856, 2864, 2872, 2880, 2888, 2896, 2904, 2912, 2920, 2928, 2936, 2944, 2952, 2960, 2968, 2976, 2984, 2992, 3000, 3008, 3016, 3024, 3032, 3040, 3048, 3056, 3064, 3072, 3080, 3088, 3096, 3104, 3112, 3120, 3128, 3136, 3144, 3152, 3160, 3168, 3176, 3184, 3192, 3200, 3208, 3216, 3224, 3232, 3240, 3248, 3256, 3264, 3272, 3280, 3288, 3296, 3304, 3312, 3320, 3328, 3336, 3344, 3352, 3360, 3368, 3376, 3384, 3392, 3400, 3408, 3416, 3424, 3432, 3440, 3448, 3456, 3464, 3472, 3480, 3488, 3496, 3504, 3512, 3520, 3528, 3536, 3544, 3552, 3560, 3568, 3576, 3584, 3592, 3600, 3608, 3616, 3624, 3632, 3640, 3648, 3656, 3664, 3672, 3680, 3688, 3696, 3704, 3712, 3720, 3728, 3736, 3744, 3752, 3760, 3768, 3776, 3784, 3792, 3800, 3808, 3816, 3824, 3832, 3840, 3848, 3856, 3864, 3872, 3880, 3888, 3896, 3904, 3912, 3920, 3928, 3936, 3944, 3952, 3960, 3968, 3976, 3984, 3992, 4000], "y": [0.999, 0.999, 0.9989, 0.9989, 0.9988, 0.9987, 0.9987, 0.9986, 0.9985, 0.9984, 0.9983, 0.9982, 0.9981, 0.9979, 0.9978, 0.9976, 0.9974, 0.9972, 0.9969, 0.9966, 0.9963, 0.9958, 0.9953, 0.9948, 0.994, 0.9931, 0.992, 0.9905, 0.9886, 0.9859, 0.9821, 0.9765, 0.9674, 0.9515, 0.9198, 0.8438, 0.6173, 0.2403, 0.6124, 0.8327, 0.9, 0.9166, 0.901, 0.8282, 0.589, 0.5058, 0.8001, 0.9092, 0.9489, 0.9669, 0.9766, 0.9823, 0.9861, 0.9886, 0.9905, 0.9918, 0.9929, 0.9937, 0.9943, 0.9948, 0.9952, 0.9955, 0.9957, 0.9958, 0.9959, 0.9959, 0.9959, 0.9957, 0.9955, 0.9951, 0.9945, 0.9937, 0.9923, 0.9902, 0.9865, 0.9794, 0.9639, 0.9215, 0.7984, 0.7985, 0.9216, 0.964, 0.9796, 0.9868, 0.9905, 0.9927, 0.9942, 0.9951, 0.9958, 0.9962, 0.9966, 0.9969, 0.9971, 0.9972, 0.9973, 0.9974, 0.9975, 0.9975, 0.9975, 0.9975, 0.9975, 0.9974, 0.9974, 0.9973, 0.9973, 0.9972, 0.997, 0.9969, 0.9967, 0.9966, 0.9963, 0.9961, 0.9958, 0.9955, 0.9951, 0.9946, 0.9941, 0.9934, 0.9926, 0.9916, 0.9904, 0.9889, 0.9869, 0.9842, 0.9806, 0.9753, 0.9675, 0.9547, 0.9319, 0.8855, 0.7764, 0.5438, 0.5332, 0.74, 0.8055, 0.7552, 0.5616, 0.5137, 0.7525, 0.874, 0.9243, 0.948, 0.9601, 0.9664, 0.9688, 0.9677, 0.9621, 0.948, 0.9138, 0.8264, 0.6961, 0.7926, 0.9023, 0.9475, 0.9674, 0.9775, 0.9834, 0.9871, 0.9896, 0.9913, 0.9926, 0.9936, 0.9944, 0.9951, 0.9956, 0.996, 0.9964, 0.9967, 0.9969, 0.9972, 0.9974, 0.9975, 0.9977, 0.9978, 0.998, 0.9981, 0.9982, 0.9983, 0.9984, 0.9984, 0.9985, 0.9986, 0.9986, 0.9987, 0.9987, 0.9988, 0.9988, 0.9989, 0.9989, 0.9989, 0.999, 0.999, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9991, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.999, 0.999, 0.999, 0.9989, 0.9989, 0.9989, 0.9988, 0.9988, 0.9987, 0.9987, 0.9987, 0.9986, 0.9985, 0.9985, 0.9984, 0.9983, 0.9983, 0.9982, 0.9981, 0.998, 0.9979, 0.9977, 0.9976, 0.9974, 0.9973, 0.9971, 0.9969, 0.9966, 0.9963, 0.996, 0.9957, 0.9952, 0.9947, 0.9941, 0.9934, 0.9926, 0.9915, 0.9901, 0.9884, 0.986, 0.9828, 0.9782, 0.9711, 0.9597, 0.9398, 0.9021, 0.8337, 0.7684, 0.8083, 0.8778, 0.9147, 0.9274, 0.9239, 0.9028, 0.853, 0.7595, 0.6873, 0.762, 0.8584, 0.9122, 0.9394, 0.9536, 0.9607, 0.9633, 0.9618, 0.9552, 0.9397, 0.9033, 0.8125, 0.6766, 0.7631, 0.8528, 0.8513, 0.7719, 0.7628, 0.8116, 0.7742, 0.8348, 0.9164, 0.9522, 0.9687, 0.9775, 0.9829, 0.9864, 0.9888, 0.9906, 0.9919, 0.993, 0.9938, 0.9945, 0.9951, 0.9956, 0.996, 0.9963, 0.9966, 0.9969, 0.9971, 0.9973, 0.9975, 0.9977, 0.9978, 0.9979, 0.998, 0.9982, 0.9983, 0.9983, 0.9984, 0.9985, 0.9986, 0.9986, 0.9987, 0.9988, 0.9988, 0.9989, 0.9989, 0.9989, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9992, 0.9992, 0.9992, 0.9992, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998]}, "ftir_pvc": {"x": [400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 1032, 1040, 1048, 1056, 1064, 1072, 1080, 1088, 1096, 1104, 1112, 1120, 1128, 1136, 1144, 1152, 1160, 1168, 1176, 1184, 1192, 1200, 1208, 1216, 1224, 1232, 1240, 1248, 1256, 1264, 1272, 1280, 1288, 1296, 1304, 1312, 1320, 1328, 1336, 1344, 1352, 1360, 1368, 1376, 1384, 1392, 1400, 1408, 1416, 1424, 1432, 1440, 1448, 1456, 1464, 1472, 1480, 1488, 1496, 1504, 1512, 1520, 1528, 1536, 1544, 1552, 1560, 1568, 1576, 1584, 1592, 1600, 1608, 1616, 1624, 1632, 1640, 1648, 1656, 1664, 1672, 1680, 1688, 1696, 1704, 1712, 1720, 1728, 1736, 1744, 1752, 1760, 1768, 1776, 1784, 1792, 1800, 1808, 1816, 1824, 1832, 1840, 1848, 1856, 1864, 1872, 1880, 1888, 1896, 1904, 1912, 1920, 1928, 1936, 1944, 1952, 1960, 1968, 1976, 1984, 1992, 2000, 2008, 2016, 2024, 2032, 2040, 2048, 2056, 2064, 2072, 2080, 2088, 2096, 2104, 2112, 2120, 2128, 2136, 2144, 2152, 2160, 2168, 2176, 2184, 2192, 2200, 2208, 2216, 2224, 2232, 2240, 2248, 2256, 2264, 2272, 2280, 2288, 2296, 2304, 2312, 2320, 2328, 2336, 2344, 2352, 2360, 2368, 2376, 2384, 2392, 2400, 2408, 2416, 2424, 2432, 2440, 2448, 2456, 2464, 2472, 2480, 2488, 2496, 2504, 2512, 2520, 2528, 2536, 2544, 2552, 2560, 2568, 2576, 2584, 2592, 2600, 2608, 2616, 2624, 2632, 2640, 2648, 2656, 2664, 2672, 2680, 2688, 2696, 2704, 2712, 2720, 2728, 2736, 2744, 2752, 2760, 2768, 2776, 2784, 2792, 2800, 2808, 2816, 2824, 2832, 2840, 2848, 2856, 2864, 2872, 2880, 2888, 2896, 2904, 2912, 2920, 2928, 2936, 2944, 2952, 2960, 2968, 2976, 2984, 2992, 3000, 3008, 3016, 3024, 3032, 3040, 3048, 3056, 3064, 3072, 3080, 3088, 3096, 3104, 3112, 3120, 3128, 3136, 3144, 3152, 3160, 3168, 3176, 3184, 3192, 3200, 3208, 3216, 3224, 3232, 3240, 3248, 3256, 3264, 3272, 3280, 3288, 3296, 3304, 3312, 3320, 3328, 3336, 3344, 3352, 3360, 3368, 3376, 3384, 3392, 3400, 3408, 3416, 3424, 3432, 3440, 3448, 3456, 3464, 3472, 3480, 3488, 3496, 3504, 3512, 3520, 3528, 3536, 3544, 3552, 3560, 3568, 3576, 3584, 3592, 3600, 3608, 3616, 3624, 3632, 3640, 3648, 3656, 3664, 3672, 3680, 3688, 3696, 3704, 3712, 3720, 3728, 3736, 3744, 3752, 3760, 3768, 3776, 3784, 3792, 3800, 3808, 3816, 3824, 3832, 3840, 3848, 3856, 3864, 3872, 3880, 3888, 3896, 3904, 3912, 3920, 3928, 3936, 3944, 3952, 3960, 3968, 3976, 3984, 3992, 4000], "y": [0.9985, 0.9984, 0.9983, 0.9982, 0.998, 0.9979, 0.9977, 0.9976, 0.9973, 0.9971, 0.9968, 0.9965, 0.9961, 0.9956, 0.995, 0.9943, 0.9934, 0.9922, 0.9907, 0.9885, 0.9855, 0.9808, 0.9732, 0.9596, 0.9313, 0.8594, 0.6418, 0.4749, 0.7761, 0.8975, 0.9368, 0.9495, 0.9486, 0.9337, 0.8901, 0.7572, 0.4282, 0.61, 0.8472, 0.9254, 0.9562, 0.9709, 0.9791, 0.984, 0.9873, 0.9895, 0.9911, 0.9923, 0.9932, 0.9939, 0.9944, 0.9948, 0.9951, 0.9953, 0.9955, 0.9956, 0.9956, 0.9956, 0.9955, 0.9953, 0.995, 0.9946, 0.9939, 0.993, 0.9916, 0.9892, 0.9851, 0.9768, 0.9566, 0.8965, 0.7963, 0.8961, 0.9558, 0.9755, 0.9833, 0.9869, 0.9886, 0.9891, 0.989, 0.9882, 0.9866, 0.9839, 0.9795, 0.9717, 0.9569, 0.9247, 0.8453, 0.7066, 0.7742, 0.8931, 0.9426, 0.9635, 0.9734, 0.9785, 0.981, 0.9821, 0.9821, 0.9812, 0.9792, 0.9761, 0.9711, 0.9633, 0.9506, 0.9285, 0.8863, 0.7976, 0.6188, 0.4942, 0.6692, 0.8206, 0.8898, 0.9196, 0.9292, 0.9229, 0.8922, 0.8041, 0.6453, 0.7262, 0.8662, 0.9246, 0.9489, 0.9595, 0.9633, 0.962, 0.9549, 0.9375, 0.8964, 0.792, 0.6084, 0.6998, 0.8594, 0.9266, 0.9556, 0.9701, 0.9783, 0.9834, 0.9867, 0.9891, 0.9908, 0.9922, 0.9932, 0.994, 0.9946, 0.9952, 0.9956, 0.996, 0.9964, 0.9966, 0.9969, 0.9971, 0.9973, 0.9975, 0.9976, 0.9978, 0.9979, 0.998, 0.9981, 0.9982, 0.9983, 0.9984, 0.9984, 0.9985, 0.9986, 0.9986, 0.9987, 0.9987, 0.9988, 0.9988, 0.9989, 0.9989, 0.9989, 0.999, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9991, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9992, 0.9992, 0.9992, 0.9992, 0.9991, 0.9991, 0.9991, 0.999, 0.999, 0.999, 0.9989, 0.9989, 0.9988, 0.9988, 0.9987, 0.9986, 0.9986, 0.9985, 0.9984, 0.9983, 0.9982, 0.9981, 0.9979, 0.9978, 0.9976, 0.9974, 0.9972, 0.997, 0.9967, 0.9963, 0.9959, 0.9955, 0.9949, 0.9943, 0.9935, 0.9924, 0.9911, 0.9895, 0.9872, 0.9841, 0.9796, 0.9727, 0.9615, 0.9417, 0.9043, 0.8382, 0.7862, 0.8315, 0.8897, 0.9164, 0.9196, 0.9019, 0.8541, 0.762, 0.6908, 0.7665, 0.8639, 0.9188, 0.9476, 0.9636, 0.9733, 0.9796, 0.9839, 0.9869, 0.9891, 0.9908, 0.9922, 0.9932, 0.9941, 0.9947, 0.9953, 0.9958, 0.9962, 0.9966, 0.9969, 0.9971, 0.9974, 0.9976, 0.9977, 0.9979, 0.9981, 0.9982, 0.9983, 0.9984, 0.9985, 0.9986, 0.9987, 0.9987, 0.9988, 0.9989, 0.9989, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9992, 0.9992, 0.9992, 0.9993, 0.9993, 0.9993, 0.9993, 0.9994, 0.9994, 0.9994, 0.9994, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999]}}</script>
 <script>
   const state = {
     mode: 'student',
@@ -1668,12 +1577,88 @@
   function prevSlide() { showSlide(currentIdx() - 1); }
   function goSlide(i) { showSlide(i); }
 
-  function switchMode(mode) {
-    state.mode = mode;
-    document.body.classList.toggle('teacherMode', mode === 'teacher');
-    document.getElementById('btnStudent').classList.toggle('active', mode === 'student');
-    document.getElementById('btnTeacher').classList.toggle('active', mode === 'teacher');
-    document.querySelectorAll('details').forEach(d => d.open = (mode === 'teacher'));
+  // ===== 光譜圖渲染 =====
+  let SPECTRA = null;
+  function loadSpectra() {
+    if (SPECTRA) return SPECTRA;
+    const el = document.getElementById('specdata');
+    if (!el) return null;
+    SPECTRA = JSON.parse(el.textContent);
+    return SPECTRA;
+  }
+
+  function renderChart(div) {
+    const spec = loadSpectra();
+    if (!spec) return;
+    const key = div.dataset.spec;
+    const data = spec[key];
+    if (!data) {
+      div.innerHTML = '<p style="color:#b91c1c">缺光譜資料：' + key + '</p>';
+      return;
+    }
+    const xs = data.x, ys = data.y;
+    const title = div.dataset.title || '';
+    const xlabel = div.dataset.xlabel || 'x';
+    const ylabel = div.dataset.ylabel || 'y';
+    const color = div.dataset.color || '#0ea5e9';
+    const xreverse = div.dataset.xreverse === '1';
+    const source = div.dataset.source || '';
+    const markers = (div.dataset.markers || '').split(',').filter(Boolean).map(Number);
+
+    const W = 600, H = 220, PL = 50, PR = 14, PT = 14, PB = 38;
+    const xmin = Math.min(...xs), xmax = Math.max(...xs);
+    const ymin = Math.min(...ys), ymax = Math.max(...ys);
+    const xspan = xmax - xmin || 1, yspan = (ymax - ymin) || 1;
+    const sx = x => {
+      let t = (x - xmin) / xspan;
+      if (xreverse) t = 1 - t;
+      return PL + t * (W - PL - PR);
+    };
+    const sy = y => PT + (1 - (y - ymin) / yspan) * (H - PT - PB);
+
+    // Polyline path
+    let d = '';
+    for (let i = 0; i < xs.length; i++) {
+      d += (i === 0 ? 'M ' : ' L ') + sx(xs[i]).toFixed(1) + ' ' + sy(ys[i]).toFixed(1);
+    }
+    // X-axis ticks (5)
+    let ticks = '';
+    for (let i = 0; i <= 4; i++) {
+      const tx = xmin + (xspan * i / 4);
+      const px = sx(tx);
+      const label = Math.abs(tx) >= 100 ? tx.toFixed(0) : tx.toFixed(1);
+      ticks += `<line x1="${px}" y1="${H-PB}" x2="${px}" y2="${H-PB+4}" stroke="#64748b"/>`;
+      ticks += `<text x="${px}" y="${H-PB+16}" fill="#475569" font-size="11" text-anchor="middle">${label}</text>`;
+    }
+    // Marker vertical lines + labels
+    let mlines = '';
+    markers.forEach(m => {
+      if (m >= xmin && m <= xmax) {
+        const px = sx(m);
+        mlines += `<line x1="${px}" y1="${PT}" x2="${px}" y2="${H-PB}" stroke="#ef4444" stroke-width="0.6" stroke-dasharray="3,3" opacity="0.6"/>`;
+        mlines += `<text x="${px}" y="${PT+12}" fill="#b91c1c" font-size="10" text-anchor="middle" font-weight="700">${m}</text>`;
+      }
+    });
+
+    const titleHTML = title ? `<div class="spec-title">${title}</div>` : '';
+    const sourceHTML = source ? `<div class="spec-source">資料來源：${source}</div>` : '';
+    div.innerHTML = `${titleHTML}
+      <svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+        <rect x="${PL}" y="${PT}" width="${W-PL-PR}" height="${H-PT-PB}" fill="#fafbfd" stroke="#e2e8f0"/>
+        ${mlines}
+        <path d="${d}" fill="none" stroke="${color}" stroke-width="1.6"/>
+        <line x1="${PL}" y1="${H-PB}" x2="${W-PR}" y2="${H-PB}" stroke="#64748b"/>
+        <line x1="${PL}" y1="${PT}" x2="${PL}" y2="${H-PB}" stroke="#64748b"/>
+        ${ticks}
+        <text x="${(PL+W-PR)/2}" y="${H-4}" fill="#475569" font-size="12" text-anchor="middle">${xlabel}${xreverse ? '（高→低）' : ''}</text>
+        <text x="14" y="${(PT+H-PB)/2}" fill="#475569" font-size="12" text-anchor="middle" transform="rotate(-90,14,${(PT+H-PB)/2})">${ylabel}</text>
+      </svg>
+      ${sourceHTML}`;
+    div.classList.add('specBox');
+  }
+
+  function renderAllCharts() {
+    document.querySelectorAll('.chart[data-spec]').forEach(renderChart);
   }
 
   function persist() {
@@ -1709,8 +1694,8 @@
     const result = document.getElementById(key + '_result');
     if (result) {
       result.innerHTML = isCorrect
-        ? '🎉 <strong style="color:#86efac">正確！</strong>請繼續閱讀下方解析理解原因。'
-        : '🤔 <strong style="color:#fca5a5">這不是最佳答案</strong>，請展開「解析」看為什麼。';
+        ? '🎉 <strong style="color:#15803d">正確！</strong>請繼續閱讀下方解析理解原因。'
+        : '🤔 <strong style="color:#b91c1c">這不是最佳答案</strong>，請展開「解析」看為什麼。';
     }
     persist();
   }
@@ -1751,8 +1736,8 @@
       if (ta) ta.value = value;
       // choices
       if (result) {
-        if (correct === true) result.innerHTML = '🎉 <strong style="color:#86efac">正確！</strong>已記錄。';
-        else if (correct === false) result.innerHTML = '🤔 <strong style="color:#fca5a5">非最佳答案</strong>，請看解析。';
+        if (correct === true) result.innerHTML = '🎉 <strong style="color:#15803d">正確！</strong>已記錄。';
+        else if (correct === false) result.innerHTML = '🤔 <strong style="color:#b91c1c">非最佳答案</strong>，請看解析。';
         else result.innerHTML = '✅ 已記錄你的選擇：<strong>' + value + '</strong>。';
       }
     });
@@ -1776,6 +1761,10 @@
 
   // 初始化
   window.addEventListener('DOMContentLoaded', () => {
+    loadSpectra();
+    renderAllCharts();
+    // 教師授課版：預設展開所有解析
+    document.querySelectorAll('details').forEach(d => d.open = true);
     showSlide(0);
     updateScoreBoard();
     restoreAnswers();
