@@ -31,7 +31,7 @@
     .slide {
       display: none;
       width: 100vw; height: 100vh;
-      padding: 48px 64px 96px;
+      padding: 40px 64px 120px;
       overflow-y: auto;
       background: transparent;
     }
@@ -159,7 +159,8 @@
       border-radius: 12px; padding: 14px; margin: 12px 0;
       box-shadow: 0 2px 6px rgba(15,23,42,0.05);
     }
-    .specBox svg { width: 100%; height: auto; display: block; }
+    .specBox svg { width: 100%; height: auto; max-height: 260px; display: block; }
+    .specBox.bigsvg svg { max-height: 380px; }
     .specBox .spec-title {
       font-size: 15px; color: #1e293b; font-weight: 600; margin-bottom: 6px;
     }
@@ -938,41 +939,71 @@
 
     <!-- S23 模組二整合是非題 -->
     <section class="slide">
-      <h2>振動光譜整合測驗：是非題</h2>
+      <h2>振動光譜整合測驗（一）</h2>
+      <p>FTIR 在 <span class="highlight">1715 cm⁻¹</span> 的強吸收，是辨識 PET 的關鍵指標。</p>
       <div class="card activity">
-        <p><strong>1.</strong> FTIR 在 1715 cm⁻¹ 的強吸收是辨識 PET 的關鍵指標。</p>
         <button class="choice" onclick="checkMCQ(this,'q_tf1','T',true)">✓ 正確</button>
         <button class="choice" onclick="checkMCQ(this,'q_tf1','F',false)">✗ 錯誤</button>
         <div class="resultBox" id="q_tf1_result"></div>
       </div>
+      <div class="card teacherTip">
+        <p><strong>正解：T</strong>　1715 cm⁻¹ 是酯類 C=O 強吸收，PET 的招牌指紋。</p>
+      </div>
+    </section>
+
+    <!-- 振動光譜整合測驗 2 -->
+    <section class="slide">
+      <h2>振動光譜整合測驗（二）</h2>
+      <p>Raman 光譜法在水溶液中表現極差，所以無法分析水裡的微塑膠。</p>
       <div class="card activity">
-        <p><strong>2.</strong> Raman 光譜法在水溶液中表現極差，所以無法分析水裡的微塑膠。</p>
         <button class="choice" onclick="checkMCQ(this,'q_tf2','T',false)">✓ 正確</button>
         <button class="choice" onclick="checkMCQ(this,'q_tf2','F',true)">✗ 錯誤</button>
         <div class="resultBox" id="q_tf2_result"></div>
       </div>
+      <div class="card teacherTip">
+        <p><strong>正解：F</strong>　Raman 對<span class="highlight">水訊號弱</span>反而是優勢，海水/飲用水中的 MP 分析常選 Raman 而非 FTIR-ATR。</p>
+      </div>
+    </section>
+
+    <!-- 振動光譜整合測驗 3 -->
+    <section class="slide">
+      <h2>振動光譜整合測驗（三）</h2>
+      <p>顯微 FTIR 受紅外光繞射極限限制，傳統機型偵測下限約為 10–20 μm。</p>
       <div class="card activity">
-        <p><strong>3.</strong> 顯微 FTIR 受紅外光繞射極限限制，傳統機型偵測下限約為 10–20 μm。</p>
         <button class="choice" onclick="checkMCQ(this,'q_tf3','T',true)">✓ 正確</button>
         <button class="choice" onclick="checkMCQ(this,'q_tf3','F',false)">✗ 錯誤</button>
         <div class="resultBox" id="q_tf3_result"></div>
       </div>
+      <div class="card teacherTip">
+        <p><strong>正解：T</strong>　突破繞射極限需要 QCL-IR、O-PTIR 等新技術，可達 5 μm 甚至 500 nm。</p>
+      </div>
+    </section>
+
+    <!-- 振動光譜整合測驗 4 -->
+    <section class="slide">
+      <h2>振動光譜整合測驗（四）</h2>
+      <p>NIR 適合用來分析 5 μm 以下的奈米塑膠。</p>
       <div class="card activity">
-        <p><strong>4.</strong> NIR 適合用來分析 5 μm 以下的奈米塑膠。</p>
         <button class="choice" onclick="checkMCQ(this,'q_tf4','T',false)">✓ 正確</button>
         <button class="choice" onclick="checkMCQ(this,'q_tf4','F',true)">✗ 錯誤</button>
         <div class="resultBox" id="q_tf4_result"></div>
       </div>
+      <div class="card teacherTip">
+        <p><strong>正解：F</strong>　NIR 解析度與靈敏度都不足以分析 ≤ 5 μm 顆粒，奈米塑膠應走 Raman/SERS、Py-GC-MS 或 O-PTIR。</p>
+      </div>
+    </section>
+
+    <!-- 振動光譜整合測驗 5 -->
+    <section class="slide">
+      <h2>振動光譜整合測驗（五）</h2>
+      <p>改用 785 或 1064 nm 雷射可降低 Raman 的螢光干擾。</p>
       <div class="card activity">
-        <p><strong>5.</strong> 改用 785 或 1064 nm 雷射可降低 Raman 的螢光干擾。</p>
         <button class="choice" onclick="checkMCQ(this,'q_tf5','T',true)">✓ 正確</button>
         <button class="choice" onclick="checkMCQ(this,'q_tf5','F',false)">✗ 錯誤</button>
         <div class="resultBox" id="q_tf5_result"></div>
       </div>
       <div class="card teacherTip">
-        <h3>答案：T, F, T, F, T</h3>
-        <p>第 2 題：Raman 對<span class="highlight">水訊號弱</span>反而是它在水中分析 MP 的優勢，因此 ESL/海水中的微塑膠分析常選 Raman 而非 FTIR-ATR。</p>
-        <p>第 4 題：NIR 解析度與靈敏度都不足以分析 ≤ 5 μm 顆粒，奈米塑膠應走 Raman/SERS、Py-GC-MS 或 O-PTIR。</p>
+        <p><strong>正解：T</strong>　光子能量低，較少激發螢光；或可用 SERDS、數學基線校正。</p>
       </div>
     </section>
 
@@ -1198,18 +1229,33 @@
       </details>
     </section>
 
-    <!-- S32 LC-MS 角色 -->
+    <!-- S32 LC-MS 角色 (一) -->
     <section class="slide">
       <h2>LC-MS：分析塑化劑與寡聚物</h2>
-      <div class="card">
-        <p>LC-MS 在微塑膠分析中<span class="highlight">不直接量「塑膠顆粒」</span>，而是測量：</p>
-        <ul>
-          <li><span class="highlight">塑化劑 (Plasticizers)</span>：鄰苯二甲酸酯 (DEHP, DBP, BBP)、檸檬酸酯</li>
-          <li><span class="highlight">內分泌干擾物</span>：BPA、BPS、BPF</li>
-          <li><span class="highlight">寡聚物 (Oligomers)</span>：PET cyclic trimer、PE 蠟質寡聚物</li>
-          <li><span class="highlight">添加劑</span>：抗氧化劑 Irganox 1010、UV 穩定劑 Tinuvin 系列</li>
-        </ul>
+      <p>LC-MS 在微塑膠分析中<span class="highlight">不直接量「塑膠顆粒」</span>，而是測量塑膠帶出的化學物質：</p>
+      <div class="grid">
+        <div class="card">
+          <h3>塑化劑 (Plasticizers)</h3>
+          <p>鄰苯二甲酸酯 (DEHP, DBP, BBP)、檸檬酸酯</p>
+        </div>
+        <div class="card">
+          <h3>內分泌干擾物</h3>
+          <p>BPA、BPS、BPF</p>
+        </div>
+        <div class="card">
+          <h3>寡聚物 (Oligomers)</h3>
+          <p>PET cyclic trimer、PE 蠟質寡聚物</p>
+        </div>
+        <div class="card">
+          <h3>添加劑</h3>
+          <p>抗氧化劑 Irganox 1010、UV 穩定劑 Tinuvin 系列</p>
+        </div>
       </div>
+    </section>
+
+    <!-- S32a LC-MS 流程 + MRM -->
+    <section class="slide">
+      <h2>LC-MS 典型流程與 MRM 定量</h2>
       <div class="grid">
         <div class="card">
           <h3>典型流程</h3>
@@ -1222,7 +1268,7 @@
           </ol>
         </div>
         <div class="card">
-          <h3>關鍵離子化選擇</h3>
+          <h3>關鍵 MRM 離子對</h3>
           <table>
             <tr><th>化合物</th><th>離子化</th><th>定量 m/z</th></tr>
             <tr><td>DEHP</td><td>ESI+</td><td>391 → 149</td></tr>
@@ -1335,7 +1381,7 @@
     <!-- S35 決策樹 -->
     <section class="slide">
       <h2>方法選擇決策樹</h2>
-      <div class="specBox">
+      <div class="specBox bigsvg" style="max-width:780px;margin:auto;">
         <svg viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg">
           <style>
             .node { fill: #e0f2fe; stroke: #0ea5e9; stroke-width: 1.5; rx: 10; }
@@ -1537,68 +1583,104 @@
       <p class="citation">Ribeiro F. et al. (2020) Quantitative Analysis of Selected Plastics in High-Commercial-Value Australian Seafood by Pyrolysis Gas Chromatography Mass Spectrometry. <em>Environ Sci Technol</em> 54:9408–9417. https://doi.org/10.1021/acs.est.0c02337</p>
     </section>
 
-    <!-- S40 互動：實驗設計題 -->
+    <!-- S40 實驗設計題：情境介紹 -->
     <section class="slide">
-      <h2>實驗設計題：嬰兒奶瓶 (PP) 80°C 沖泡釋出微塑膠分析</h2>
-      <div class="card activity">
-        <p><strong>(1) 主要儀器</strong>？為什麼？</p>
-        <textarea data-key="q_design_1"></textarea>
-        <p><strong>(2)</strong> 如何設計<span class="highlight">空白組與對照組</span>？</p>
-        <textarea data-key="q_design_2"></textarea>
-        <p><strong>(3)</strong> 沖泡液如何<span class="highlight">前處理</span>？</p>
-        <textarea data-key="q_design_3"></textarea>
-        <p><strong>(4)</strong> 如何<span class="highlight">驗證準確度</span>？</p>
-        <textarea data-key="q_design_4"></textarea>
+      <h2>綜合應用：實驗設計題</h2>
+      <div class="card ref">
+        <h3>情境</h3>
+        <p>分析「市售嬰兒奶瓶 (PP 製) 在 <span class="highlight">80°C 沖泡奶粉</span>時，是否釋放微塑膠到沖泡液中」。</p>
+        <p>接下來四張投影片會分別問你四個設計問題，依序回答。</p>
       </div>
-      <details>
-        <summary>參考答案（Li et al. 2020 真實研究）</summary>
-        <ol>
-          <li><strong>主要儀器</strong>：μ-FTIR 化學成像（鑑定 1–500 μm 顆粒類型與計數）+ Py-GC-MS（總質量定量）。NP 補 SEM + EDS。</li>
-          <li><strong>空白組</strong>：① 玻璃奶瓶（材質對照）；② 空氣沉降空白（同時開蓋暴露於空氣 30 分鐘）；③ 程序空白（試劑、容器、過濾全程序）。</li>
-          <li><strong>前處理</strong>：先 Ar 流氣下冷藏靜置 30 min 沉澱大顆粒 → 過濾 1.2 μm Anodisc 濾膜 → 不進行化學消化（沖泡液乾淨）→ 直接顯微鏡掃描。</li>
-          <li><strong>驗證</strong>：spike 已知數量 5、10、50 μm PP 顆粒回收率 (recovery 80–120%)；平行三重複；參與國際循環比對（如 BAM、JRC）。</li>
-        </ol>
-        <p class="citation">Li D. et al. (2020) Microplastic release from the degradation of polypropylene feeding bottles during infant formula preparation. <em>Nat Food</em> 1:746–754.</p>
-      </details>
+      <p class="citation">參考研究：Li D. et al. (2020) Microplastic release from PP feeding bottles during infant formula preparation. <em>Nat Food</em> 1:746–754.</p>
     </section>
 
-    <!-- S41 進階閱讀 -->
+    <!-- S40a Q1 主要儀器 -->
     <section class="slide">
-      <h2>進階閱讀：方法學重點文獻</h2>
-      <div class="grid">
-        <div class="card">
-          <h3>方法綜論</h3>
-          <ul>
-            <li>Primpke S. et al. (2020) Critical assessment of analytical methods. <em>Appl Spectrosc</em> 74:1012.</li>
-            <li>Schwaferts C. et al. (2019) Nano- and submicrometer particles. <em>TrAC</em> 112:52.</li>
-            <li>La Nasa J. et al. (2020) Challenges and developments. <em>J Hazard Mater</em> 401:123379.</li>
-            <li>Mariano S. et al. (2021) Identification: classic and innovative techniques. <em>Front Toxicol</em> 3:636640.</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>振動光譜</h3>
-          <ul>
-            <li>Käppler A. et al. (2016) FTIR, Raman or both? <em>Anal Bioanal Chem</em> 408:8377.</li>
-            <li>Xu G. et al. (2020) SERS for &lt;1 μm. <em>Environ Sci Technol</em> 54:15594.</li>
-            <li>Anger PM. et al. (2018) Raman microspectroscopy. <em>TrAC</em> 109:214.</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>質譜技術</h3>
-          <ul>
-            <li>Fischer M. & Scholz-Böttcher BM. (2017) Py-GC-MS quantification. <em>Environ Sci Technol</em> 51:5052.</li>
-            <li>Dümichen E. et al. (2017) TED-GC-MS. <em>Chemosphere</em> 174:572.</li>
-            <li>Ribeiro F. et al. (2020) Seafood Py-GC-MS. <em>Environ Sci Technol</em> 54:9408.</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>報告與標準化</h3>
-          <ul>
-            <li>Cowger W. et al. (2020) Reporting Guidelines. <em>Appl Spectrosc</em> 74:1066.</li>
-            <li>ISO/TR 21960:2020 — Plastics — Environmental aspects — State of knowledge and methodologies.</li>
-            <li>EU Drinking Water Directive 2020/2184 — Annex III 微塑膠監測方法草案</li>
-          </ul>
-        </div>
+      <h2>實驗設計（1/4）：主要儀器</h2>
+      <p>你會選擇什麼<span class="highlight">主要儀器</span>？為什麼？</p>
+      <div class="card activity">
+        <textarea data-key="q_design_1"></textarea>
+      </div>
+      <div class="card teacherTip">
+        <p><strong>參考答案：</strong>μ-FTIR 化學成像（鑑定 1–500 μm 顆粒類型與計數）+ Py-GC-MS（總質量定量）；NP 範圍補 SEM + EDS。</p>
+      </div>
+    </section>
+
+    <!-- S40b Q2 空白組 -->
+    <section class="slide">
+      <h2>實驗設計（2/4）：空白組與對照組</h2>
+      <p>如何設計<span class="highlight">空白組與對照組</span>？</p>
+      <div class="card activity">
+        <textarea data-key="q_design_2"></textarea>
+      </div>
+      <div class="card teacherTip">
+        <p><strong>參考答案：</strong>① 玻璃奶瓶（材質對照）；② 空氣沉降空白（同時開蓋暴露於空氣 30 分鐘）；③ 程序空白（試劑、容器、過濾全程序）。</p>
+      </div>
+    </section>
+
+    <!-- S40c Q3 前處理 -->
+    <section class="slide">
+      <h2>實驗設計（3/4）：前處理</h2>
+      <p>沖泡液如何<span class="highlight">前處理</span>才能上機？</p>
+      <div class="card activity">
+        <textarea data-key="q_design_3"></textarea>
+      </div>
+      <div class="card teacherTip">
+        <p><strong>參考答案：</strong>先 Ar 流氣下冷藏靜置 30 min 沉澱 → 過濾 1.2 μm Anodisc 濾膜 → 不化學消化（沖泡液乾淨）→ 直接顯微鏡掃描。</p>
+      </div>
+    </section>
+
+    <!-- S40d Q4 驗證 -->
+    <section class="slide">
+      <h2>實驗設計（4/4）：驗證準確度</h2>
+      <p>你會如何<span class="highlight">驗證準確度</span>？</p>
+      <div class="card activity">
+        <textarea data-key="q_design_4"></textarea>
+      </div>
+      <div class="card teacherTip">
+        <p><strong>參考答案：</strong>spike 已知數量 5、10、50 μm PP 顆粒測回收率 (80–120%)；平行三重複；參與國際循環比對（如 BAM、JRC）。</p>
+      </div>
+    </section>
+
+    <!-- S41 進階閱讀（一）方法綜論 + 振動光譜 -->
+    <section class="slide">
+      <h2>進階閱讀（一）：方法綜論 + 振動光譜</h2>
+      <div class="card">
+        <h3>方法綜論</h3>
+        <ul>
+          <li>Primpke S. et al. (2020) Critical assessment of analytical methods. <em>Appl Spectrosc</em> 74:1012.</li>
+          <li>Schwaferts C. et al. (2019) Nano- and submicrometer particles. <em>TrAC</em> 112:52.</li>
+          <li>La Nasa J. et al. (2020) Challenges and developments. <em>J Hazard Mater</em> 401:123379.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>振動光譜 (FTIR / Raman)</h3>
+        <ul>
+          <li>Käppler A. et al. (2016) FTIR, Raman or both? <em>Anal Bioanal Chem</em> 408:8377.</li>
+          <li>Xu G. et al. (2020) SERS for &lt;1 μm. <em>Environ Sci Technol</em> 54:15594.</li>
+          <li>Anger PM. et al. (2018) Raman microspectroscopy. <em>TrAC</em> 109:214.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- S41a 進階閱讀（二）質譜 + 報告 -->
+    <section class="slide">
+      <h2>進階閱讀（二）：質譜 + 報告標準</h2>
+      <div class="card">
+        <h3>質譜技術 (Py-GC-MS / LC-MS)</h3>
+        <ul>
+          <li>Fischer M. & Scholz-Böttcher BM. (2017) Py-GC-MS quantification. <em>Environ Sci Technol</em> 51:5052.</li>
+          <li>Dümichen E. et al. (2017) TED-GC-MS. <em>Chemosphere</em> 174:572.</li>
+          <li>Ribeiro F. et al. (2020) Seafood Py-GC-MS. <em>Environ Sci Technol</em> 54:9408.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>報告與標準化</h3>
+        <ul>
+          <li>Cowger W. et al. (2020) Reporting Guidelines. <em>Appl Spectrosc</em> 74:1066.</li>
+          <li>ISO/TR 21960:2020 — Plastics — Environmental aspects.</li>
+          <li>EU Drinking Water Directive 2020/2184 — Annex III 微塑膠監測方法草案.</li>
+        </ul>
       </div>
     </section>
 
@@ -1633,22 +1715,31 @@
       </div>
     </section>
 
-    <!-- S43 Exit Ticket -->
+    <!-- S43 Exit Ticket Q1 -->
     <section class="slide">
-      <h2>Exit Ticket</h2>
+      <h2>Exit Ticket（1/3）</h2>
+      <p>用一句話總結今天最重要的學習。</p>
       <div class="card activity">
-        <h3>1. 用一句話總結今天最重要的學習</h3>
-        <textarea data-key="exit_1"></textarea>
+        <textarea data-key="exit_1" style="min-height:140px;"></textarea>
       </div>
+    </section>
+
+    <!-- S43a Exit Ticket Q2 -->
+    <section class="slide">
+      <h2>Exit Ticket（2/3）</h2>
+      <p>哪個概念你還不確定，希望老師再講一次？</p>
       <div class="card activity">
-        <h3>2. 哪個概念你還不確定，希望再講一次？</h3>
-        <textarea data-key="exit_2"></textarea>
+        <textarea data-key="exit_2" style="min-height:140px;"></textarea>
       </div>
+    </section>
+
+    <!-- S43b Exit Ticket Q3 -->
+    <section class="slide">
+      <h2>Exit Ticket（3/3）</h2>
+      <p>如果讓你選一個技術深入學習，你會選？為什麼？</p>
       <div class="card activity">
-        <h3>3. 如果讓你選一個技術深入學習，你會選？為什麼？</h3>
-        <textarea data-key="exit_3"></textarea>
+        <textarea data-key="exit_3" style="min-height:140px;"></textarea>
       </div>
-      <p class="mini">作答自動儲存於瀏覽器；底部「匯出作答」可下載 TSV。</p>
     </section>
 
     <!-- S44 致謝 -->
