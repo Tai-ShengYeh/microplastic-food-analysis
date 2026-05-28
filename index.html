@@ -248,6 +248,16 @@
     }
     details summary { cursor: pointer; font-weight: 700; font-size: 18px; color: #075985; }
     details[open] summary { margin-bottom: 8px; }
+    /* 未作答時提示：解析鎖定 */
+    details:not([open]) {
+      background: #fff7ed; border-color: #fed7aa; opacity: 0.85;
+    }
+    details:not([open]) summary { color: #9a3412; }
+    details:not([open]) summary::after {
+      content: " 🔒 作答後才會自動展開";
+      font-size: 13px; color: #c2410c; font-weight: 500;
+      margin-left: 10px;
+    }
     .citation {
       font-size: 14px; color: #64748b; font-style: italic;
       border-left: 3px solid #cbd5e1; padding-left: 8px; margin: 6px 0;
@@ -2116,6 +2126,13 @@
 
   const RESET_BTN = ' <button class="reset-btn" onclick="resetQuestion(\'KEY\')">↺ 重新作答</button>';
 
+  // 作答後自動展開該 slide 的所有解析 details
+  function revealSlideDetails(el) {
+    const slide = el?.closest?.('.slide');
+    if (!slide) return;
+    slide.querySelectorAll('details').forEach(d => { d.open = true; });
+  }
+
   function selectChoice(btn, key, value) {
     const group = btn.parentElement.querySelectorAll('.choice');
     group.forEach(b => b.classList.remove('selected'));
@@ -2123,6 +2140,7 @@
     state.answers[key] = value;
     const result = document.getElementById(key + '_result');
     if (result) result.innerHTML = '✅ 已記錄：<strong>' + value + '</strong>' + RESET_BTN.replace('KEY', key);
+    revealSlideDetails(btn);
     logAttempt({ key, type: 'select', answer: value, isCorrect: null });
   }
 
@@ -2139,6 +2157,7 @@
         : '🤔 <strong style="color:#b91c1c">非最佳答案</strong>，請看解析。';
       result.innerHTML = msg + RESET_BTN.replace('KEY', key);
     }
+    revealSlideDetails(btn);
     const type = key.startsWith('q_tf') ? 'tf' : 'mcq';
     logAttempt({ key, type, answer: value, isCorrect });
   }
@@ -2188,8 +2207,7 @@
   window.addEventListener('DOMContentLoaded', () => {
     loadSpectra();
     renderAllCharts();
-    // 教師授課版：預設展開所有解析
-    document.querySelectorAll('details').forEach(d => d.open = true);
+    // 解析 details 預設收起 → 學生作答後 (透過 revealSlideDetails) 才自動展開
     showSlide(0);
     initSupabase();
   });
