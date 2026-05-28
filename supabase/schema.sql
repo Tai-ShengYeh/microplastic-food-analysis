@@ -45,6 +45,13 @@ create policy "authenticated can read attempts"
   to authenticated
   using (true);
 
+-- 顯式 GRANT (符合 2026-05-30 後 Supabase 的新預設行為)
+-- 舊專案於 2026-10-30 前都能自動授權，加上這些 GRANT 後可保證未來重跑也適用
+grant usage on schema public to anon, authenticated;
+grant insert on public.attempts to anon, authenticated;
+grant select on public.attempts to authenticated;
+grant usage, select on sequence public.attempts_id_seq to anon, authenticated;
+
 -- 3. 每題正確率統計 view
 create or replace view public.item_stats as
 select
