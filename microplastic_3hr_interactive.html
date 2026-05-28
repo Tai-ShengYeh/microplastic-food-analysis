@@ -77,6 +77,15 @@
       display: block; font-weight: 700; color: #b45309;
       font-size: 16px; margin-bottom: 8px;
     }
+    /* 含互動題的 slide：tip 卡預設隱藏，作答後 (.answered) 才顯示 */
+    .slide:has(.card.activity) .card.tip {
+      background: #fff7ed; opacity: 0.9;
+    }
+    .slide:has(.card.activity):not(.answered) .card.tip > * { display: none; }
+    .slide:has(.card.activity):not(.answered) .card.tip::before {
+      content: "🔒 作答後才會顯示答案";
+      color: #c2410c;
+    }
     .ref {
       border-left: 6px solid var(--accent2);
       background: linear-gradient(180deg, #eef2ff 0%, #ffffff 100%);
@@ -2130,11 +2139,12 @@
 
   const RESET_BTN = ' <button class="reset-btn" onclick="resetQuestion(\'KEY\')">↺ 重新作答</button>';
 
-  // 作答後自動展開該 slide 的所有解析 details
+  // 作答後自動展開該 slide 的所有解析 details + 顯示 tip 卡
   function revealSlideDetails(el) {
     const slide = el?.closest?.('.slide');
     if (!slide) return;
     slide.querySelectorAll('details').forEach(d => { d.open = true; });
+    slide.classList.add('answered');
   }
 
   function selectChoice(btn, key, value) {
