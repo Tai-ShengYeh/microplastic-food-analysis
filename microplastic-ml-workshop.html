@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>微塑膠機器學習實作工作坊｜NIR + Raman + Orange</title>
+  <style>
+    :root {
+      --bg: #f8fafc; --card: #ffffff;
+      --accent: #0ea5e9; --accent2: #6366f1; --accent3: #ec4899;
+      --text: #0f172a; --muted: #475569;
+      --good: #15803d; --warn: #b45309; --bad: #b91c1c;
+      --line: #e2e8f0; --line-strong: #cbd5e1;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", Arial, sans-serif;
+      background: linear-gradient(135deg, #ddd6fe 0%, #f8fafc 40%, #d1fae5 100%);
+      color: var(--text); overflow: hidden;
+    }
+    .deck { width: 100vw; height: 100vh; position: relative; }
+    .slide {
+      display: none; width: 100vw; height: 100vh;
+      padding: 40px 56px 120px; overflow-y: auto;
+    }
+    .slide.active { display: block; animation: fade 0.22s ease-in-out; }
+    @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    h1 { font-size: 46px; line-height: 1.18; margin: 0 0 22px; color: #0f172a; }
+    h2 { font-size: 32px; margin: 0 0 18px; color: #4c1d95; }
+    h3 { font-size: 22px; margin: 14px 0 10px; color: #5b21b6; }
+    p, li { font-size: 19px; line-height: 1.55; color: #1e293b; }
+    small, .mini { color: var(--muted); font-size: 15px; }
+    .subtitle { font-size: 23px; color: #475569; }
+    .tag {
+      display: inline-block; padding: 5px 11px; border-radius: 999px;
+      background: #ede9fe; color: #4c1d95; font-size: 15px; margin: 4px 4px 4px 0;
+      border: 1px solid #c4b5fd; font-weight: 600;
+    }
+    .tag.cyan { background: #cffafe; color: #155e75; border-color: #67e8f9; }
+    .tag.pink { background: #fce7f3; color: #831843; border-color: #f9a8d4; }
+    .tag.green { background: #dcfce7; color: #166534; border-color: #86efac; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
+    .grid3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+    .card {
+      background: #ffffff; border: 1px solid var(--line); border-radius: 14px;
+      padding: 18px; box-shadow: 0 3px 10px rgba(15,23,42,0.05);
+      margin-bottom: 14px;
+    }
+    .card p, .card li { font-size: 17px; }
+    .activity {
+      border-left: 6px solid var(--accent);
+      background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%);
+    }
+    .tip {
+      border-left: 6px solid #f59e0b;
+      background: linear-gradient(180deg, #fef3c7 0%, #ffffff 100%);
+    }
+    .tip::before {
+      content: "💡 提示"; display: block; font-weight: 700; color: #b45309;
+      font-size: 15px; margin-bottom: 6px;
+    }
+    .ref {
+      border-left: 6px solid var(--accent2);
+      background: linear-gradient(180deg, #eef2ff 0%, #ffffff 100%);
+    }
+    .highlight { color: #4c1d95; font-weight: 700; }
+    .good { color: #15803d; font-weight: 700; }
+    .warn { color: #b45309; font-weight: 700; }
+    .bad { color: #b91c1c; font-weight: 700; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 16px; background: white; }
+    th, td { border: 1px solid var(--line); padding: 8px 10px; vertical-align: top; }
+    th { background: #ede9fe; color: #4c1d95; font-weight: 700; }
+    tr:nth-child(even) td { background: #f8fafc; }
+    .controls {
+      position: fixed; left: 0; right: 0; bottom: 0; height: 60px;
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 6px 24px; border-top: 1px solid var(--line-strong); z-index: 20;
+      box-shadow: 0 -4px 12px rgba(15,23,42,0.06);
+    }
+    button {
+      cursor: pointer; border: 0; border-radius: 8px;
+      padding: 8px 14px; font-size: 15px;
+      background: var(--accent); color: white; margin: 2px; font-weight: 600;
+      box-shadow: 0 2px 4px rgba(14,165,233,0.25);
+    }
+    button:hover { filter: brightness(1.08); }
+    button.secondary { background: #64748b; box-shadow: 0 2px 4px rgba(100,116,139,0.25); }
+    button.goodBtn { background: #16a34a; }
+    button.purpleBtn { background: #7c3aed; }
+    .choice {
+      display: block; width: 100%; text-align: left;
+      background: #ffffff; border: 1.5px solid var(--line-strong); color: #1e293b;
+      margin: 6px 0; padding: 10px 14px; white-space: normal; font-size: 17px;
+    }
+    .choice:hover { background: #f1f5f9; border-color: var(--accent); }
+    .choice.selected { background: #e0f2fe; border-color: #0ea5e9; outline: 2px solid #38bdf8; color: #075985; font-weight: 600; }
+    .choice.correct { background: #dcfce7; border-color: #16a34a; outline: 2px solid #22c55e; color: #14532d; font-weight: 600; }
+    .choice.wrong { background: #fee2e2; border-color: #dc2626; outline: 2px solid #ef4444; color: #7f1d1d; font-weight: 600; }
+    .choices-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; }
+    .choices-grid .choice { margin: 0; }
+    textarea, input, select {
+      width: 100%; border-radius: 8px;
+      border: 1.5px solid var(--line-strong);
+      background: #ffffff; color: var(--text);
+      padding: 8px 10px; font-size: 15px; margin: 3px 0 8px;
+      font-family: inherit;
+    }
+    textarea:focus, input:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,102,241,0.12); }
+    textarea { min-height: 70px; resize: vertical; font-family: ui-monospace, "Courier New", monospace; font-size: 13px; }
+    .resultBox {
+      margin-top: 8px; padding: 10px; border-radius: 8px;
+      background: #f1f5f9; border: 1px solid var(--line);
+      font-size: 16px; color: #1e293b;
+    }
+    .resultBox:empty { display: none; }
+    .reset-btn {
+      display: inline-block; margin-left: 10px;
+      padding: 3px 8px; font-size: 12px;
+      background: #ffffff; color: #475569;
+      border: 1px solid #cbd5e1; border-radius: 5px; box-shadow: none; font-weight: 600;
+    }
+    details {
+      background: #f8fafc; padding: 10px 14px;
+      border-radius: 10px; border: 1px solid var(--line); margin: 8px 0;
+    }
+    details summary { cursor: pointer; font-weight: 700; font-size: 17px; color: #4c1d95; }
+    details:not([open]) {
+      background: #fff7ed; border-color: #fed7aa; opacity: 0.85;
+    }
+    details:not([open]) summary { color: #9a3412; }
+    details:not([open]) summary::after {
+      content: " 🔒 作答後才會自動展開";
+      font-size: 12px; color: #c2410c; font-weight: 500; margin-left: 10px;
+    }
+    .progress {
+      position: fixed; left: 0; top: 0; height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+      width: 0%; z-index: 30; transition: width 0.3s;
+    }
+    .slideNo { color: var(--muted); font-size: 15px; font-weight: 600; }
+    .citation {
+      font-size: 13px; color: #64748b; font-style: italic;
+      border-left: 3px solid #cbd5e1; padding-left: 8px; margin: 6px 0;
+    }
+    .pill {
+      display: inline-block; padding: 3px 9px; border-radius: 999px;
+      font-size: 13px; font-weight: 700; margin: 2px;
+    }
+    .pill.cyan { background: #cffafe; color: #155e75; border: 1px solid #67e8f9; }
+    .pill.purple { background: #ede9fe; color: #5b21b6; border: 1px solid #c4b5fd; }
+    .pill.pink { background: #fce7f3; color: #9d174d; border: 1px solid #f9a8d4; }
+    .pill.green { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+    .pill.amber { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+    /* ===== 學生資訊面板（頂端固定） ===== */
+    .student-bar {
+      position: fixed; top: 8px; right: 12px; z-index: 50;
+      display: flex; gap: 6px; align-items: center;
+      background: rgba(255,255,255,0.95); padding: 6px 12px;
+      border-radius: 999px; border: 1px solid var(--line-strong);
+      box-shadow: 0 2px 8px rgba(15,23,42,0.08); font-size: 14px;
+    }
+    .student-bar.active { background: #d1fae5; border-color: #6ee7b7; }
+    .student-bar button {
+      padding: 4px 10px; font-size: 13px; background: var(--accent);
+      box-shadow: none;
+    }
+    /* ===== 掃描資料上傳 widget ===== */
+    .scan-recorder {
+      background: #f8fafc; border: 2px dashed #c4b5fd;
+      border-radius: 12px; padding: 16px; margin: 12px 0;
+    }
+    .scan-recorder h3 { margin-top: 0; color: #4c1d95; }
+    .scan-recorder .form-row {
+      display: grid; grid-template-columns: 110px 1fr; gap: 8px;
+      align-items: center; margin: 6px 0;
+    }
+    .scan-recorder .form-row label {
+      font-weight: 600; color: #1e293b; font-size: 14px; margin: 0;
+    }
+    .scan-recorder textarea { min-height: 90px; }
+    .scan-recorder .actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+    .scan-recorder .preview { margin-top: 12px; }
+    .scan-recorder .status {
+      font-size: 13px; margin-top: 6px; color: #475569;
+    }
+    .scan-recorder .status.success { color: #15803d; font-weight: 700; }
+    .scan-recorder .status.error { color: #b91c1c; font-weight: 700; }
+    /* ===== Spectrum SVG chart ===== */
+    .specBox {
+      background: #ffffff; border: 1px solid var(--line-strong);
+      border-radius: 10px; padding: 12px; margin: 10px 0;
+      box-shadow: 0 2px 6px rgba(15,23,42,0.05);
+    }
+    .specBox svg { width: 100%; height: auto; max-height: 280px; display: block; }
+    .specBox .spec-title { font-size: 14px; color: #1e293b; font-weight: 600; margin-bottom: 6px; }
+    .specBox .spec-source { font-size: 11px; color: #64748b; margin-top: 6px; font-style: italic; }
+    /* ===== 模態框 (學生資訊輸入) ===== */
+    .modal {
+      position: fixed; inset: 0; z-index: 100;
+      display: none; align-items: center; justify-content: center;
+      background: rgba(15,23,42,0.55); backdrop-filter: blur(2px);
+    }
+    .modal.open { display: flex; }
+    .modal .panel {
+      background: white; padding: 26px; border-radius: 14px;
+      max-width: 480px; width: 90%;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+    .modal h3 { margin: 0 0 8px; color: #4c1d95; font-size: 22px; }
+    .modal .desc { font-size: 14px; color: #475569; margin-bottom: 12px; }
+    .modal label { display: block; margin: 10px 0 4px; font-weight: 600; color: #1e293b; font-size: 14px; }
+    .modal .btns { display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end; }
+    .toast {
+      position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%);
+      padding: 10px 18px; border-radius: 8px; z-index: 200;
+      background: #1e293b; color: white; font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      opacity: 0; transition: opacity 0.25s; pointer-events: none;
+    }
+    .toast.show { opacity: 1; }
+    @media print {
+      body { overflow: visible; background: white; }
+      .slide { display: block !important; height: auto; page-break-after: always; padding: 28px; }
+      .controls, .progress, .student-bar, .modal, .toast { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+
+  <!-- 學生資訊面板 -->
+  <div class="student-bar" id="studentBar">
+    <button onclick="openStudentModal()">📝 學生登入</button>
+  </div>
+  <div class="modal" id="studentModal">
+    <div class="panel">
+      <h3>學生資訊</h3>
+      <p class="desc">登入後上傳的光譜資料會記到您的學號 / 組別；老師可在儀表板看到全班進度。</p>
+      <label>學號 <span style="color:#dc2626">*</span></label>
+      <input id="inpStudentId" type="text" placeholder="例：B11234567" />
+      <label>組別 <span style="color:#dc2626">*</span></label>
+      <select id="inpGroupId">
+        <option value="">請選擇...</option>
+        <option value="1">第 1 組</option>
+        <option value="2">第 2 組</option>
+        <option value="3">第 3 組</option>
+        <option value="4">第 4 組</option>
+        <option value="5">第 5 組</option>
+      </select>
+      <div class="btns">
+        <button class="secondary" onclick="closeStudentModal()">取消</button>
+        <button onclick="saveStudentInfo()">開始</button>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <main class="deck" id="deck">
+    <!-- 投影片將在此插入 -->
+  </main>
+
+  <div class="controls">
+    <button onclick="prevSlide()">◀</button>
+    <div class="slideNo"><span id="slideNow">1</span> / <span id="slideTotal">1</span></div>
+    <button onclick="nextSlide()">▶</button>
+  </div>
+
+<script>
+  // ===== Supabase Config =====
+  const SUPABASE_URL = 'https://qmldcjkllisvfgegkfsz.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbGRjamtsbGlzdmZnZWdrZnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMjM5ODYsImV4cCI6MjA4NjY5OTk4Nn0.Bfj0W7HN_n_vcjGe5502Chamk0YV-de8a0fxF4Nyczk';
+  let supabase = null;
+
+  // ===== 學生狀態 =====
+  const student = {
+    id: null,
+    groupId: null,
+  };
+
+  async function initSupabase() {
+    try {
+      const mod = await import('https://esm.sh/@supabase/supabase-js@2');
+      supabase = mod.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } catch (e) {
+      console.error('Supabase 載入失敗:', e);
+    }
+  }
+
+  function showToast(msg, ms = 2400) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => t.classList.remove('show'), ms);
+  }
+
+  function openStudentModal() {
+    document.getElementById('studentModal').classList.add('open');
+    setTimeout(() => document.getElementById('inpStudentId').focus(), 50);
+  }
+  function closeStudentModal() {
+    document.getElementById('studentModal').classList.remove('open');
+  }
+  function saveStudentInfo() {
+    const sid = document.getElementById('inpStudentId').value.trim();
+    const gid = document.getElementById('inpGroupId').value;
+    if (!sid) { alert('請輸入學號'); return; }
+    if (!gid) { alert('請選擇組別'); return; }
+    student.id = sid;
+    student.groupId = gid;
+    closeStudentModal();
+    updateStudentBar();
+    showToast(`✅ 已登入：${sid} ｜ 第 ${gid} 組`);
+  }
+  function updateStudentBar() {
+    const bar = document.getElementById('studentBar');
+    const btn = bar.querySelector('button');
+    if (student.id) {
+      bar.classList.add('active');
+      btn.textContent = `👤 ${student.id} ｜ 第 ${student.groupId} 組`;
+    } else {
+      bar.classList.remove('active');
+      btn.textContent = '📝 學生登入';
+    }
+  }
+
+  // ===== 投影片導覽 =====
+  function getSlides() { return document.querySelectorAll('#deck .slide'); }
+  function currentIdx() {
+    return Array.from(getSlides()).findIndex(s => s.classList.contains('active'));
+  }
+  function showSlide(idx) {
+    const slides = Array.from(getSlides());
+    if (idx < 0 || idx >= slides.length) return;
+    slides.forEach(s => s.classList.remove('active'));
+    slides[idx].classList.add('active');
+    slides[idx].scrollTop = 0;
+    document.getElementById('slideNow').textContent = idx + 1;
+    document.getElementById('slideTotal').textContent = slides.length;
+    document.getElementById('progress').style.width = ((idx + 1) / slides.length * 100) + '%';
+  }
+  function nextSlide() { showSlide(currentIdx() + 1); }
+  function prevSlide() { showSlide(currentIdx() - 1); }
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+  });
+
+  // ===== 互動題 (MCQ / select) =====
+  const RESET_BTN = ' <button class="reset-btn" onclick="resetQuestion(\'KEY\')">↺ 重新作答</button>';
+  function selectChoice(btn, key, value) {
+    const group = btn.parentElement.querySelectorAll('.choice');
+    group.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    const r = document.getElementById(key + '_result');
+    if (r) r.innerHTML = '✅ 已記錄：<strong>' + value + '</strong>' + RESET_BTN.replace('KEY', key);
+    revealSlideDetails(btn);
+  }
+  function checkMCQ(btn, key, value, isCorrect) {
+    const group = btn.parentElement.querySelectorAll('.choice');
+    group.forEach(b => b.classList.remove('selected','correct','wrong'));
+    btn.classList.add('selected', isCorrect ? 'correct' : 'wrong');
+    const r = document.getElementById(key + '_result');
+    if (r) {
+      const msg = isCorrect ? '🎉 <strong style="color:#15803d">正確！</strong>' : '🤔 <strong style="color:#b91c1c">非最佳答案</strong>，請看解析。';
+      r.innerHTML = msg + RESET_BTN.replace('KEY', key);
+    }
+    revealSlideDetails(btn);
+  }
+  function resetQuestion(key) {
+    const r = document.getElementById(key + '_result');
+    if (!r) return;
+    r.innerHTML = '';
+    const card = r.closest('.card');
+    if (card) card.querySelectorAll('.choice').forEach(b => b.classList.remove('selected','correct','wrong'));
+  }
+  function revealSlideDetails(el) {
+    const s = el?.closest?.('.slide');
+    if (!s) return;
+    s.querySelectorAll('details').forEach(d => d.open = true);
+  }
+
+  // ===== Spectrum chart 渲染 =====
+  function renderSpectrumSVG(container, xs, ys, opts = {}) {
+    if (!xs.length || !ys.length) {
+      container.innerHTML = '<p style="color:#b91c1c;font-size:14px;">無資料</p>';
+      return;
+    }
+    const W = 600, PL = 50, PR = 14, PT = 14, PB = 36, DATA_H = 160;
+    const H = PT + DATA_H + PB;
+    const xmin = Math.min(...xs), xmax = Math.max(...xs);
+    const ymin = Math.min(...ys), ymax = Math.max(...ys);
+    const xspan = (xmax - xmin) || 1, yspan = (ymax - ymin) || 1;
+    const xrev = opts.xreverse;
+    const sx = x => { let t = (x - xmin) / xspan; if (xrev) t = 1 - t; return PL + t * (W - PL - PR); };
+    const sy = y => PT + (1 - (y - ymin) / yspan) * DATA_H;
+    let d = '';
+    for (let i = 0; i < xs.length; i++) {
+      d += (i === 0 ? 'M ' : ' L ') + sx(xs[i]).toFixed(1) + ' ' + sy(ys[i]).toFixed(1);
+    }
+    const tickSteps = [50, 100, 200, 250, 500, 1000];
+    let step = tickSteps[tickSteps.length - 1];
+    for (const s of tickSteps) { if (xspan / s <= 10) { step = s; break; } }
+    let ticks = '';
+    const first = Math.ceil(xmin / step) * step;
+    for (let t = first; t <= xmax; t += step) {
+      const px = sx(t);
+      ticks += `<line x1="${px}" y1="${PT+DATA_H}" x2="${px}" y2="${PT+DATA_H+4}" stroke="#64748b"/>`;
+      ticks += `<text x="${px}" y="${PT+DATA_H+14}" fill="#475569" font-size="11" text-anchor="middle">${Math.round(t)}</text>`;
+    }
+    const color = opts.color || '#6366f1';
+    const title = opts.title || '';
+    const xlabel = opts.xlabel || 'x';
+    const ylabel = opts.ylabel || 'y';
+    container.innerHTML = `${title ? `<div class="spec-title">${title}</div>` : ''}
+      <svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+        <rect x="${PL}" y="${PT}" width="${W-PL-PR}" height="${DATA_H}" fill="#fafbfd" stroke="#e2e8f0"/>
+        <path d="${d}" fill="none" stroke="${color}" stroke-width="1.6"/>
+        <line x1="${PL}" y1="${PT+DATA_H}" x2="${W-PR}" y2="${PT+DATA_H}" stroke="#64748b"/>
+        <line x1="${PL}" y1="${PT}" x2="${PL}" y2="${PT+DATA_H}" stroke="#64748b"/>
+        ${ticks}
+        <text x="${(PL+W-PR)/2}" y="${H-4}" fill="#475569" font-size="11" text-anchor="middle">${xlabel}${xrev ? '（高→低）' : ''}</text>
+        <text x="14" y="${PT+DATA_H/2}" fill="#475569" font-size="11" text-anchor="middle" transform="rotate(-90,14,${PT+DATA_H/2})">${ylabel}</text>
+      </svg>`;
+  }
+
+  // ===== Scan recorder：解析 CSV → 顯示 → 上傳 =====
+  function parseCSV(text) {
+    const lines = text.split(/\r?\n/).filter(l => l.trim() && !l.trim().startsWith('#'));
+    const xs = [], ys = [];
+    for (const line of lines) {
+      const parts = line.split(/[,\t;\s]+/).map(s => parseFloat(s.trim())).filter(v => !isNaN(v));
+      if (parts.length >= 2) { xs.push(parts[0]); ys.push(parts[1]); }
+    }
+    return { xs, ys };
+  }
+  function previewScan(btn) {
+    const card = btn.closest('.scan-recorder');
+    const text = card.querySelector('textarea').value;
+    const { xs, ys } = parseCSV(text);
+    const preview = card.querySelector('.preview');
+    if (!xs.length) {
+      preview.innerHTML = '<p style="color:#b91c1c;font-size:14px;">無法解析資料（請確認格式為兩欄：wavelength, intensity）</p>';
+      return;
+    }
+    const technique = card.querySelector('[data-field="technique"]').value;
+    const xlabel = technique === 'NIR' ? 'Wavelength (nm)' : 'Raman shift (cm⁻¹)';
+    const plastic = card.querySelector('[data-field="plastic_type"]').value;
+    preview.innerHTML = '<div class="specBox"></div>';
+    renderSpectrumSVG(preview.querySelector('.specBox'), xs, ys, {
+      title: `${plastic} | ${technique} | ${xs.length} 點`,
+      xlabel, ylabel: 'Intensity',
+      color: technique === 'NIR' ? '#0ea5e9' : '#16a34a'
+    });
+    card.querySelector('.status').textContent = `✅ 已預覽 ${xs.length} 個資料點`;
+    card.querySelector('.status').className = 'status success';
+  }
+  function pasteFile(btn) {
+    const card = btn.closest('.scan-recorder');
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.csv,.txt,.tsv';
+    input.onchange = async () => {
+      const f = input.files[0];
+      if (!f) return;
+      card.querySelector('textarea').value = await f.text();
+      previewScan(btn);
+    };
+    input.click();
+  }
+  async function uploadScan(btn) {
+    if (!student.id || !student.groupId) {
+      alert('請先點右上角「📝 學生登入」輸入學號 + 組別');
+      return;
+    }
+    if (!supabase) { alert('Supabase 尚未載入'); return; }
+    const card = btn.closest('.scan-recorder');
+    const status = card.querySelector('.status');
+    const text = card.querySelector('textarea').value;
+    const { xs, ys } = parseCSV(text);
+    if (!xs.length) { status.textContent = '⚠️ 無資料可上傳'; status.className = 'status error'; return; }
+    const payload = {
+      student_id: student.id,
+      group_id: student.groupId,
+      plastic_type: card.querySelector('[data-field="plastic_type"]').value,
+      technique: card.querySelector('[data-field="technique"]').value,
+      instrument: card.querySelector('[data-field="instrument"]').value,
+      wavelengths: xs,
+      intensities: ys,
+      npoints: xs.length,
+      notes: card.querySelector('[data-field="notes"]')?.value || null,
+      user_agent: navigator.userAgent.slice(0, 200),
+    };
+    status.textContent = '⏳ 上傳中...';
+    status.className = 'status';
+    try {
+      const { error } = await supabase.from('ml_workshop_scans').insert(payload);
+      if (error) {
+        status.textContent = '❌ 上傳失敗：' + error.message;
+        status.className = 'status error';
+      } else {
+        status.textContent = `🎉 已上傳到雲端！${payload.plastic_type} ${payload.technique} ${xs.length} 點`;
+        status.className = 'status success';
+        showToast(`✅ 上傳成功：${payload.plastic_type} ${payload.technique}`);
+      }
+    } catch (e) {
+      status.textContent = '❌ 上傳例外：' + e.message;
+      status.className = 'status error';
+    }
+  }
+  function makeScanRecorder(id, defaults = {}) {
+    return `
+      <div class="scan-recorder" id="${id}">
+        <h3>📊 ${defaults.title || '掃描資料上傳'}</h3>
+        <div class="form-row">
+          <label>儀器</label>
+          <select data-field="instrument">${(defaults.instruments || []).map(i => `<option value="${i.v}">${i.l}</option>`).join('')}</select>
+        </div>
+        <div class="form-row">
+          <label>塑膠</label>
+          <select data-field="plastic_type">
+            <option value="PE">PE 聚乙烯</option>
+            <option value="PP">PP 聚丙烯</option>
+            <option value="PET">PET 聚對苯二甲酸乙二酯</option>
+            <option value="PS">PS 聚苯乙烯</option>
+            <option value="PVC">PVC 聚氯乙烯</option>
+            <option value="unknown">未知樣品</option>
+          </select>
+        </div>
+        <input type="hidden" data-field="technique" value="${defaults.technique || 'NIR'}" />
+        <div class="form-row">
+          <label>備註</label>
+          <input data-field="notes" placeholder="例：3 重複的第 1 次" />
+        </div>
+        <label style="font-weight:600;color:#1e293b;font-size:14px;">CSV 資料（wavelength, intensity 每行一筆）：</label>
+        <textarea placeholder="900, 0.123&#10;901, 0.124&#10;..."></textarea>
+        <div class="actions">
+          <button onclick="pasteFile(this)" class="secondary">📁 從檔案載入</button>
+          <button onclick="previewScan(this)">👁️ 預覽光譜</button>
+          <button onclick="uploadScan(this)" class="goodBtn">☁️ 上傳到雲端</button>
+        </div>
+        <div class="status"></div>
+        <div class="preview"></div>
+      </div>
+    `;
+  }
+  // 為 scan-recorder 暴露至全域
+  window.makeScanRecorder = makeScanRecorder;
+
+  // ===== 初始化 =====
+  window.addEventListener('DOMContentLoaded', () => {
+    initSupabase();
+    buildSlides();
+    showSlide(0);
+  });
+</script>
+<script src="ml-workshop-slides.js"></script>
+</body>
+</html>

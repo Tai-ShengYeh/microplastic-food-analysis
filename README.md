@@ -57,9 +57,15 @@
 
 ## 🚀 線上瀏覽
 
-👉 **[https://tai-shengyeh.github.io/microplastic-food-analysis/](https://tai-shengyeh.github.io/microplastic-food-analysis/)**
+| 用途 | 網址 |
+|---|---|
+| **主課程**（3 小時、66 張投影片） | [microplastic-food-analysis/](https://tai-shengyeh.github.io/microplastic-food-analysis/) |
+| **ML 實作工作坊**（3.5 小時、hands-on lab） | [microplastic-ml-workshop.html](https://tai-shengyeh.github.io/microplastic-food-analysis/microplastic-ml-workshop.html) |
+| **教師儀表板** | [teacher.html](https://tai-shengyeh.github.io/microplastic-food-analysis/teacher.html) |
 
-學生可直接打開上方網址，使用網頁版互動教材。所有作答會儲存在本機瀏覽器，可隨時匯出。
+ML 工作坊：學生親手用 NIR / Raman 掃描塑膠樣品，全班合作上傳資料到 Supabase，
+然後在 Orange Data Mining 中做 PCA + 三種分類器 (kNN/SVM/RF) + 模型評估。
+詳見 [`ml-workshop/README.md`](ml-workshop/README.md)。
 
 ## 💻 本機使用
 

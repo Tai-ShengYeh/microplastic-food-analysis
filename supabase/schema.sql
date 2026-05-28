@@ -95,6 +95,62 @@ order by class_id, student_id;
 grant select on public.class_summary to authenticated;
 
 -- ============================================================
+-- 5. ML 工作坊掃描資料表 (microplastic-ml-workshop.html 使用)
+-- ============================================================
+create table if not exists public.ml_workshop_scans (
+  id           bigserial primary key,
+  student_id   text not null,
+  group_id     text,
+  plastic_type text not null,                  -- 'PE' | 'PP' | 'PET' | 'PS' | 'PVC' | 'PA' | 'ABS' | 'unknown'
+  technique    text not null,                  -- 'NIR' | 'Raman'
+  instrument   text,                           -- 'InnoSpectra' | 'NeoSpectra' | 'MicroNIR' | 'QEPro_532' | 'QEPro_785'
+  wavelengths  jsonb not null,                 -- array of numbers (nm 或 cm⁻¹)
+  intensities  jsonb not null,                 -- array of numbers
+  npoints      int,
+  notes        text,
+  scanned_at   timestamptz default now(),
+  user_agent   text
+);
+
+create index if not exists idx_scans_group_plastic on public.ml_workshop_scans(group_id, plastic_type);
+create index if not exists idx_scans_technique     on public.ml_workshop_scans(technique, instrument);
+create index if not exists idx_scans_student       on public.ml_workshop_scans(student_id, scanned_at desc);
+
+alter table public.ml_workshop_scans enable row level security;
+
+drop policy if exists "anyone can insert scans" on public.ml_workshop_scans;
+create policy "anyone can insert scans"
+  on public.ml_workshop_scans for insert
+  to anon, authenticated
+  with check (true);
+
+drop policy if exists "authenticated can read scans" on public.ml_workshop_scans;
+create policy "authenticated can read scans"
+  on public.ml_workshop_scans for select
+  to authenticated
+  using (true);
+
+grant insert on public.ml_workshop_scans to anon, authenticated;
+grant select on public.ml_workshop_scans to authenticated;
+grant usage, select on sequence public.ml_workshop_scans_id_seq to anon, authenticated;
+
+-- 6. ML 工作坊進度檢視 view
+create or replace view public.ml_workshop_progress as
+select
+  group_id,
+  technique,
+  count(*)                                    as total_scans,
+  count(distinct plastic_type)                as unique_plastics,
+  count(distinct student_id)                  as students_contributed,
+  min(scanned_at)                             as first_scan_at,
+  max(scanned_at)                             as last_scan_at
+from public.ml_workshop_scans
+group by group_id, technique
+order by group_id, technique;
+
+grant select on public.ml_workshop_progress to authenticated;
+
+-- ============================================================
 -- 教師建立帳號方式：
 -- 在 Supabase Dashboard → Authentication → Users → Add user
 -- 用 email + password 註冊；之後就能登入 teacher.html 看統計
