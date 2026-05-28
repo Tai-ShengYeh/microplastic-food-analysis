@@ -226,12 +226,20 @@
     }
     .legend span::before { content: "■"; margin-right: 4px; }
     .sizebar {
-      position: relative; height: 64px; border-radius: 10px;
-      background: linear-gradient(90deg, #ec4899 0%, #8b5cf6 25%, #06b6d4 65%, #22c55e 100%);
-      margin: 14px 0; box-shadow: 0 4px 8px rgba(15,23,42,0.1);
+      display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+      margin: 18px 0; border-radius: 10px; overflow: hidden;
+      box-shadow: 0 4px 10px rgba(15,23,42,0.1);
     }
-    .sizebar .label { position: absolute; top: 6px; font-size: 14px; color: white; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
-    .sizebar .scale { position: absolute; bottom: 4px; font-size: 13px; color: white; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+    .sizebar .zone {
+      padding: 16px 8px; text-align: center; color: white;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+    .sizebar .zone-name { font-weight: 800; font-size: 18px; letter-spacing: 0.5px; }
+    .sizebar .zone-range { font-size: 14px; opacity: 0.95; margin-top: 4px; }
+    .sizebar .z1 { background: #ec4899; }
+    .sizebar .z2 { background: #8b5cf6; }
+    .sizebar .z3 { background: #06b6d4; }
+    .sizebar .z4 { background: #22c55e; }
     .pill {
       display: inline-block; padding: 4px 10px; border-radius: 999px;
       font-size: 14px; font-weight: 700; margin: 3px;
@@ -355,14 +363,10 @@
         <p><span class="highlight">奈米塑膠 (Nanoplastics, NP)</span>：粒徑 &lt; 1 μm（或 &lt; 100 nm 嚴格定義），來自微塑膠的進一步破碎或產品中的奈米添加。</p>
       </div>
       <div class="sizebar">
-        <span class="label" style="left:4%;top:20px">NP &lt; 1 μm</span>
-        <span class="label" style="left:30%;top:20px">小 MP 1–100 μm</span>
-        <span class="label" style="left:55%;top:20px">大 MP 100 μm–5 mm</span>
-        <span class="label" style="left:84%;top:20px">塑膠碎片 &gt; 5 mm</span>
-        <span class="scale" style="left:2%">10 nm</span>
-        <span class="scale" style="left:25%">1 μm</span>
-        <span class="scale" style="left:55%">100 μm</span>
-        <span class="scale" style="left:82%">5 mm</span>
+        <div class="zone z1"><div class="zone-name">NP</div><div class="zone-range">&lt; 1 μm</div></div>
+        <div class="zone z2"><div class="zone-name">小 MP</div><div class="zone-range">1 – 100 μm</div></div>
+        <div class="zone z3"><div class="zone-name">大 MP</div><div class="zone-range">100 μm – 5 mm</div></div>
+        <div class="zone z4"><div class="zone-name">塑膠碎片</div><div class="zone-range">&gt; 5 mm</div></div>
       </div>
       <div class="grid">
         <div class="card">
