@@ -32,19 +32,28 @@
 | 155–170 min | M4 | 方法整合與決策樹 |
 | 170–180 min | M5 | 總結與 Exit Ticket |
 
-共 **44 張投影片**，內含 **12 個互動元件**（選擇題、是非題、圖譜辨識題、情境決策題、短答題）。
+共 **66 張投影片**，內含 14 個互動元件（選擇題、是非題、圖譜辨識題、情境決策題、短答題）。
 
 ## ✨ 功能特色
 
-- 🎨 **學生版 / 教師版雙視角切換**（右上角按鈕）
-  - 教師版自動展開所有「解析」摘要、顯示教學提示
-- 📊 **即時自動評分**（選擇題、是非題、圖譜辨識）
-- 💾 **作答自動儲存** 至瀏覽器 localStorage
-- 📋 **一鍵匯出 TSV** 作答紀錄
-- 🖼️ **內嵌 SVG 光譜圖**（FTIR、Raman、NIR 示意）
-- ⌨️ **鍵盤翻頁**：← → 翻頁、Home/End 到首尾
+- 📊 **即時自動評分**（選擇題、是非題、圖譜辨識），每題可重新作答
+- 🖼️ **內嵌 SVG 光譜圖**（NIR 為實驗室真實數據；Raman 取自 KU Leuven 公開資料庫；FTIR 依文獻峰位重建）
+- ⌨️ **鍵盤翻頁**：← → 翻頁
 - 🖨️ **可列印 / 匯出 PDF**（瀏覽器列印對話框）
 - 📱 響應式設計
+
+### 🎓 評量模式（教學實踐計畫 / 學習成效追蹤）
+
+點擊右上角「📝 我要作答」可進入評量模式：
+- 學生輸入學號 + 班級
+- 每題作答即時上傳至 **Supabase** 雲端資料庫
+- 教師端可在 [`teacher.html`](teacher.html) 用帳號密碼登入查看：
+  - **整體摘要**：參與學生數、總作答數、平均正確率
+  - **item_stats**：每題答對率（含進度條視覺化）
+  - **class_summary**：每位學生在班級內的表現
+  - **原始作答紀錄**：最近 200 筆完整資料，可匯出 CSV
+
+> ⚠️ 預設未設定 Supabase，評量模式不會送出資料。設定方法見「Supabase 部署」章節。
 
 ## 🚀 線上瀏覽
 
@@ -85,6 +94,41 @@ cd microplastic-food-analysis
 ## 📝 授權與使用
 
 歡迎用於非營利教學用途，請保留原始引用文獻。教材所有光譜為教學示意 SVG，**不可作為標準儀器圖譜使用**。
+
+## 🗄️ Supabase 部署（學習成效追蹤）
+
+### 1. 在 Supabase 建立 schema
+1. 登入 [Supabase Dashboard](https://supabase.com/dashboard) → 選擇您的專案
+2. 左側 **SQL Editor** → New query → 將 [`supabase/schema.sql`](supabase/schema.sql) 全部內容貼上 → **Run**
+3. 確認 `attempts` 表、`item_stats`、`class_summary` views 都建立成功
+
+### 2. 取得專案 URL 與 anon key
+- 左側 **Project Settings** → **API**
+- 複製 **Project URL**（形如 `https://xxxxx.supabase.co`）
+- 複製 **anon / public** 那行的 API key（不是 service role！）
+
+### 3. 將憑證寫入 HTML
+編輯 `index.html` 與 `teacher.html`，找到：
+```js
+const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+```
+替換為您的值。Anon key 設計上可公開（受 Row Level Security 保護），放到 GitHub 公開 repo 也安全。
+
+### 4. 建立教師帳號
+左側 **Authentication** → **Users** → **Add user** → 用 email + password 建立帳號。
+之後即可登入 `teacher.html` 看統計。
+
+### 5. 推送並使用
+```bash
+git add index.html teacher.html
+git commit -m "config: 寫入 Supabase 憑證"
+git push
+```
+
+學生使用：開啟 GitHub Pages 網址 → 右上角「📝 我要作答」→ 輸入學號 → 每題作答即時上傳。
+
+教師使用：打開 `<github-pages-url>/teacher.html` → 用 email/password 登入 → 看儀表板。
 
 ## 🛠️ 二次編輯
 

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>教師儀表板｜微塑膠教學課程</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --accent: #0ea5e9;
+      --text: #0f172a;
+      --muted: #475569;
+      --line: #e2e8f0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif;
+      background: linear-gradient(135deg, #e0f2fe 0%, #f8fafc 40%, #fef3c7 100%);
+      color: var(--text); min-height: 100vh;
+    }
+    header {
+      background: white; padding: 16px 28px;
+      border-bottom: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 2px 6px rgba(15,23,42,0.05);
+    }
+    h1 { font-size: 24px; margin: 0; color: #075985; }
+    main { padding: 24px 28px; max-width: 1400px; margin: auto; }
+    .card {
+      background: white; border: 1px solid var(--line); border-radius: 12px;
+      padding: 20px; margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(15,23,42,0.04);
+    }
+    h2 { color: #075985; margin-top: 0; font-size: 20px; }
+    button {
+      cursor: pointer; padding: 8px 14px; font-size: 14px;
+      background: var(--accent); color: white;
+      border: 0; border-radius: 8px; font-weight: 600;
+      box-shadow: 0 2px 4px rgba(14,165,233,0.25);
+    }
+    button.secondary { background: #64748b; }
+    button.danger { background: #dc2626; }
+    button:hover { filter: brightness(1.08); }
+    input, select {
+      padding: 8px 12px; font-size: 14px;
+      border: 1.5px solid #cbd5e1; border-radius: 8px;
+      background: white; font-family: inherit;
+    }
+    input:focus, select:focus { outline: none; border-color: var(--accent); }
+    label { display: block; margin: 8px 0 4px; font-weight: 600; color: #1e293b; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 14px; }
+    th, td { padding: 8px 10px; border: 1px solid var(--line); text-align: left; }
+    th { background: #e0f2fe; color: #075985; font-weight: 700; }
+    tr:nth-child(even) td { background: #f8fafc; }
+    .correct-rate-bar {
+      display: inline-block; width: 60px; height: 8px;
+      background: #e2e8f0; border-radius: 4px; vertical-align: middle;
+      margin-right: 6px;
+    }
+    .correct-rate-bar > div { height: 100%; border-radius: 4px; }
+    .login-screen {
+      min-height: 80vh; display: flex; align-items: center; justify-content: center;
+    }
+    .login-screen .card { width: 90%; max-width: 380px; padding: 28px; }
+    .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: end; margin-bottom: 12px; }
+    .toolbar > * { flex-shrink: 0; }
+    .small { font-size: 13px; color: var(--muted); }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+    .stat-grid .stat { background: #f0f9ff; padding: 12px 16px; border-radius: 10px; border-left: 4px solid var(--accent); }
+    .stat .label { font-size: 13px; color: var(--muted); }
+    .stat .value { font-size: 24px; font-weight: 700; color: #075985; }
+    .err { color: #b91c1c; font-size: 14px; margin-top: 8px; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📊 教師儀表板｜微塑膠教學課程</h1>
+    <div id="userBox"></div>
+  </header>
+
+  <main>
+    <!-- 登入畫面 -->
+    <div id="loginScreen" class="login-screen">
+      <div class="card">
+        <h2>教師登入</h2>
+        <p class="small">使用 Supabase Auth 帳號登入</p>
+        <label>Email</label>
+        <input id="loginEmail" type="email" style="width:100%;" />
+        <label>Password</label>
+        <input id="loginPassword" type="password" style="width:100%;" />
+        <div style="margin-top:14px;display:flex;gap:8px;">
+          <button onclick="signIn()" style="flex:1;">登入</button>
+        </div>
+        <div id="loginErr" class="err"></div>
+      </div>
+    </div>
+
+    <!-- 主儀表板 -->
+    <div id="dashboard" class="hidden">
+      <!-- 篩選 toolbar -->
+      <div class="card">
+        <div class="toolbar">
+          <div>
+            <label>班級篩選</label>
+            <select id="classFilter" onchange="reloadAll()">
+              <option value="">全部班級</option>
+            </select>
+          </div>
+          <div>
+            <label>&nbsp;</label>
+            <button onclick="reloadAll()">🔄 重新載入</button>
+          </div>
+          <div>
+            <label>&nbsp;</label>
+            <button class="secondary" onclick="exportRawCSV()">⬇️ 匯出原始資料 CSV</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 摘要統計 -->
+      <div class="card">
+        <h2>整體摘要</h2>
+        <div class="stat-grid" id="summaryStats"></div>
+      </div>
+
+      <!-- 每題正確率 -->
+      <div class="card">
+        <h2>各題作答統計 (item_stats)</h2>
+        <div class="small">依班級分組顯示每題的答題數、答對率</div>
+        <div id="itemStatsTable"></div>
+      </div>
+
+      <!-- 每位學生表現 -->
+      <div class="card">
+        <h2>學生個人表現 (class_summary)</h2>
+        <div id="studentTable"></div>
+      </div>
+
+      <!-- 原始作答資料 -->
+      <div class="card">
+        <h2>最近 200 筆作答原始紀錄</h2>
+        <div id="rawTable"></div>
+      </div>
+    </div>
+  </main>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+  const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
+  if (SUPABASE_URL.startsWith('YOUR_')) {
+    document.body.innerHTML = '<div style="padding:40px;font-family:sans-serif;"><h2>⚠️ 尚未設定 Supabase</h2><p>請編輯 teacher.html，將 <code>YOUR_SUPABASE_URL</code> 與 <code>YOUR_SUPABASE_ANON_KEY</code> 替換為您的專案資訊。</p></div>';
+    throw new Error('Not configured');
+  }
+
+  const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  let rawCache = [];
+
+  // ===== Auth =====
+  async function checkAuth() {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      showDashboard(session.user);
+    } else {
+      showLogin();
+    }
+  }
+
+  window.signIn = async function signIn() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) {
+      document.getElementById('loginErr').textContent = '登入失敗：' + error.message;
+      return;
+    }
+    showDashboard(data.user);
+  }
+
+  window.signOut = async function signOut() {
+    await sb.auth.signOut();
+    showLogin();
+  }
+
+  function showLogin() {
+    document.getElementById('loginScreen').classList.remove('hidden');
+    document.getElementById('dashboard').classList.add('hidden');
+    document.getElementById('userBox').innerHTML = '';
+  }
+
+  async function showDashboard(user) {
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
+    document.getElementById('userBox').innerHTML =
+      `<span class="small">登入：${user.email}</span> <button class="secondary" onclick="signOut()" style="margin-left:10px;">登出</button>`;
+    await populateClassFilter();
+    await reloadAll();
+  }
+
+  // ===== 資料載入 =====
+  async function populateClassFilter() {
+    const { data, error } = await sb.from('class_summary').select('class_id');
+    if (error) return;
+    const classes = [...new Set(data.map(r => r.class_id).filter(Boolean))].sort();
+    const sel = document.getElementById('classFilter');
+    sel.innerHTML = '<option value="">全部班級</option>' +
+      classes.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+  }
+
+  window.reloadAll = async function reloadAll() {
+    const cls = document.getElementById('classFilter').value;
+    await Promise.all([
+      loadItemStats(cls),
+      loadClassSummary(cls),
+      loadRawAttempts(cls),
+    ]);
+  }
+
+  async function loadItemStats(cls) {
+    let q = sb.from('item_stats').select('*');
+    if (cls) q = q.eq('class_id', cls);
+    const { data, error } = await q;
+    if (error) { document.getElementById('itemStatsTable').innerHTML = err(error); return; }
+    if (!data || !data.length) { document.getElementById('itemStatsTable').innerHTML = '<p class="small">尚無資料</p>'; return; }
+
+    let html = '<table><tr><th>班級</th><th>題目</th><th>類型</th><th>答題人數</th><th>總作答數</th><th>正確率</th></tr>';
+    data.sort((a,b) => (a.class_id||'').localeCompare(b.class_id||'') || a.question_key.localeCompare(b.question_key));
+    data.forEach(r => {
+      const rate = r.correct_rate_pct;
+      const rateDisplay = rate == null
+        ? '<span class="small">非評分題</span>'
+        : `<span class="correct-rate-bar"><div style="width:${rate}%;background:${rate>=70?'#16a34a':rate>=50?'#f59e0b':'#dc2626'};"></div></span> ${rate}%`;
+      html += `<tr>
+        <td>${escapeHtml(r.class_id||'')}</td>
+        <td><code>${escapeHtml(r.question_key)}</code></td>
+        <td>${escapeHtml(r.question_type||'')}</td>
+        <td>${r.unique_students}</td>
+        <td>${r.total_attempts}</td>
+        <td>${rateDisplay}</td>
+      </tr>`;
+    });
+    html += '</table>';
+    document.getElementById('itemStatsTable').innerHTML = html;
+  }
+
+  async function loadClassSummary(cls) {
+    let q = sb.from('class_summary').select('*');
+    if (cls) q = q.eq('class_id', cls);
+    const { data, error } = await q;
+    if (error) { document.getElementById('studentTable').innerHTML = err(error); return; }
+    if (!data || !data.length) { document.getElementById('studentTable').innerHTML = '<p class="small">尚無資料</p>'; return; }
+
+    // 摘要
+    const totalAttempts = data.reduce((s,r) => s + r.total_attempts, 0);
+    const totalStudents = data.length;
+    const avgAccuracy = data.filter(r => r.accuracy_pct != null).reduce((s,r) => s + r.accuracy_pct, 0)
+      / Math.max(1, data.filter(r => r.accuracy_pct != null).length);
+    document.getElementById('summaryStats').innerHTML = `
+      <div class="stat"><div class="label">參與學生</div><div class="value">${totalStudents}</div></div>
+      <div class="stat"><div class="label">總作答數</div><div class="value">${totalAttempts}</div></div>
+      <div class="stat"><div class="label">平均正確率</div><div class="value">${avgAccuracy.toFixed(1)}%</div></div>
+    `;
+
+    let html = '<table><tr><th>班級</th><th>學號</th><th>答題數</th><th>不同題數</th><th>正確</th><th>正確率</th><th>首次</th><th>最近</th></tr>';
+    data.sort((a,b) => (a.class_id||'').localeCompare(b.class_id||'') || a.student_id.localeCompare(b.student_id));
+    data.forEach(r => {
+      const rate = r.accuracy_pct;
+      html += `<tr>
+        <td>${escapeHtml(r.class_id||'')}</td>
+        <td><strong>${escapeHtml(r.student_id)}</strong></td>
+        <td>${r.total_attempts}</td>
+        <td>${r.unique_questions_answered}</td>
+        <td>${r.correct_count}</td>
+        <td>${rate == null ? '—' : rate + '%'}</td>
+        <td class="small">${fmtTs(r.first_answer_at)}</td>
+        <td class="small">${fmtTs(r.last_answer_at)}</td>
+      </tr>`;
+    });
+    html += '</table>';
+    document.getElementById('studentTable').innerHTML = html;
+  }
+
+  async function loadRawAttempts(cls) {
+    let q = sb.from('attempts').select('*').order('answered_at', { ascending: false }).limit(200);
+    if (cls) q = q.eq('class_id', cls);
+    const { data, error } = await q;
+    if (error) { document.getElementById('rawTable').innerHTML = err(error); return; }
+    rawCache = data || [];
+    if (!rawCache.length) { document.getElementById('rawTable').innerHTML = '<p class="small">尚無資料</p>'; return; }
+
+    let html = '<table><tr><th>時間</th><th>班級</th><th>學號</th><th>題目</th><th>類型</th><th>作答</th><th>對</th><th>重答</th></tr>';
+    rawCache.forEach(r => {
+      const ans = r.answer && r.answer.length > 40 ? r.answer.slice(0, 40) + '…' : (r.answer || '');
+      const icon = r.is_correct === true ? '✅' : r.is_correct === false ? '❌' : '—';
+      html += `<tr>
+        <td class="small">${fmtTs(r.answered_at)}</td>
+        <td>${escapeHtml(r.class_id||'')}</td>
+        <td>${escapeHtml(r.student_id)}</td>
+        <td><code>${escapeHtml(r.question_key)}</code></td>
+        <td>${escapeHtml(r.question_type||'')}</td>
+        <td>${escapeHtml(ans)}</td>
+        <td>${icon}</td>
+        <td>${r.retry_count}</td>
+      </tr>`;
+    });
+    html += '</table>';
+    document.getElementById('rawTable').innerHTML = html;
+  }
+
+  window.exportRawCSV = function exportRawCSV() {
+    if (!rawCache.length) { alert('沒有資料可匯出'); return; }
+    const headers = ['answered_at','class_id','student_id','question_key','question_type','answer','is_correct','retry_count','session_id'];
+    const rows = [headers.join(',')];
+    rawCache.forEach(r => {
+      const row = headers.map(h => {
+        let v = r[h] == null ? '' : String(r[h]);
+        if (v.includes(',') || v.includes('"') || v.includes('\n')) v = '"' + v.replace(/"/g, '""') + '"';
+        return v;
+      });
+      rows.push(row.join(','));
+    });
+    const blob = new Blob(['﻿' + rows.join('\n')], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'microplastic_attempts_' + new Date().toISOString().slice(0,10) + '.csv';
+    a.click();
+  }
+
+  // ===== Helpers =====
+  function escapeHtml(s) {
+    if (s == null) return '';
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function fmtTs(s) {
+    if (!s) return '';
+    const d = new Date(s);
+    return d.toLocaleString('zh-TW', { hour12: false }).replace(/\//g, '-');
+  }
+  function err(e) { return `<p class="err">錯誤：${escapeHtml(e.message)}</p>`; }
+
+  checkAuth();
+</script>
+</body>
+</html>

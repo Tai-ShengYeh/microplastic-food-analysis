@@ -156,6 +156,43 @@
       box-shadow: none; font-weight: 600;
     }
     .reset-btn:hover { background: #f1f5f9; transform: none; }
+    /* 評量模式 UI */
+    .eval-toggle {
+      position: fixed; top: 12px; right: 16px; z-index: 50;
+    }
+    .eval-toggle button {
+      padding: 8px 14px; font-size: 14px; border-radius: 999px;
+      background: rgba(255,255,255,0.95); color: #475569;
+      border: 1px solid #cbd5e1; font-weight: 600;
+      box-shadow: 0 2px 6px rgba(15,23,42,0.08);
+    }
+    .eval-toggle.active button {
+      background: #16a34a; color: white; border-color: #15803d;
+    }
+    .eval-modal {
+      position: fixed; inset: 0; z-index: 100;
+      display: none; align-items: center; justify-content: center;
+      background: rgba(15,23,42,0.55); backdrop-filter: blur(2px);
+    }
+    .eval-modal.open { display: flex; }
+    .eval-modal .panel {
+      background: white; padding: 28px; border-radius: 14px;
+      max-width: 460px; width: 90%;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+    .eval-modal h3 { margin: 0 0 8px; color: #075985; font-size: 22px; }
+    .eval-modal .desc { font-size: 15px; color: #475569; margin-bottom: 12px; }
+    .eval-modal label { display: block; margin: 12px 0 4px; font-weight: 600; color: #1e293b; font-size: 15px; }
+    .eval-modal .btns { display: flex; gap: 8px; margin-top: 20px; justify-content: flex-end; }
+    .eval-toast {
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+      padding: 10px 18px; border-radius: 8px; z-index: 200;
+      background: #1e293b; color: white; font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      opacity: 0; transition: opacity 0.25s;
+    }
+    .eval-toast.show { opacity: 1; }
+    @media print { .eval-toggle, .eval-modal, .eval-toast { display: none !important; } }
     .progress {
       position: fixed; left: 0; top: 0; height: 5px;
       background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
@@ -230,6 +267,26 @@
 </head>
 <body>
   <div class="progress" id="progress"></div>
+
+  <!-- 評量模式切換 -->
+  <div class="eval-toggle" id="evalToggle">
+    <button onclick="openEvalModal()">📝 我要作答</button>
+  </div>
+  <div class="eval-modal" id="evalModal">
+    <div class="panel">
+      <h3>進入評量模式</h3>
+      <p class="desc">輸入學號後，你的作答會即時上傳到雲端；老師可看到班級統計。</p>
+      <label>學號 <span style="color:#dc2626">*</span></label>
+      <input id="evalStudentId" type="text" placeholder="例：B11234567" />
+      <label>班級（選填）</label>
+      <input id="evalClassId" type="text" placeholder="例：113-1-食品分析-甲" />
+      <div class="btns">
+        <button class="secondary" onclick="closeEvalModal()">取消</button>
+        <button onclick="enterEvalMode()">開始作答</button>
+      </div>
+    </div>
+  </div>
+  <div class="eval-toast" id="evalToast"></div>
 
   <main class="deck" id="studentDeck">
 
@@ -1799,6 +1856,123 @@
     answers: {},
   };
 
+  // ===== Supabase 評量模式設定 =====
+  // 部署時請將下方兩個值替換為您的 Supabase 專案資訊
+  const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+  const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
+  let supabaseClient = null;
+  const evalMode = {
+    active: false,
+    studentId: null,
+    classId: null,
+    sessionId: null,
+    answeredCount: 0,
+  };
+  const retryCounts = {};
+
+  async function initSupabase() {
+    if (SUPABASE_URL.startsWith('YOUR_') || SUPABASE_ANON_KEY.startsWith('YOUR_')) {
+      console.warn('Supabase 尚未設定，評量模式無法上傳資料。');
+      return;
+    }
+    try {
+      const mod = await import('https://esm.sh/@supabase/supabase-js@2');
+      supabaseClient = mod.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } catch (e) {
+      console.error('Supabase 載入失敗:', e);
+    }
+  }
+
+  function showToast(msg, durationMs = 2200) {
+    const t = document.getElementById('evalToast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(showToast._timer);
+    showToast._timer = setTimeout(() => t.classList.remove('show'), durationMs);
+  }
+
+  function openEvalModal() {
+    if (evalMode.active) {
+      // 已在評量模式 → 詢問是否退出
+      if (confirm(`你目前以學號「${evalMode.studentId}」作答，已答 ${evalMode.answeredCount} 題。要退出評量模式嗎？`)) {
+        exitEvalMode();
+      }
+      return;
+    }
+    document.getElementById('evalModal').classList.add('open');
+    setTimeout(() => document.getElementById('evalStudentId').focus(), 50);
+  }
+
+  function closeEvalModal() {
+    document.getElementById('evalModal').classList.remove('open');
+  }
+
+  function enterEvalMode() {
+    const sid = document.getElementById('evalStudentId').value.trim();
+    const cid = document.getElementById('evalClassId').value.trim();
+    if (!sid) { alert('請輸入學號'); return; }
+    evalMode.active = true;
+    evalMode.studentId = sid;
+    evalMode.classId = cid || null;
+    evalMode.sessionId = crypto.randomUUID();
+    evalMode.answeredCount = 0;
+    closeEvalModal();
+    updateEvalToggle();
+    showToast(`✅ 已進入評量模式｜學號 ${sid}`);
+  }
+
+  function exitEvalMode() {
+    evalMode.active = false;
+    evalMode.studentId = null;
+    evalMode.classId = null;
+    evalMode.sessionId = null;
+    evalMode.answeredCount = 0;
+    updateEvalToggle();
+    showToast('已退出評量模式');
+  }
+
+  function updateEvalToggle() {
+    const el = document.getElementById('evalToggle');
+    const btn = el.querySelector('button');
+    if (evalMode.active) {
+      el.classList.add('active');
+      btn.textContent = `📊 ${evalMode.studentId} ｜ 已答 ${evalMode.answeredCount}`;
+    } else {
+      el.classList.remove('active');
+      btn.textContent = '📝 我要作答';
+    }
+  }
+
+  async function logAttempt(payload) {
+    if (!evalMode.active || !supabaseClient) return;
+    const data = {
+      student_id: evalMode.studentId,
+      class_id: evalMode.classId,
+      session_id: evalMode.sessionId,
+      question_key: payload.key,
+      question_type: payload.type,
+      answer: payload.answer == null ? null : String(payload.answer),
+      is_correct: payload.isCorrect ?? null,
+      retry_count: retryCounts[payload.key] || 0,
+      user_agent: navigator.userAgent.slice(0, 200),
+    };
+    try {
+      const { error } = await supabaseClient.from('attempts').insert(data);
+      if (error) {
+        console.error('logAttempt error:', error);
+        showToast('⚠️ 上傳失敗，請檢查網路');
+        return;
+      }
+      evalMode.answeredCount++;
+      updateEvalToggle();
+    } catch (e) {
+      console.error('logAttempt exception:', e);
+      showToast('⚠️ 上傳例外');
+    }
+  }
+
   function getDeck() {
     return document.getElementById('studentDeck');
   }
@@ -1949,6 +2123,7 @@
     state.answers[key] = value;
     const result = document.getElementById(key + '_result');
     if (result) result.innerHTML = '✅ 已記錄：<strong>' + value + '</strong>' + RESET_BTN.replace('KEY', key);
+    logAttempt({ key, type: 'select', answer: value, isCorrect: null });
   }
 
   function checkMCQ(btn, key, value, isCorrect) {
@@ -1964,10 +2139,13 @@
         : '🤔 <strong style="color:#b91c1c">非最佳答案</strong>，請看解析。';
       result.innerHTML = msg + RESET_BTN.replace('KEY', key);
     }
+    const type = key.startsWith('q_tf') ? 'tf' : 'mcq';
+    logAttempt({ key, type, answer: value, isCorrect });
   }
 
   function resetQuestion(key) {
     delete state.answers[key];
+    retryCounts[key] = (retryCounts[key] || 0) + 1;
     const result = document.getElementById(key + '_result');
     if (!result) return;
     result.innerHTML = '';
@@ -1993,6 +2171,19 @@
     if (e.key === 'End') { e.preventDefault(); const slides = getSlides(); goSlide(slides.length - 1); }
   });
 
+  // textarea 失去焦點時上傳 (限評量模式 + 內容長度 > 5)
+  document.addEventListener('focusout', e => {
+    if (e.target.tagName !== 'TEXTAREA' || !e.target.dataset.key) return;
+    const text = e.target.value.trim();
+    if (text.length <= 5) return;
+    logAttempt({
+      key: e.target.dataset.key,
+      type: 'free',
+      answer: text,
+      isCorrect: null,
+    });
+  }, true);
+
   // 初始化
   window.addEventListener('DOMContentLoaded', () => {
     loadSpectra();
@@ -2000,6 +2191,7 @@
     // 教師授課版：預設展開所有解析
     document.querySelectorAll('details').forEach(d => d.open = true);
     showSlide(0);
+    initSupabase();
   });
 </script>
 </body>
