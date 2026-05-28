@@ -4,3 +4,5 @@ Thumbs.db
 *.tmp
 *.log
 microplastic_teaching.zip
+en/_*.txt
+en/_*.py

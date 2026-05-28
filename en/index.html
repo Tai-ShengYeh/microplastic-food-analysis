@@ -304,9 +304,9 @@
       <h3>Enter Assessment Mode</h3>
       <p class="desc">After signing in with your Student ID, your answers are uploaded in real time. The instructor can view class-wide statistics on the dashboard.</p>
       <label>Student ID <span style="color:#dc2626">*</span></label>
-      <input id="evalStudentId" type="text" placeholder="例：B11234567" />
+      <input id="evalStudentId" type="text" placeholder="e.g., B11234567" />
       <label>Class (optional)</label>
-      <input id="evalClassId" type="text" placeholder="例：113-1-食品分析-甲" />
+      <input id="evalClassId" type="text" placeholder="e.g., 113-1-Food-Analysis-Sec-A" />
       <div class="btns">
         <button class="secondary" onclick="closeEvalModal()">Cancel</button>
         <button onclick="enterEvalMode()">Start</button>
@@ -316,7 +316,7 @@
   <div class="eval-toast" id="evalToast"></div>
 
   <div class="lang-switch" style="position:fixed;top:8px;left:12px;z-index:50;background:rgba(255,255,255,0.95);padding:4px 10px;border-radius:999px;border:1px solid #cbd5e1;box-shadow:0 2px 8px rgba(15,23,42,0.08);font-size:13px;">
-    <a href="../index.html" style="color:#4c1d95;text-decoration:none;font-weight:600;margin:0 4px;">中文</a>
+    <a href="../index.html" style="color:#4c1d95;text-decoration:none;font-weight:600;margin:0 4px;">Chinese</a>
     <a href="index.html" style="color:white;background:#0ea5e9;padding:2px 8px;border-radius:999px;text-decoration:none;font-weight:600;margin:0 4px;">EN</a>
   </div>
 
@@ -330,10 +330,10 @@
         <h3>Today you will learn</h3>
         <ul>
           <li>Sources, types, and health concerns of microplastics in food</li>
-          <li>三種Vibrational Spectroscopy各自的<span class="highlight">detection limits</span>與應用場景</li>
-          <li>Py-GC-MS、TED-GC-MS 如何進行<span class="highlight">mass-based quantification</span></li>
-          <li>LC-MS 在Plasticizers、寡聚物、Additives分析的角色</li>
-          <li>如何依Sample 特性與目標<span class="highlight">select the correct method</span></li>
+          <li>For each of the three vibrational spectroscopies, the <span class="highlight">detection limit</span> and application context</li>
+          <li>Py-GC-MS、TED-GC-MS enables <span class="highlight">mass-based quantification</span></li>
+          <li>LC-MS role in analyzing plasticizers, oligomers, and additives</li>
+          <li>How to <span class="highlight">select the correct method</span></li>
         </ul>
       </div>
     </section>
@@ -343,7 +343,7 @@
       <h2>Course Content</h2>
       <ul>
         <li>Microplastics 101: definitions, sources, sample preparation</li>
-        <li>Vibrational Spectroscopy：NIR、FTIR、Raman</li>
+        <li>vibrational spectroscopy：NIR、FTIR、Raman</li>
         <li>Mass spectrometry: Py-GC-MS, LC-MS</li>
         <li>Method integration and decision tree</li>
         <li>Summary and Exit Ticket</li>
@@ -355,7 +355,7 @@
       <h2>Warm-up: How many microplastics does an average adult ingest per week?</h2>
       <div class="card activity">
         <div class="choices-grid">
-        <button class="choice" onclick="selectChoice(this,'q_warmup','A')">A. 幾乎沒有（&lt; 0.01 g)</button>
+        <button class="choice" onclick="selectChoice(this,'q_warmup','A')">A. Almost none (&lt; 0.01 g)</button>
         <button class="choice" onclick="selectChoice(this,'q_warmup','B')">B. ~1 g (mass of an ATM card)</button>
         <button class="choice" onclick="selectChoice(this,'q_warmup','C')">C. ~5 g (mass of a credit card)</button>
         <button class="choice" onclick="selectChoice(this,'q_warmup','D')">D. ~50 g (mass of a toothbrush)</button>
@@ -369,12 +369,12 @@
       </details>
     </section>
 
-    <!-- S4 微塑膠定義 -->
+    <!-- S4 微plastic定義 -->
     <section class="slide">
       <h2>What are microplastics?</h2>
       <div class="card">
-        <p><span class="highlight">微塑膠 (Microplastics, MP)</span>：粒徑 &lt; 5 mm 的塑膠顆粒（由 NOAA / GESAMP 定義；歐盟提案 1 μm – 5 mm).</p>
-        <p><span class="highlight">奈米塑膠 (Nanoplastics, NP)</span>：粒徑 &lt; 1 μm（或 &lt; 100 nm 嚴格定義)，來自微塑膠的進一步破碎或產品中的奈米添加.</p>
+        <p><span class="highlight">Microplastics (MP)</span>：Plastic particles &lt; 5 mm in size (NOAA/GESAMP definition; EU proposes 1 μm – 5 mm).</p>
+        <p><span class="highlight">Nanoplastics (NP)</span>：Particles &lt; 1 μm (or &lt; 100 nm by strict definition), formed by further fragmentation of MP or as nano-additives in products.</p>
       </div>
       <div class="sizebar">
         <div class="zone z1"><div class="zone-name">NP</div><div class="zone-range">&lt; 1 μm</div></div>
@@ -395,7 +395,7 @@
       <p class="citation">Cole M. et al. (2011) Microplastics as contaminants in the marine environment: a review. <em>Mar Pollut Bull</em> 62:2588–2597.</p>
     </section>
 
-    <!-- S5 常見塑膠類型 -->
+    <!-- S5 常見plastic類型 -->
     <section class="slide">
       <h2>Most commonly detected plastics in food</h2>
       <table>
@@ -405,8 +405,8 @@
         <tr><td><span class="pill pink">PET</span></td><td>Polyethylene terephthalate</td><td>1.37</td><td>Water bottles, beverages, oil bottles</td><td>FTIR: 1715/1240/1090/720</td></tr>
         <tr><td><span class="pill green">PS</span></td><td>Polystyrene</td><td>1.04–1.10</td><td>Disposable cutlery, foam boxes, yogurt cups</td><td>FTIR: 3025/1601/1493/696</td></tr>
         <tr><td><span class="pill amber">PVC</span></td><td>Polyvinyl chloride</td><td>1.16–1.45</td><td>Cling film (some), pipes</td><td>FTIR: 1426/1330/690 (C-Cl)</td></tr>
-        <tr><td><span class="pill cyan">PA</span></td><td>Nylon (PA)</td><td>1.13–1.15</td><td>Tea bags, cooking bags, fishing-net debris</td><td>Py-GC-MS: 己內醯胺 (PA6)</td></tr>
-        <tr><td><span class="pill purple">PC</span></td><td>Polycarbonate</td><td>1.20</td><td>Baby bottles, 5-gallon containers</td><td>LC-MS: BPA 寡聚物</td></tr>
+        <tr><td><span class="pill cyan">PA</span></td><td>Nylon (PA)</td><td>1.13–1.15</td><td>Tea bags, cooking bags, fishing-net debris</td><td>Py-GC-MS: caprolactam (PA6)</td></tr>
+        <tr><td><span class="pill purple">PC</span></td><td>Polycarbonate</td><td>1.20</td><td>Baby bottles, 5-gallon containers</td><td>LC-MS: BPA Oligomers</td></tr>
       </table>
       <p class="mini">Density information matters: it determines the choice of <span class="highlight">density flotation</span> salt solution (NaCl 1.2, NaI 1.6, ZnCl₂ 1.7, NaBr 1.4).</p>
     </section>
@@ -465,7 +465,7 @@
         <div class="card">
           <h3>Chemical co-contaminants</h3>
           <ul>
-            <li><span class="warn">Plasticizers</span>: phthalate esters (DEHP, DBP) — analyzed by LC-MS</li>
+            <li><span class="warn">plasticizers</span>: phthalate esters (DEHP, DBP) — analyzed by LC-MS</li>
             <li><span class="warn">Bisphenol A (BPA)</span>: endocrine disruptor</li>
             <li><span class="warn">Antioxidants, UV stabilizers</span>: phenolic additives</li>
             <li>Environmentally adsorbed PCBs and pesticide residues can be carried by MP</li>
@@ -475,7 +475,7 @@
       <p class="citation">Leslie HA. et al. (2022) Discovery and quantification of plastic particle pollution in human blood. <em>Environ Int</em> 163:107199.</p>
     </section>
 
-    <!-- S8 Sample pre-process總覽 -->
+    <!-- S8 sample preparation總覽 -->
     <section class="slide">
       <h2>Sample preparation: the most critical step before analysis</h2>
       <p>Poor preparation can: (1) destroy the plastic itself, (2) introduce background contamination, (3) interfere with spectral interpretation.<span class="highlight">preparation quality dictates everything</span>.</p>
@@ -506,7 +506,7 @@
         <summary>Why?</summary>
         <ul>
           <li><span class="bad">A is wrong</span>: Concentrated HNO₃ severely damages PA and PS plastics, <span class="warn">causing discoloration, deformation, or even dissolution</span>, distorting subsequent identification.</li>
-          <li><span class="good">B is best</span>：10% KOH 在 40°C 對魚組織有良好消化效率（&gt; 90%)，且對 PE、PP、PET、PS 等常見塑膠相對溫和.Karami et al. (2017) 的標準操作流程之一.</li>
+          <li><span class="good">B is best</span>：10% KOH achieves &gt; 90% digestion efficiency for fish tissue at 40 °C while being gentle to PE/PP/PET/PS — one of the standard protocols established by Karami et al. (2017).</li>
           <li><span class="bad">C is ineffective</span>: Water cannot digest proteins and lipids.</li>
           <li><span class="warn">D is risky</span>: High-temperature H₂O₂ discolors PA and weakens PET; if H₂O₂ is required, prefer room-temperature long-duration digestion.</li>
         </ul>
@@ -543,9 +543,9 @@
       <p class="citation">Schwaferts C. et al. (2019) Methods for the analysis of submicrometer- and nanoplastic particles in the environment. <em>TrAC</em> 112:52–65.</p>
     </section>
 
-    <!-- S11 Vibrational SpectroscopyPrinciple -->
+    <!-- S11 vibrational spectroscopyprinciple -->
     <section class="slide">
-      <h2>Vibrational SpectroscopyPrinciple：分子在「跳什麼舞」?</h2>
+      <h2>vibrational spectroscopyprinciple：which "dance" do molecules perform?</h2>
       <div class="grid">
         <div class="card">
           <h3>Energy levels</h3>
@@ -573,17 +573,17 @@
       <div class="twoCol">
         <div>
           <div class="card">
-            <h3>Principle</h3>
-            <p>NIR spans <span class="highlight">12500–4000 cm⁻¹</span>（800–2500 nm)，primaryRecords the  C–H、O–H、N–H 鍵的<span class="warn">overtones</span> and <span class="warn">combination bands</span>.</p>
-            <p>Broad peaks, weak signal, low resolution → requires <span class="highlight">chemometrics</span>（PCA、PLS、SIMCA)建模辨識.</p>
+            <h3>principle</h3>
+            <p>NIR spans <span class="highlight">12500–4000 cm⁻¹</span>（800–2500 nm)，primaryRecords the  C–H、O–H、N–H  bond <span class="warn">overtones</span> and <span class="warn">combination bands</span>.</p>
+            <p>Broad peaks, weak signal, low resolution → requires <span class="highlight">chemometrics</span>（PCA、PLS、SIMCA)modeling for identification.</p>
           </div>
           <div class="card">
             <h3>Role in food microplastic analysis</h3>
             <ul>
-              <li>大尺寸塑膠 (&gt; 1 mm) <span class="highlight">recycling-line sorting</span> is the mainstream technology</li>
+              <li>Large-sized plastics (&gt; 1 mm) <span class="highlight">recycling-line sorting</span> is the mainstream technology</li>
               <li>Large-particle screening: HSI (hyperspectral imaging) 1000–2500 nm</li>
-              <li><span class="bad">Not suitable</span> &lt; 500 μm MP 分析</li>
-              <li>食品基質干擾大（水、油的 O–H、C–H 強吸收)</li>
+              <li><span class="bad">Not suitable</span> &lt; 500 μm MP Analysis</li>
+              <li>Strong food-matrix interference (water and oil O–H, C–H absorption)</li>
             </ul>
           </div>
         </div>
@@ -596,20 +596,20 @@
                data-color="#0ea5e9"
                data-markers="1210,1410,1730,2300"
                data-source="Lab measurement on NeoSpectra/InnoSpectra (bag1_run1, 900–2400 nm)"></div>
-          <p class="mini">PE 在 NIR 的特徵：~1210、1410、1730 nm（C–H 第一倍頻)，~2310 nm（C–H 組合頻).本圖為實驗室自量數據，未做基線校正，因此 2300 nm 以後吸收急遽上升（Sample 厚度與儀器響應).</p>
+          <p class="mini">PE NIR features: ~1210, 1410, 1730 nm (C–H first overtones), ~2310 nm (C–H combination). This is raw in-house data without baseline correction, so absorption rises sharply beyond 2300 nm due to sample thickness and instrument response.</p>
         </div>
       </div>
       <p class="citation">Serranti S. et al. (2018) The utilization of hyperspectral imaging for impurities detection in secondary plastics. <em>Open Waste Manag J</em>.</p>
     </section>
 
-    <!-- S13 互動：NIR 適用Scenario -->
+    <!-- S13 互動：NIR 適用scenario -->
     <section class="slide">
       <h2>Interaction: When is NIR most suitable?</h2>
       <div class="card activity">
-        <h3>請從以下Scenario選出 NIR 最合適的應用（可能不只一個正確答案，請選最佳)</h3>
+        <h3>Choose the most suitable NIR application from the scenarios below (more than one may be reasonable; pick the best):</h3>
         <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_nir','A',false)">A. Detecting 5 μm nano-scale PE particles in tap water</button>
-        <button class="choice" onclick="checkMCQ(this,'q_nir','B',true)">B. 工廠回收線高速分選 2 cm 大小的 PET and  HDPE 瓶片</button>
+        <button class="choice" onclick="checkMCQ(this,'q_nir','B',true)">B. High-speed sorting of 2 cm PET and HDPE bottle flakes on a recycling line</button>
         <button class="choice" onclick="checkMCQ(this,'q_nir','C',false)">C. Identifying 50 μm plastic fibers in sea salt</button>
         <button class="choice" onclick="checkMCQ(this,'q_nir','D',false)">D. Detecting 0.5 μg of PS in fish muscle</button>
         </div>
@@ -617,22 +617,22 @@
       </div>
       <details>
         <summary>Explanation</summary>
-        <p>The core advantage of NIR is being <span class="highlight">fast, non-destructive, and amenable to inline monitoring</span>，但Explanation度與靈敏度都不如 FTIR / Raman.它最Suitable for <span class="highlight">大型塑膠（mm 以上)的分選與成分篩選</span>，例如回收業以高光譜成像 (HSI) 線上分選 PET、HDPE、PP.對於 ≤ 100 μm 的微塑膠或mass極低的樣本，NIR 的靈敏度不足.</p>
+        <p>The core advantage of NIR is being <span class="highlight">fast, non-destructive, and amenable to inline monitoring</span>，but resolution and sensitivity fall short of FTIR/Raman. It is best suited for  <span class="highlight">sorting and bulk composition screening of large plastics (≥ mm)</span>， — e.g., recycling-line HSI sorting of PET, HDPE, PP. For MP ≤ 100 μm or very low-mass samples, NIR sensitivity is insufficient.</p>
       </details>
     </section>
 
-    <!-- S14 FTIR Principle -->
+    <!-- S14 FTIR principle -->
     <section class="slide">
       <h2>Fourier-transform infrared spectroscopy (FTIR): the workhorse for microplastics</h2>
       <div class="grid">
         <div class="card">
-          <h3>關鍵Principle</h3>
+          <h3>Key principle</h3>
           <ul>
-            <li>光源（globar)→ <span class="highlight">Michelson interferometer</span> → sample → detector</li>
+            <li>Source (globar) → <span class="highlight">Michelson interferometer</span> → sample → detector</li>
             <li>Records the <span class="highlight">interferogram</span></li>
             <li>Fourier transform → absorption spectrum</li>
             <li>All wavenumbers measured simultaneously → <span class="highlight">Fellgett multiplex SNR advantage</span></li>
-            <li>Explanation度可達 0.5 cm⁻¹</li>
+            <li>ExplanationResolution up to 0.5 cm⁻¹</li>
           </ul>
         </div>
         <div class="card">
@@ -640,7 +640,7 @@
           <table>
             <tr><th>Mode</th><th>Best for</th><th>Limitation</th></tr>
             <tr><td>Transmission</td><td>Small particles on filter</td><td>Filter must be IR-transparent (Si/Anodisc)</td></tr>
-            <tr><td>ATR</td><td>大顆粒 &gt; 100 μm</td><td>需<span class="warn">crystal contact</span></td></tr>
+            <tr><td>ATR</td><td>Large particles &gt; 100 μm</td><td>需<span class="warn">crystal contact</span></td></tr>
             <tr><td>Reflection</td><td>Metal-coated filter</td><td>RAB artifacts on thick samples</td></tr>
             <tr><td>μ-FTIR</td><td>Individual particles 10 μm–mm</td><td>Slow, requires focus</td></tr>
           </table>
@@ -648,13 +648,13 @@
       </div>
     </section>
 
-    <!-- S15 FTIR detection limits與化學成像 -->
+    <!-- S15 FTIR detection limit與化學成像 -->
     <section class="slide">
-      <h2>FTIR 的detection limits與化學成像</h2>
+      <h2>FTIR  detection limit and chemical imaging</h2>
       <div class="card">
-        <h3>顯微 FTIR (μ-FTIR) and 化學成像</h3>
-        <p>傳統單點顯微 FTIR：detection limits約 <span class="highlight">10–20 μm</span>（受 IR 繞射極限限制).</p>
-        <p>Using a <span class="highlight">FPA 偵測器（Focal Plane Array)</span> enables 64 × 64 pixel chemical imaging in one shot; whole filters can be auto-scanned for <span class="highlight">chemical classification</span>（搭配 siMPle、PRIMPKE 等 open-source 軟體).</p>
+        <h3>μ-FTIR and chemical imaging</h3>
+        <p>Conventional single-point μ-FTIR detection limit ~ <span class="highlight">10–20 μm</span>（(limited by IR diffraction).</p>
+        <p>Using a <span class="highlight">FPA detector (Focal Plane Array, FPA)</span> enables 64 × 64 pixel chemical imaging in one shot; whole filters can be auto-scanned for <span class="highlight">chemical classification</span>（in combination with open-source software such as siMPle or PRIMPKE).</p>
       </div>
       <div class="grid">
         <div class="card">
@@ -662,14 +662,14 @@
           <ul>
             <li>Quantum cascade laser (QCL) source</li>
             <li>High intensity, enabling <span class="highlight">fast scanning</span> — a 1 cm² filter can be analyzed in 30 minutes</li>
-            <li>detection limits可達 ~5 μm</li>
+            <li>detection limitreaches ~5 μm</li>
           </ul>
         </div>
         <div class="card">
           <h3>O-PTIR (Optical photothermal IR)</h3>
           <ul>
             <li>Combines IR source with visible probe</li>
-            <li>Breaks the diffraction limit, reaching <span class="highlight">~ 500 nm 空間Explanation度</span></li>
+            <li>Breaks the diffraction limit, reaching <span class="highlight">~ 500 nm spatial resolution</span></li>
             <li>Simultaneous Raman possible; high instrument cost</li>
           </ul>
         </div>
@@ -679,56 +679,56 @@
 
     <!-- S16 PE FTIR -->
     <section class="slide">
-      <h2><span class="pill cyan">PE</span> 聚乙烯 FTIR</h2>
+      <h2><span class="pill cyan">PE</span> Polyethylene (PE) FTIR</h2>
       <div class="chart" data-spec="ftir_pe" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#0284c7" data-xreverse="1" data-markers="2915,2848,1463,720"></div>
       <div class="grid">
         <div class="card">
-          <h3>Four characteristic peaks</h3>
+          <h3>four characteristic peaks</h3>
           <ul>
             <li><strong>2915</strong>: CH₂ asymmetric stretch</li>
             <li><strong>2848</strong>: CH₂ symmetric stretch</li>
             <li><strong>1463</strong>: CH₂ scissoring</li>
-            <li><strong>720</strong>：CH₂ 搖動（HDPE 結晶會分裂為 730/720 雙峰)</li>
+            <li><strong>720</strong>：CH₂ rocking (HDPE crystalline phase splits into 730/720 doublet)</li>
           </ul>
         </div>
         <div class="card">
           <h3>Food applications</h3>
-          <p>食品袋、保鮮膜、瓶蓋、塑膠袋.<br/>
-          密度 0.91–0.96 g/cm³，NaCl is sufficient浮選.</p>
+          <p>Food bags, cling film, bottle caps, plastic bags.<br/>
+          Density 0.91–0.96 g/cm³; NaCl flotation is sufficient.</p>
         </div>
       </div>
     </section>
 
     <!-- S16a PP FTIR -->
     <section class="slide">
-      <h2><span class="pill purple">PP</span> 聚丙烯 FTIR</h2>
+      <h2><span class="pill purple">PP</span> Polypropylene (PP) FTIR</h2>
       <div class="chart" data-spec="ftir_pp" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#7c3aed" data-xreverse="1" data-markers="2950,1455,1377,998"></div>
       <div class="grid">
         <div class="card">
-          <h3>Characteristic peaks</h3>
+          <h3>characteristic peaks</h3>
           <ul>
-            <li><strong>2950 / 2917</strong>：CH₃ and  CH₂ 伸縮</li>
+            <li><strong>2950 / 2917</strong>：CH₃ and  CH₂ stretching</li>
             <li><strong>1455</strong>: CH₂/CH₃ bends</li>
-            <li><strong>1377</strong>：<span class="highlight">CH₃ symmetric bend</span>（區分 PE/PP 的關鍵)</li>
+            <li><strong>1377</strong>：<span class="highlight">CH₃ symmetric bend</span>（distinguishes from PE)</li>
             <li><strong>998 / 974 / 840</strong>: backbone vibration triplet</li>
           </ul>
         </div>
         <div class="card">
           <h3>Food applications</h3>
-          <p>微波容器、優格杯、塑膠茶包、嬰兒奶瓶（80°C 沖泡會釋出 MP).</p>
+          <p>Microwave containers, yogurt cups, plastic tea bags, infant feeding bottles (release MP when brewed at 80 °C).</p>
         </div>
       </div>
     </section>
 
     <!-- S16b PET FTIR -->
     <section class="slide">
-      <h2><span class="pill pink">PET</span> 聚對苯二甲酸乙二酯 FTIR</h2>
+      <h2><span class="pill pink">PET</span> Polyethylene terephthalate (PET) FTIR</h2>
       <div class="chart" data-spec="ftir_pet" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#db2777" data-xreverse="1" data-markers="1715,1240,1090,723"></div>
       <div class="grid">
         <div class="card">
           <h3>Signature peak group</h3>
           <ul>
-            <li><strong>1715</strong>：<span class="highlight">strong ester C=O absorption</span>（PET 的招牌指紋)</li>
+            <li><strong>1715</strong>：<span class="highlight">strong ester C=O absorption</span>（PET is the signature fingerprint)</li>
             <li><strong>1240</strong>: C–O–C asymmetric stretch</li>
             <li><strong>1090</strong>: C–O symmetric stretch</li>
             <li><strong>723</strong>: para-substituted aromatic C–H bend</li>
@@ -743,7 +743,7 @@
 
     <!-- S16c PS FTIR -->
     <section class="slide">
-      <h2><span class="pill green">PS</span> 聚苯乙烯 FTIR</h2>
+      <h2><span class="pill green">PS</span> Polystyrene (PS) FTIR</h2>
       <div class="chart" data-spec="ftir_ps" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#16a34a" data-xreverse="1" data-markers="3025,1601,1493,696"></div>
       <div class="grid">
         <div class="card">
@@ -751,19 +751,19 @@
           <ul>
             <li><strong>3025</strong>: aromatic C–H stretch</li>
             <li><strong>1601 / 1493</strong>: aromatic ring backbone</li>
-            <li><strong>696</strong>：<span class="highlight">mono-substituted benzene C–H out-of-plane bend</span>（PS 招牌)</li>
+            <li><strong>696</strong>：<span class="highlight">mono-substituted benzene C–H out-of-plane bend</span>（PS signature)</li>
           </ul>
         </div>
         <div class="card">
           <h3>Food applications</h3>
-          <p>免洗杯/碗、發泡盒、優格杯.發泡 PS 有額外發泡劑訊號.</p>
+          <p>Disposable cups/bowls, foam boxes, yogurt cups. Foamed PS shows additional blowing-agent signals.</p>
         </div>
       </div>
     </section>
 
     <!-- S16d PVC FTIR -->
     <section class="slide">
-      <h2><span class="pill amber">PVC</span> 聚氯乙烯 FTIR</h2>
+      <h2><span class="pill amber">PVC</span> Polyvinyl chloride (PVC) FTIR</h2>
       <div class="chart" data-spec="ftir_pvc" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#d97706" data-xreverse="1" data-markers="1426,1255,690,614"></div>
       <div class="grid">
         <div class="card">
@@ -771,33 +771,33 @@
           <ul>
             <li><strong>1426</strong>: CH₂ bend</li>
             <li><strong>1255</strong>: CH–Cl bend</li>
-            <li><strong>690 / 614</strong>：<span class="highlight">C–Cl stretch</span>（PVC 獨有指紋)</li>
+            <li><strong>690 / 614</strong>：<span class="highlight">C–Cl stretch</span>（PVC unique fingerprint)</li>
           </ul>
         </div>
         <div class="card">
           <h3>Food applications</h3>
-          <p>部分保鮮膜、輸送管、紅色血袋；含大量Plasticizers DEHP/DBP（LC-MS 分析).</p>
+          <p>Some cling films, pipes, red blood bags; high DEHP/DBP plasticizer content (LC-MS analysis).</p>
         </div>
       </div>
     </section>
 
     <!-- S16e FTIR 對照表 -->
     <section class="slide">
-      <h2>五大塑膠 FTIR Characteristic peaks速查</h2>
+      <h2>FTIR characteristic peak cheat sheet for the five plastics</h2>
       <table>
-        <tr><th>塑膠</th><th>關鍵Characteristic peaks (cm⁻¹)</th><th>歸屬</th><th>判讀重點</th></tr>
+        <tr><th>plastic</th><th>Key bands (cm⁻¹)</th><th>Assignment</th><th>Interpretation focus</th></tr>
         <tr><td><span class="pill cyan">PE</span></td><td>2915, 2848, 1463, 720</td><td>C–H stretch, CH₂ bend/rock</td><td>No 1377 band</td></tr>
         <tr><td><span class="pill purple">PP</span></td><td>2950, 1455, <strong>1377</strong>, 998</td><td>CH₃ bend, backbone</td><td>1377 distinguishes from PE</td></tr>
         <tr><td><span class="pill pink">PET</span></td><td><strong>1715</strong>, 1240, 1090, 723</td><td>C=O, C–O, aromatic C–H</td><td>Strong 1715 band</td></tr>
         <tr><td><span class="pill green">PS</span></td><td>3025, 1601, 1493, <strong>696</strong></td><td>Aromatic C–H, ring</td><td>696 signature</td></tr>
         <tr><td><span class="pill amber">PVC</span></td><td>1426, 1255, <strong>690</strong>, 614</td><td>CH–Cl, <strong>C–Cl</strong></td><td>C–Cl is unique</td></tr>
       </table>
-      <p class="mini">X 軸 Wavenumber 高→低為 FTIR 慣例；Y 軸穿透率，峰朝下＝吸收.圖譜依 Käppler 2018、Jung 2018 文獻峰位重建.</p>
+      <p class="mini">X axis: wavenumber high → low (FTIR convention); Y-axis: transmittance, with downward peaks indicating absorption. Spectra reconstructed from band positions in Käppler 2018 and Jung 2018.</p>
     </section>
 
     <!-- S17 互動：FTIR 圖譜辨識 1 -->
     <section class="slide">
-      <h2>FTIR 圖譜辨識（一)：請判斷塑膠類型</h2>
+      <h2>FTIR spectrum identification (1): determine the plastic</h2>
       <div class="card activity">
         <div class="chart" data-spec="ftir_pe" data-title="Unknown plastic FTIR | main bands: 2915, 2848, 1463, 720 cm⁻¹" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#0c4a6e" data-xreverse="1" data-markers="2915,2848,1463,720"></div>
         <div class="choices-grid">
@@ -811,17 +811,17 @@
       <details>
         <summary>Reasoning</summary>
         <ul>
-          <li><span class="good">PE is correct</span>：2915（CH₂ 不對稱伸縮)+ 2848（CH₂ 對稱伸縮)+ 1463（CH₂ 剪式變角)+ <span class="highlight">720</span>（CH₂ 搖動雙峰，分裂為 730/720 是 HDPE 結晶特徵)— 這是 PE 的「Four characteristic peaks」.</li>
-          <li><span class="bad">Not PP</span>：PP 一定要看到 1377 cm⁻¹（CH₃ symmetric bend)與 998/974/840 cm⁻¹ 三個骨架峰.</li>
-          <li><span class="bad">Not PET</span>：缺少 1715 cm⁻¹ 強烈的 C=O 吸收.</li>
-          <li><span class="bad">Not PS</span>：缺少 3025 cm⁻¹ 芳香 C–H、1601/1493 苯環、696 cm⁻¹.</li>
+          <li><span class="good">PE is correct</span>：2915（CH₂ asymmetric stretch) + 2848 (CH₂ symmetric stretch) + 1463 (CH₂ scissoring) + <span class="highlight">720</span>（CH₂ rocking doublet, split into 730/720 in crystalline HDPE) — these are the four characteristic PE peaks.</li>
+          <li><span class="bad">Not PP</span>：PP must show 1377 cm⁻¹ (CH₃ symmetric bend) and the three backbone bands at 998/974/840 cm⁻¹.</li>
+          <li><span class="bad">Not PET</span>：lacks the strong 1715 cm⁻¹ C=O absorption.</li>
+          <li><span class="bad">Not PS</span>：lacks 3025 cm⁻¹ aromatic C–H, 1601/1493 ring bands, and 696 cm⁻¹.</li>
         </ul>
       </details>
     </section>
 
     <!-- S18 互動：FTIR 圖譜辨識 2 -->
     <section class="slide">
-      <h2>FTIR 圖譜辨識（二)：海鹽中分離的 80 μm 透明顆粒</h2>
+      <h2>FTIR spectrum identification (2): an 80 μm transparent particle isolated from sea salt</h2>
       <div class="card activity">
         <div class="chart" data-spec="ftir_pet" data-title="μ-FTIR | strong absorption at 1715, 1240, 1090, 720 cm⁻¹" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#0c4a6e" data-xreverse="1" data-markers="1715,1240,1090,723"></div>
         <div class="choices-grid">
@@ -835,25 +835,25 @@
       <details>
         <summary>Reasoning</summary>
         <ul>
-          <li><span class="good">PET is correct</span>: 1715 cm⁻¹ is the <span class="highlight">strong ester C=O absorption</span>的標記；1240（C–O–C 不對稱伸縮)+ 1090（C–O 對稱伸縮)+ 720（對位取代苯 C–H 變角)構成 PET 的標準四峰群.</li>
-          <li>Nylon (PA) also has C=O, but its amide C=O lies near <span class="highlight">1640 cm⁻¹</span>（amide I)，且伴隨 3300 cm⁻¹ 寬 N–H 峰，與 PET 不同.</li>
-          <li>PVC 的標誌是 690 cm⁻¹ 強 C–Cl stretch，本譜沒看到.</li>
-          <li>A particle of this type isolated from sea salt likely originates from <span class="warn">oceanic PET bottle fragments</span>，符合 Yang et al. (2015) 在中國市售食鹽中發現以 PET 為主的觀察.</li>
+          <li><span class="good">PET is correct</span>: 1715 cm⁻¹ is the <span class="highlight">strong ester C=O absorption</span>marker; together with 1240 (C–O–C asym stretch), 1090 (C–O sym stretch), and 720 (para-substituted aromatic C–H bend), they form the standard PET quartet.</li>
+          <li>Nylon (PA) also has C=O, but its amide C=O lies near <span class="highlight">1640 cm⁻¹</span>（amide I)，and is accompanied by a broad N–H peak at 3300 cm⁻¹ — different from PET.</li>
+          <li>PVC  is marked by a strong C–Cl stretch at 690 cm⁻¹, which is absent in this spectrum.</li>
+          <li>A particle of this type isolated from sea salt likely originates from <span class="warn">oceanic PET bottle fragments</span>，consistent with Yang et al. (2015) who found PET-dominated particles in Chinese commercial table salt.</li>
         </ul>
         <p class="citation">Yang D. et al. (2015) Microplastic Pollution in Table Salts from China. <em>Environ Sci Technol</em> 49:13622–13627.</p>
       </details>
     </section>
 
-    <!-- S19 Raman Principle -->
+    <!-- S19 Raman principle -->
     <section class="slide">
       <h2>Raman spectroscopy: the power of scattering</h2>
       <div class="grid">
         <div class="card">
-          <h3>關鍵Principle</h3>
+          <h3>Key principle</h3>
           <ul>
             <li>Monochromatic laser illuminates the sample (commonly 532, 633, 785, or 1064 nm)</li>
-            <li>Most light undergoes <span class="highlight">Rayleigh scattering</span>（彈性，波長不變)</li>
-            <li>A small fraction undergoes <span class="highlight">Raman scattering</span>（非彈性，波長變化等於分子振動能量)</li>
+            <li>Most light undergoes <span class="highlight">Rayleigh scattering</span>（elastic; wavelength unchanged)</li>
+            <li>A small fraction undergoes <span class="highlight">Raman scattering</span>（inelastic; wavelength shift equals molecular vibrational energy)</li>
             <li>Stokes line ν₀ − νᵥ; anti-Stokes line ν₀ + νᵥ</li>
           </ul>
           <div class="eq">Δν̃ = (1/λ₀) − (1/λₛ)</div>
@@ -862,9 +862,9 @@
           <h3>Complementarity vs FTIR</h3>
           <table>
             <tr><th>Property</th><th>FTIR</th><th>Raman</th></tr>
-            <tr><td>選律</td><td>偶極變化</td><td>change in polarizability</td></tr>
+            <tr><td>Selection rule</td><td>dipole change</td><td>change in polarizability</td></tr>
             <tr><td>Water signal</td><td>Severe interference</td><td>Almost none</td></tr>
-            <tr><td>detection limits</td><td>~10–20 μm</td><td>~1 μm</td></tr>
+            <tr><td>detection limit</td><td>~10–20 μm</td><td>~1 μm</td></tr>
             <tr><td>Fluorescence interference</td><td>None</td><td>Common issue</td></tr>
             <tr><td>Symmetric bonds (C=C)</td><td>Weak</td><td>Strong</td></tr>
             <tr><td>Analysis time</td><td>Seconds per particle</td><td>Tens of seconds per particle</td></tr>
@@ -883,12 +883,12 @@
           <ul>
             <li><strong>1296</strong>: CH₂ twisting</li>
             <li><strong>1440</strong>: CH₂ bend</li>
-            <li><strong>2848 / 2882</strong>：<span class="highlight">C–H stretch doublet</span>（PE 最強訊號)</li>
+            <li><strong>2848 / 2882</strong>：<span class="highlight">C–H stretch doublet</span>（PE strongest signal)</li>
           </ul>
         </div>
         <div class="card">
           <h3>Practical notes</h3>
-          <p>PE 缺少強芳香鍵，Raman 強度遠低於 PS、PET；分析時建議搭配 FTIR 互相驗證.</p>
+          <p>PE lacks strong aromatic bonds; Raman intensity is much lower than PS/PET. Pair with FTIR for cross-validation.</p>
         </div>
       </div>
     </section>
@@ -902,34 +902,34 @@
           <h3>Characteristic shifts</h3>
           <ul>
             <li><strong>808</strong>: C–C backbone</li>
-            <li><strong>973</strong>：CH₃ 搖動（區分 PE 關鍵)</li>
+            <li><strong>973</strong>：CH₃ rocking (key to distinguishing from PE)</li>
             <li><strong>2884 / 2953</strong>: C–H stretch</li>
           </ul>
         </div>
         <div class="card">
           <h3>Practical notes</h3>
-          <p>973 cm⁻¹ 是 PP 獨有訊號，PE 完全沒有.低結晶度 PP 的 808 峰會減弱.</p>
+          <p>973 cm⁻¹ is unique to PP, absent in PE. Low-crystallinity PP shows a weakened 808 band.</p>
         </div>
       </div>
     </section>
 
     <!-- S20b PS Raman -->
     <section class="slide">
-      <h2><span class="pill green">PS</span> Raman ─ 招牌 1001 cm⁻¹</h2>
+      <h2><span class="pill green">PS</span> Raman ─ signature at 1001 cm⁻¹</h2>
       <div class="chart" data-spec="raman_ps" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#16a34a" data-markers="621,1001,1602,3050"></div>
       <div class="grid">
         <div class="card">
           <h3>Characteristic shifts</h3>
           <ul>
             <li><strong>621</strong>: C–C bending</li>
-            <li><strong>1001</strong>：<span class="highlight">mono-substituted benzene ring breathing mode</span>（強度極高、極尖銳，PS 的招牌指紋)</li>
+            <li><strong>1001</strong>：<span class="highlight">mono-substituted benzene ring breathing mode</span>（extremely intense and sharp; the PS signature fingerprint)</li>
             <li><strong>1602</strong>: aromatic C=C ring</li>
             <li><strong>3050</strong>: aromatic C–H stretch</li>
           </ul>
         </div>
         <div class="card">
           <h3>Practical notes</h3>
-          <p>The 1001 cm⁻¹ signal is so intense that it is commonly used as the <span class="highlight">internal standard reference</span>.免洗杯、發泡盒判讀首選.</p>
+          <p>The 1001 cm⁻¹ signal is so intense that it is commonly used as the <span class="highlight">internal standard reference</span>.First-choice marker for identifying disposable cups and foam boxes.</p>
         </div>
       </div>
     </section>
@@ -944,13 +944,13 @@
           <ul>
             <li><strong>1117</strong>: C–O stretch</li>
             <li><strong>1613</strong>: aromatic C=C ring</li>
-            <li><strong>1726</strong>：<span class="highlight">ester C=O stretch</span>（PET 識別關鍵)</li>
+            <li><strong>1726</strong>：<span class="highlight">ester C=O stretch</span>（PET key identifier)</li>
             <li><strong>3082</strong>: aromatic C–H</li>
           </ul>
         </div>
         <div class="card">
           <h3>Practical notes</h3>
-          <p>同時看到 1613 (芳香) + 1726 (C=O) → is sufficient鎖定 PET，與 PA (僅 C=O 無芳香) 區分.</p>
+          <p>Seeing 1613 (aromatic) + 1726 (C=O) together → confirms PET and distinguishes it from PA (which has C=O but no aromatic).</p>
         </div>
       </div>
     </section>
@@ -963,13 +963,13 @@
         <div class="card">
           <h3>Characteristic shifts</h3>
           <ul>
-            <li><strong>638 / 696</strong>：<span class="highlight">C–Cl stretch</span>（PVC 獨有，所有其他塑膠都沒有)</li>
+            <li><strong>638 / 696</strong>：<span class="highlight">C–Cl stretch</span>（PVC unique to this plastic; absent in all others)</li>
             <li><strong>2913</strong>: C–H stretch</li>
           </ul>
         </div>
         <div class="card">
           <h3>Practical notes</h3>
-          <p>低於 700 cm⁻¹ 的強峰是 PVC 直接證據；同時 FTIR 690 cm⁻¹ 也是 PVC 招牌.</p>
+          <p>Strong bands below 700 cm⁻¹ are direct evidence of PVC; the corresponding FTIR signature is at 690 cm⁻¹.</p>
         </div>
       </div>
     </section>
@@ -979,13 +979,13 @@
       <h2>Raman characteristic peak cheat sheet for the five plastics</h2>
       <table>
         <tr><th>Plastic</th><th>Key shifts (cm⁻¹)</th><th>Assignment</th><th>Interpretation focus</th></tr>
-        <tr><td><span class="pill cyan">PE</span></td><td>1296, 1440, 2848, 2882</td><td>C–H stretch doublet</td><td>訊號弱</td></tr>
+        <tr><td><span class="pill cyan">PE</span></td><td>1296, 1440, 2848, 2882</td><td>C–H stretch doublet</td><td>weak signal</td></tr>
         <tr><td><span class="pill purple">PP</span></td><td>808, <strong>973</strong>, 2884, 2953</td><td>Backbone, CH₃ rocking</td><td>973 distinguishes from PE</td></tr>
         <tr><td><span class="pill green">PS</span></td><td>621, <strong>1001</strong>, 1602, 3050</td><td>Aromatic ring breathing</td><td><strong>1001 is signature</strong></td></tr>
         <tr><td><span class="pill pink">PET</span></td><td>1117, 1613, <strong>1726</strong>, 3082</td><td>C=O + aromatic</td><td>1613 + 1726 together</td></tr>
         <tr><td><span class="pill amber">PVC</span></td><td><strong>638, 696</strong>, 2913</td><td><strong>C–Cl</strong></td><td>C–Cl is unique</td></tr>
       </table>
-      <p class="mini">數據來源：KU Leuven RDR (doi:10.48804/FZNZMH)，EXIMIOUS 計畫 HPU Raman 光譜庫.</p>
+      <p class="mini">Data source: KU Leuven RDR (doi:10.48804/FZNZMH), EXIMIOUS project HPU Raman library.</p>
     </section>
 
     <!-- S21 互動：Raman 圖譜辨識 -->
@@ -1004,10 +1004,10 @@
       <details>
         <summary>Reasoning</summary>
         <ul>
-          <li><span class="good">PS is correct</span>：<span class="highlight">1001 cm⁻¹ 是mono-substituted benzene ring breathing mode</span>，PS 的招牌指紋；伴隨 621（C–C 變角)、1031（C–H 平面內變角)、1602（C=C 苯環骨架)、3050（芳香 C–H 伸縮).</li>
-          <li>PE/PP 無芳香環，沒有 1001 or  1602 峰.</li>
-          <li>PVC 的拉曼指紋為 638、696 cm⁻¹（C–Cl stretch)與 2920.</li>
-          <li>免洗杯材料以 PS 為主，符合常識.若用發泡杯，會額外看到發泡劑訊號.</li>
+          <li><span class="good">PS is correct</span>：<span class="highlight">1001 cm⁻¹ is the mono-substituted benzene ring breathing mode</span>，PS is the signature fingerprint; accompanied by 621 (C–C bend), 1031 (C–H in-plane bend), 1602 (C=C ring), and 3050 (aromatic C–H stretch).</li>
+          <li>PE/PP lack aromatic rings — no 1001 or 1602 bands.</li>
+          <li>PVC  Raman fingerprint: 638, 696 cm⁻¹ (C–Cl stretch) and 2920.</li>
+          <li>Disposable cups are made primarily of PS, consistent with common knowledge. Foamed cups show additional blowing-agent signals.</li>
         </ul>
       </details>
     </section>
@@ -1018,33 +1018,33 @@
       <div class="grid">
         <div class="card">
           <h3>Issue 1: fluorescence interference</h3>
-          <p>Food matrices, colored particles, and additive-loaded plastics emit strong <span class="bad">fluorescence background</span>，淹沒拉曼訊號.</p>
+          <p>Food matrices, colored particles, and additive-loaded plastics emit strong <span class="bad">fluorescence background</span>，overwhelm the Raman signal.</p>
           <h3>Remedies</h3>
           <ul>
-            <li>Switch to <span class="highlight">785 nm or  1064 nm</span> 雷射（光子能量低，較少激發螢光)</li>
+            <li>Switch to <span class="highlight">785 nm or  1064 nm</span> laser (lower photon energy reduces fluorescence excitation)</li>
             <li>Sample <span class="highlight">pre-bleaching</span>（H₂O₂ + UV)</li>
-            <li>SERDS (Shifted-Excitation Raman Difference Spectroscopy)</li>
-            <li>數學基線校正（asymmetric least squares)</li>
+            <li>SERDS (Shifted-Excitation Raman Difference spectroscopy)</li>
+            <li>Mathematical baseline correction (asymmetric least squares)</li>
           </ul>
         </div>
         <div class="card">
           <h3>Issue 2: nanoplastics too small</h3>
-          <p>常規 Raman 無法看到 &lt; 1 μm 顆粒.</p>
+          <p>Conventional Raman cannot resolve particles &lt; 1 μm.</p>
           <h3>Remedies</h3>
           <ul>
-            <li><span class="highlight">SERS</span> (Surface-Enhanced Raman)：將Sample 吸附於 Au/Ag 奈米基板上，訊號增強 10⁶–10¹⁰ 倍，可看到單分子</li>
-            <li><span class="highlight">TERS</span> (Tip-Enhanced)：結合 AFM 探針，Explanation度 ~20 nm</li>
+            <li><span class="highlight">SERS</span> (Surface-Enhanced Raman)：adsorbs the sample onto an Au/Ag nano-substrate; signal enhanced 10⁶–10¹⁰× — single-molecule detection feasible</li>
+            <li><span class="highlight">TERS</span> (Tip-Enhanced)：combined with an AFM tip; ~20 nm resolution</li>
             <li>O-PTIR: reaches 500 nm, with simultaneous Raman acquisition</li>
           </ul>
         </div>
       </div>
-      <p class="citation">Xu G. et al. (2020) Surface-Enhanced Raman Spectroscopy facilitates the detection of microplastics &lt;1 μm in the environment. <em>Environ Sci Technol</em> 54:15594–15603.</p>
+      <p class="citation">Xu G. et al. (2020) Surface-Enhanced Raman spectroscopy facilitates the detection of microplastics &lt;1 μm in the environment. <em>Environ Sci Technol</em> 54:15594–15603.</p>
     </section>
 
     <!-- S23 Module二整合是非題 -->
     <section class="slide">
-      <h2>Vibrational Spectroscopy整合測驗（一)</h2>
-      <p>FTIR absorption at <span class="highlight">1715 cm⁻¹</span> 的強吸收，is a key marker for identifying PET.</p>
+      <h2>vibrational spectroscopyComprehensive test (1)</h2>
+      <p>FTIR absorption at <span class="highlight">1715 cm⁻¹</span> is a key marker for identifying PET.</p>
       <div class="card activity">
         <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_tf1','T',true)">✓ True</button>
@@ -1053,14 +1053,14 @@
         <div class="resultBox" id="q_tf1_result"></div>
       </div>
       <div class="card tip">
-        <p><strong>Answer: T</strong>　1715 cm⁻¹ 是strong ester C=O absorption，PET 的招牌指紋.</p>
+        <p><strong>Answer: T</strong>　1715 cm⁻¹ is the strong ester C=O absorption, the PET signature fingerprint.</p>
       </div>
     </section>
 
-    <!-- Vibrational Spectroscopy整合測驗 2 -->
+    <!-- vibrational spectroscopy整合測驗 2 -->
     <section class="slide">
-      <h2>Vibrational Spectroscopy整合測驗（二)</h2>
-      <p>Raman Spectroscopy在水溶液中表現極差，所以無法分析水裡的微塑膠.</p>
+      <h2>vibrational spectroscopyComprehensive test (2)</h2>
+      <p>Raman spectroscopyperforms poorly in aqueous solutions, so it cannot analyze microplastics in water.</p>
       <div class="card activity">
         <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_tf2','T',false)">✓ True</button>
@@ -1069,14 +1069,14 @@
         <div class="resultBox" id="q_tf2_result"></div>
       </div>
       <div class="card tip">
-        <p><strong>Answer: F</strong>   Raman has <span class="highlight">weak water signal</span>反而是優勢，海水/飲用水中的 MP 分析常選 Raman 而非 FTIR-ATR.</p>
+        <p><strong>Answer: F</strong>   Raman has <span class="highlight">weak water signal</span>is actually an advantage; MP analysis in sea/drinking water often selects Raman over FTIR-ATR.</p>
       </div>
     </section>
 
-    <!-- Vibrational Spectroscopy整合測驗 3 -->
+    <!-- vibrational spectroscopy整合測驗 3 -->
     <section class="slide">
-      <h2>Vibrational Spectroscopy整合測驗（三)</h2>
-      <p>顯微 FTIR 受紅外光繞射極限限制，傳統機型偵測下限約為 10–20 μm.</p>
+      <h2>vibrational spectroscopyComprehensive test (3)</h2>
+      <p>μ-FTIR is limited by IR diffraction; conventional instruments have a detection limit around 10–20 μm.</p>
       <div class="card activity">
         <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_tf3','T',true)">✓ True</button>
@@ -1085,14 +1085,14 @@
         <div class="resultBox" id="q_tf3_result"></div>
       </div>
       <div class="card tip">
-        <p><strong>Answer: T</strong>　突破繞射極限需要 QCL-IR、O-PTIR 等新技術，可達 5 μm 甚至 500 nm.</p>
+        <p><strong>Answer: T</strong>　Breaking the diffraction limit requires new techniques such as QCL-IR or O-PTIR, reaching 5 μm or even 500 nm.</p>
       </div>
     </section>
 
-    <!-- Vibrational Spectroscopy整合測驗 4 -->
+    <!-- vibrational spectroscopy整合測驗 4 -->
     <section class="slide">
-      <h2>Vibrational Spectroscopy整合測驗（四)</h2>
-      <p>NIR Suitable for 用來分析 5 μm 以下的奈米塑膠.</p>
+      <h2>vibrational spectroscopyComprehensive test (4)</h2>
+      <p>NIR suitable for is suitable for analyzing nanoplastics below 5 μm.</p>
       <div class="card activity">
         <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_tf4','T',false)">✓ True</button>
@@ -1101,14 +1101,14 @@
         <div class="resultBox" id="q_tf4_result"></div>
       </div>
       <div class="card tip">
-        <p><strong>Answer: F</strong>　NIR Explanation度與靈敏度都不足以分析 ≤ 5 μm 顆粒，奈米塑膠應走 Raman/SERS、Py-GC-MS or  O-PTIR.</p>
+        <p><strong>Answer: F</strong>　NIR Explanationresolution and sensitivity are insufficient to analyze particles ≤ 5 μm; nanoplastics require Raman/SERS, Py-GC-MS, or O-PTIR.</p>
       </div>
     </section>
 
-    <!-- Vibrational Spectroscopy整合測驗 5 -->
+    <!-- vibrational spectroscopy整合測驗 5 -->
     <section class="slide">
-      <h2>Vibrational Spectroscopy整合測驗（五)</h2>
-      <p>Switch to 785 or  1064 nm 雷射可降低 Raman 的螢光干擾.</p>
+      <h2>vibrational spectroscopyComprehensive test (5)</h2>
+      <p>Switch to 785 or  1064 nm lasers reduce fluorescence interference in Raman.</p>
       <div class="card activity">
         <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_tf5','T',true)">✓ True</button>
@@ -1117,7 +1117,7 @@
         <div class="resultBox" id="q_tf5_result"></div>
       </div>
       <div class="card tip">
-        <p><strong>Answer: T</strong>　光子能量低，較少激發螢光；或可用 SERDS、數學基線校正.</p>
+        <p><strong>Answer: T</strong>　Lower photon energy excites less fluorescence; SERDS or mathematical baseline correction are alternatives.</p>
       </div>
     </section>
 
@@ -1126,8 +1126,8 @@
       <h2>☕ 10-minute break</h2>
       <div class="card activity">
         <h3>During the break, think about this</h3>
-        <p>FTIR / Raman 可以告訴你「這是 PET」，但無法直接告訴你「Sample 中有多少<span class="highlight">mass</span>的 PET」.Why?要怎麼解決?</p>
-        <textarea data-key="q_break" placeholder="寫下你的想法..."></textarea>
+        <p>FTIR / Raman can tell you "this is PET" but cannot directly tell you "how much <span class="highlight">mass</span>PET is in the sample." Why? How do we solve this?</p>
+        <textarea data-key="q_break" placeholder="Write your thoughts here..."></textarea>
       </div>
     </section>
 
@@ -1138,9 +1138,9 @@
         <div class="card">
           <h3>Inherent limitations of spectroscopy</h3>
           <ul>
-            <li>Quantification unit is <span class="warn">"particles per filter area"</span>，不是「mass / Sample 重」</li>
-            <li>奈米塑膠 (&lt; 1 μm) 顆粒太多，個別計數不切實際</li>
-            <li>Sample 基質干擾大時，無法成像</li>
+            <li>Quantification unit is <span class="warn">"particles per filter area"</span>，not "mass per sample weight"</li>
+            <li>Nanoplastics (&lt; 1 μm) are too numerous for practical individual counting</li>
+            <li>Sample Imaging fails under heavy matrix interference</li>
             <li>Cannot distinguish <span class="warn">additives and oligomers</span></li>
           </ul>
         </div>
@@ -1148,26 +1148,26 @@
           <h3>How MS fills the gap</h3>
           <ul>
             <li><span class="highlight">Py-GC-MS / TED-GC-MS</span>: pyrolyze plastic to small molecules; quantify by GC-MS to obtain <span class="highlight">mass-based quantification (μg)</span></li>
-            <li><span class="highlight">LC-MS</span>：分析Plasticizers、抗氧化劑、BPA、寡聚物</li>
-            <li>NP 範圍仍可分析（Sample 濃縮即可)</li>
+            <li><span class="highlight">LC-MS</span>：analysis of plasticizers, antioxidants, BPA, oligomers</li>
+            <li>NP range still analyzable (just concentrate the sample)</li>
             <li>Food matrix can be injected directly after digestion</li>
           </ul>
         </div>
       </div>
       <div class="card ref">
         <h3>Complementarity</h3>
-        <p><span class="highlight">Spectroscopy</span> answers "<em>What is it? How many?</em>"; <span class="highlight">mass spectrometry</span> answers "<em>它有多少mass?帶了什麼化學物?</em>」.Comprehensive MP studies typically <span class="highlight">employ both in parallel</span>.</p>
+        <p><span class="highlight">spectroscopy</span> answers "<em>What is it? How many?</em>"; <span class="highlight">mass spectrometry</span> answers "<em>How much mass? What chemicals does it carry?</em>」.Comprehensive MP studies typically <span class="highlight">employ both in parallel</span>.</p>
       </div>
     </section>
 
-    <!-- S26 Py-GC-MS Principle -->
+    <!-- S26 Py-GC-MS principle -->
     <section class="slide">
       <h2>Py-GC-MS: Pyrolysis-Gas Chromatography-Mass Spectrometry</h2>
       <div class="grid">
         <div class="card">
-          <h3>Principle三步驟</h3>
+          <h3>principleThree steps</h3>
           <ol>
-            <li><span class="highlight">Pyrolysis</span>：在無氧條件下將Sample 加熱至 500–700°C，聚合物斷裂成小分子（單體、寡聚物、副產物)</li>
+            <li><span class="highlight">Pyrolysis</span>：In an inert atmosphere, heat the sample to 500–700 °C; the polymer cleaves into small molecules (monomers, oligomers, by-products)</li>
             <li><span class="highlight">GC separation</span>: volatile pyrolysates separated on capillary column</li>
             <li><span class="highlight">MS detection</span>: EI ionization (70 eV); spectra matched against NIST library</li>
           </ol>
@@ -1176,80 +1176,80 @@
           <h3>Key hardware</h3>
           <ul>
             <li>Pyrolyzer: <span class="highlight">Curie-point</span> or <span class="highlight">micro-furnace</span> are the two mainstream designs</li>
-            <li>典型Sample 量：<span class="highlight">0.1–50 μg</span> is sufficient</li>
-            <li>detection limits：~0.1 μg per polymer</li>
+            <li>Typical sample size: <span class="highlight">0.1–50 μg</span> is sufficient</li>
+            <li>detection limit：~0.1 μg per polymer</li>
             <li>Analysis time: ~30–60 min per sample</li>
           </ul>
         </div>
       </div>
       <div class="card">
         <h3>Why "inert atmosphere"?</h3>
-        <p>Pyrolysis must occur in an <span class="highlight">惰性氣氛（He)</span>下進行.若混入 O₂，聚合物會發生<span class="warn">oxidative pyrolysis</span>，產生大量 CO₂、H₂O and 非特異性氧化產物，破壞「指標化合物」的特異性，無法做定性與定量.</p>
+        <p>Pyrolysis must occur in an <span class="highlight">inert atmosphere (He)</span>. If O₂ contaminates the system, the polymer undergoes <span class="warn">oxidative pyrolysis</span>，, producing CO₂, H₂O, and non-specific oxidation products that destroy indicator-compound specificity and prevent both qualitative and quantitative analysis.</p>
       </div>
       <p class="citation">Käppler A. et al. (2018) Analysis of environmental microplastics by vibrational microspectroscopy: FTIR, Raman or both? <em>Anal Bioanal Chem</em> 408:8377–8391.</p>
     </section>
 
-    <!-- S27 各塑膠指標產物 -->
+    <!-- S27 各plastic指標產物 -->
     <section class="slide">
       <h2>Indicator pyrolysates for each plastic</h2>
       <table>
         <tr><th>Plastic</th><th>Main indicator compound</th><th>m/z signature</th><th>Notes</th></tr>
         <tr>
           <td><span class="pill cyan">PE</span></td>
-          <td>α,ω-烯-烷雙峰序列（C₅–C₃₃ 三聯體)</td>
-          <td>系列 m/z = 12n+1</td>
-          <td>無唯一單體，依「三聯峰圖型」</td>
+          <td>α,ω-alkene-alkane doublet series (C₅–C₃₃ triplets)</td>
+          <td>m/z series = 12n+1</td>
+          <td>no unique monomer; relies on triplet pattern</td>
         </tr>
         <tr>
           <td><span class="pill purple">PP</span></td>
           <td><span class="highlight">2,4-dimethyl-1-heptene</span></td>
           <td>126</td>
-          <td>頭尾連接 PP 三元體的標誌</td>
+          <td>head-to-tail PP triad marker</td>
         </tr>
         <tr>
           <td><span class="pill pink">PET</span></td>
           <td><span class="highlight">vinyl benzoate</span>、benzoic acid、biphenyl</td>
           <td>148、122、154</td>
-          <td>常用 vinyl benzoate 定量</td>
+          <td>commonly quantified using vinyl benzoate</td>
         </tr>
         <tr>
           <td><span class="pill green">PS</span></td>
           <td><span class="highlight">styrene monomer</span>、dimer、trimer</td>
           <td>104、208、312</td>
-          <td>styrene trimer 特異性最高</td>
+          <td>styrene trimer highest specificity</td>
         </tr>
         <tr>
           <td><span class="pill amber">PVC</span></td>
           <td>HCl, benzene, toluene, naphthalene</td>
           <td>78、92、128</td>
-          <td>HCl 釋出腐蝕儀器，需注意</td>
+          <td>HCl release corrodes the instrument — caution required</td>
         </tr>
         <tr>
           <td><span class="pill cyan">PA-6</span></td>
           <td><span class="highlight">ε-caprolactam</span></td>
           <td>113</td>
-          <td>PA-6 and  PA-66 各有特徵</td>
+          <td>PA-6 and  PA-66 each have distinct signatures</td>
         </tr>
         <tr>
           <td><span class="pill purple">PMMA</span></td>
           <td>methyl methacrylate monomer</td>
           <td>100</td>
-          <td>幾乎 100% 回收為單體</td>
+          <td>nearly 100% depolymerizes to monomer</td>
         </tr>
         <tr>
           <td><span class="pill pink">PC</span></td>
           <td>bisphenol A, phenol</td>
           <td>228、94</td>
-          <td>BPA 釋出，可同時與 LC-MS 對照</td>
+          <td>BPA release; can be cross-checked with LC-MS</td>
         </tr>
       </table>
-      <p class="mini">Quantification: build a <span class="highlight">指標化合物峰面積 vs 標準聚合物mass</span>的檢量線，未知Sample mass可內插.內標常用 deuterated polystyrene-d5 or  ²H-PE.</p>
+      <p class="mini">Quantification: build a <span class="highlight">indicator-compound peak area vs reference polymer mass</span> calibration curve; unknown sample mass is interpolated. Common internal standards: deuterated polystyrene-d5 or ²H-PE.</p>
     </section>
 
     <!-- S28 互動：裂解產物配對 -->
     <section class="slide">
       <h2>Py-GC-MS pyrolysate matching</h2>
-      <p>某未知Sample 色譜圖最強峰質譜為 <span class="highlight">m/z = 104</span>，伴隨 m/z = 208、312 較小峰群.主成分塑膠是?</p>
+      <p>In an unknown sample chromatogram, the strongest peak shows mass spectrum  <span class="highlight">m/z = 104</span>，, accompanied by smaller peaks at m/z = 208 and 312. The dominant plastic is?</p>
       <div class="card activity">
         <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_pygc1','PE',false)">A. PE</button>
@@ -1262,10 +1262,10 @@
       <details>
         <summary>Reasoning</summary>
         <ul>
-          <li><span class="good">PS is correct</span>: m/z 104 is <span class="highlight">styrene monomer (C₈H₈)</span>；208 是雙聚體 (1,3-diphenylpropane)、312 是三聚體.三者並現是 PS 的招牌.</li>
-          <li>PP 的指標 m/z = 126 (2,4-dimethyl-1-heptene).</li>
-          <li>PE primary為烷-烯-雙烯三聯體，由 C₆₊ 起，無單一強峰.</li>
-          <li>PET 為 148 (vinyl benzoate)、122 (benzoic acid).</li>
+          <li><span class="good">PS is correct</span>: m/z 104 is <span class="highlight">styrene monomer (C₈H₈)</span>；208 is the dimer (1,3-diphenylpropane), 312 is the trimer. Their simultaneous presence is the PS signature.</li>
+          <li>PP  indicator: m/z = 126 (2,4-dimethyl-1-heptene).</li>
+          <li>PE primaryshows the alkane-alkene-diene triplet series starting from C₆⁺ with no single dominant peak.</li>
+          <li>PET : 148 (vinyl benzoate), 122 (benzoic acid).</li>
         </ul>
         <p class="citation">Fischer M. & Scholz-Böttcher BM. (2017) Simultaneous Trace Identification and Quantification of Common Types of Microplastics in Environmental Samples by Pyrolysis-Gas Chromatography-Mass Spectrometry. <em>Environ Sci Technol</em> 51:5052–5060.</p>
       </details>
@@ -1273,15 +1273,15 @@
 
     <!-- S29 TED-GC-MS -->
     <section class="slide">
-      <h2>TED-GC-MS：可處理較大Sample 的進階版</h2>
+      <h2>TED-GC-MS：Advanced variant for larger sample amounts</h2>
       <div class="grid">
         <div class="card">
           <h3>Core difference</h3>
-          <p>TED = Thermal Extraction Desorption.Sample 在<span class="highlight">thermogravimetric analyzer (TGA)</span> under controlled heating, and the products are collected on a <span class="highlight">solid sorbent (PDMS strip)</span> 蒐集，再以熱脫附導入 GC-MS.</p>
+          <p>TED = Thermal Extraction Desorption.Sample 在<span class="highlight">thermogravimetric analyzer (TGA)</span> under controlled heating, and the products are collected on a <span class="highlight">solid sorbent (PDMS strip)</span> collect, then thermally desorb into GC-MS.</p>
           <ul>
-            <li>Sample 量可達 <span class="highlight">100 mg</span>（傳統 Py-GC-MS 僅 0.1–50 μg)</li>
-            <li>Suitable for <span class="highlight">direct injection of complex matrices</span>（沉積物、土壤、消化後組織)</li>
-            <li>detection limits：~1 μg/g matrix</li>
+            <li>Sample amount can reach  <span class="highlight">100 mg</span>（conventional Py-GC-MS: only 0.1–50 μg)</li>
+            <li>suitable for <span class="highlight">direct injection of complex matrices</span>（sediments, soils, digested tissues)</li>
+            <li>detection limit：~1 μg/g matrix</li>
           </ul>
         </div>
         <div class="card">
@@ -1292,7 +1292,7 @@
             <tr><td>LOD</td><td>~0.1 μg</td><td>~1 μg/g</td></tr>
             <tr><td>Matrix tolerance</td><td>Low</td><td>High</td></tr>
             <tr><td>Speed</td><td>~30 min/sample</td><td>~3 h/sample</td></tr>
-            <tr><td>儀器成本</td><td>Moderate</td><td>高（TGA+GC-MS)</td></tr>
+            <tr><td>instrumentcost</td><td>Moderate</td><td>High (TGA + GC-MS)</td></tr>
           </table>
         </div>
       </div>
@@ -1301,13 +1301,13 @@
 
     <!-- S30 互動：方法選擇 1 -->
     <section class="slide">
-      <h2>Scenario決策（一)：海鹽中的微塑膠</h2>
-      <p>You have 500 g of commercial sea salt and wish to determine the <span class="highlight">type and particle count</span>.請選最合適的<strong>primary</strong> analytical instrument:</p>
+      <h2>scenarioDecision (1): microplastics in sea salt</h2>
+      <p>You have 500 g of commercial sea salt and wish to determine the <span class="highlight">type and particle count</span>.Choose the most appropriate <strong>primary</strong> analytical instrument:</p>
       <div class="card activity">
         <div class="choices-grid">
-        <button class="choice" onclick="checkMCQ(this,'q_dec1','ATR',false)">A. ATR-FTIR（一顆一顆量)</button>
-        <button class="choice" onclick="checkMCQ(this,'q_dec1','uFTIR',true)">B. μ-FTIR chemical imaging（FPA 偵測器)</button>
-        <button class="choice" onclick="checkMCQ(this,'q_dec1','Raman',false)">C. 顯微 Raman（一顆一顆量)</button>
+        <button class="choice" onclick="checkMCQ(this,'q_dec1','ATR',false)">A. ATR-FTIR（particle-by-particle)</button>
+        <button class="choice" onclick="checkMCQ(this,'q_dec1','uFTIR',true)">B. μ-FTIR chemical imaging（FPA detector)</button>
+        <button class="choice" onclick="checkMCQ(this,'q_dec1','Raman',false)">C. Confocal Raman (particle-by-particle)</button>
         <button class="choice" onclick="checkMCQ(this,'q_dec1','PyGC',false)">D. Py-GC-MS</button>
         </div>
         <div class="resultBox" id="q_dec1_result"></div>
@@ -1315,10 +1315,10 @@
       <details>
         <summary>Explanation</summary>
         <ul>
-          <li><span class="good">μ-FTIR + FPA is best</span>：需要「類型 + 顆粒數」兩個資訊，且粒徑都在 FTIR detection limits (10–20 μm) 以上.FPA 化學成像可整片濾膜一次掃描、自動分類，<span class="highlight">highest efficiency</span>.</li>
-          <li>ATR-FTIR：Suitable for 單顆 &gt; 500 μm 顆粒，逐顆量太慢.</li>
-          <li>Raman：可行但分析時間長（每顆 30–60 秒，海鹽濾膜數百顆需數小時)；且部分海鹽顆粒帶色，螢光干擾.</li>
-          <li>Py-GC-MS：得到「總mass」但失去「顆粒數」資訊，不符問題需求.</li>
+          <li><span class="good">μ-FTIR + FPA is best</span>：Both "type + count" are needed and all particles exceed the FTIR detection limit (10–20 μm). FPA chemical imaging scans the whole filter at once with automated classification, <span class="highlight">highest efficiency</span>.</li>
+          <li>ATR-FTIR：suitable for best for individual particles &gt; 500 μm; one-by-one is too slow.</li>
+          <li>Raman：feasible but slow (30–60 s per particle; hundreds of particles per filter take hours); some colored salt particles cause fluorescence interference.</li>
+          <li>Py-GC-MS：provides "total mass" but loses "particle count" information — does not meet the requirement.</li>
         </ul>
         <p class="citation">Karami A. et al. (2017) The presence of microplastics in commercial salts from different countries. <em>Sci Rep</em> 7:46173.</p>
       </details>
@@ -1326,24 +1326,24 @@
 
     <!-- S31 互動：方法選擇 2 -->
     <section class="slide">
-      <h2>Scenario決策（二)：瓶裝水中的奈米塑膠</h2>
-      <p>Regulations require determination of the <span class="highlight">總mass濃度</span>（μg/L).請選最合適的方法組合：</p>
+      <h2>scenarioDecision (2): nanoplastics in bottled water</h2>
+      <p>Regulations require determination of the <span class="highlight">total mass concentration</span>（μg/L).Choose the most appropriate method combination:</p>
       <div class="card activity">
         <div class="choices-grid">
         <button class="choice" onclick="checkMCQ(this,'q_dec2','ATR',false)">A. ATR-FTIR directly on water sample</button>
         <button class="choice" onclick="checkMCQ(this,'q_dec2','uFTIR',false)">B. μ-FTIR chemical imaging</button>
         <button class="choice" onclick="checkMCQ(this,'q_dec2','SERS',false)">C. Confocal Raman, particle-by-particle</button>
-        <button class="choice" onclick="checkMCQ(this,'q_dec2','PyGC',true)">D. AF4 場流分餾濃縮後進 Py-GC-MS（或 TED-GC-MS)</button>
+        <button class="choice" onclick="checkMCQ(this,'q_dec2','PyGC',true)">D. AF4 AF4 flow field-flow fractionation concentration followed by Py-GC-MS (or TED-GC-MS)</button>
         </div>
         <div class="resultBox" id="q_dec2_result"></div>
       </div>
       <details>
         <summary>Explanation</summary>
         <ul>
-          <li><span class="good">D is best</span>：100 nm – 1 μm 顆粒已遠低於 FTIR and 常規 Raman 的detection limits；要的是「mass濃度」而非「顆數」 → <span class="highlight">Py-GC-MS is the first choice</span>.pre-process用<span class="highlight">asymmetric flow field-flow fractionation (AF4)</span> or ultracentrifugation將水中奈米塑膠濃縮.</li>
-          <li>ATR-FTIR：水的 O–H 吸收會淹沒一切.</li>
-          <li>μ-FTIR：Explanation度極限在 ~10 μm，看不到 100 nm.</li>
-          <li>顯微 Raman：Explanation度 ~1 μm，邊界情況；數量太多無法計數，且即便用 SERS 也只能定性.</li>
+          <li><span class="good">D is best</span>：100 nm – 1 μm particles fall far below the detection limit of FTIR and conventional Raman; the required output is "mass concentration" not "particle count" → <span class="highlight">Py-GC-MS is the first choice</span>.pre-processing用<span class="highlight">asymmetric flow field-flow fractionation (AF4)</span> or ultracentrifugationto concentrate nanoplastics from water.</li>
+          <li>ATR-FTIR：Water O–H absorption swamps all signals.</li>
+          <li>μ-FTIR：Explanationresolution limited to ~10 μm; cannot see 100 nm.</li>
+          <li>Confocal Raman: resolution ~1 μm, marginal case; particles too numerous to count, and SERS provides only qualitative ID.</li>
         </ul>
         <p class="citation">Schwaferts C. et al. (2019) Methods for the analysis of submicrometer- and nanoplastic particles. <em>TrAC</em> 112:52–65.</p>
       </details>
@@ -1351,11 +1351,11 @@
 
     <!-- S32 LC-MS 角色 (一) -->
     <section class="slide">
-      <h2>LC-MS：分析Plasticizers與寡聚物</h2>
+      <h2>LC-MS：analysis of plasticizers and oligomers</h2>
       <p>In microplastic analysis, LC-MS <span class="highlight">does not directly measure "plastic particles"</span>. Instead, it measures the chemicals leached from plastics:</p>
       <div class="grid">
         <div class="card">
-          <h3>Plasticizers (Plasticizers)</h3>
+          <h3>plasticizers (plasticizers)</h3>
           <p>phthalate esters (DEHP, DBP, BBP), citrate esters</p>
         </div>
         <div class="card">
@@ -1367,7 +1367,7 @@
           <p>PET cyclic trimer, PE waxy oligomers</p>
         </div>
         <div class="card">
-          <h3>Additives</h3>
+          <h3>additives</h3>
           <p>antioxidants (Irganox 1010), UV stabilizers (Tinuvin series)</p>
         </div>
       </div>
@@ -1380,10 +1380,10 @@
         <div class="card">
           <h3>Typical workflow</h3>
           <ol>
-            <li>Sample  → 有機溶劑萃取（MeOH、ACN、IPA)</li>
+            <li>Sample  → organic solvent extraction (MeOH, ACN, IPA)</li>
             <li>Solid-phase extraction (SPE) cleanup (HLB, MCX)</li>
             <li>UHPLC C18 column separation</li>
-            <li>ESI（+)或（−)離子化</li>
+            <li>ESI（+)or (−) ionization</li>
             <li>Triple-quadrupole (QqQ) MRM quantification</li>
           </ol>
         </div>
@@ -1401,18 +1401,18 @@
       </div>
     </section>
 
-    <!-- S33 Plasticizers與 BPA -->
+    <!-- S33 plasticizers與 BPA -->
     <section class="slide">
-      <h2>Plasticizers與 BPA：為什麼食品分析師最在乎這兩類?</h2>
+      <h2>plasticizersand BPA: why food analysts care most about these two classes</h2>
       <div class="grid">
         <div class="card">
           <h3>Phthalate esters</h3>
           <ul>
             <li>Added to PVC, PET, PA to enhance flexibility</li>
             <li><span class="warn">Non-covalent binding</span> → readily migrates into food</li>
-            <li>歐盟法規 (EU) 10/2011 嚴格規範：DEHP &lt; 1.5 mg/kg food</li>
+            <li>EU Regulation 10/2011 sets strict limits: DEHP &lt; 1.5 mg/kg food</li>
             <li>Taiwan FDA: residue limits set for DEHP, DBP, BBP, DINP, DIDP, DnOP</li>
-            <li>分析法：QuEChERS + GC-MS/MS or  LC-MS/MS</li>
+            <li>Analytical method: QuEChERS + GC-MS/MS or LC-MS/MS</li>
           </ul>
         </div>
         <div class="card">
@@ -1426,7 +1426,7 @@
         </div>
       </div>
       <div class="card tip">
-        <p><span class="highlight">微塑膠顆粒分析 → Spectroscopy + Py-GC-MS</span>；<span class="highlight">Plastic-derived chemical analysis → LC-MS</span>.目標、Sample pre-process、儀器設定完全不同.</p>
+        <p><span class="highlight">Microplastic particle analysis → spectroscopy + Py-GC-MS</span>；<span class="highlight">Plastic-derived chemical analysis → LC-MS</span>.Objectives, sample preparation, and instrument settings differ completely.</p>
       </div>
       <p class="citation">Cao XL. (2010) Phthalate esters in foods: sources, occurrence, and analytical methods. <em>Compr Rev Food Sci Food Saf</em> 9:21–43.</p>
     </section>
@@ -1437,7 +1437,7 @@
       <table>
         <tr><th></th><th>NIR</th><th>FTIR</th><th>Raman</th><th>Py-GC-MS</th><th>LC-MS</th></tr>
         <tr>
-          <td><strong>detection limits</strong></td>
+          <td><strong>detection limit</strong></td>
           <td>~mm</td>
           <td>10–20 μm</td>
           <td>1 μm</td>
@@ -1453,12 +1453,12 @@
           <td>Concentration</td>
         </tr>
         <tr>
-          <td><strong>Sample 破壞</strong></td>
+          <td><strong>Sample Destroyed</strong></td>
           <td>No</td>
           <td>No</td>
           <td>No</td>
           <td><span class="bad">是</span></td>
-          <td><span class="bad">是（萃取)</span></td>
+          <td><span class="bad">Yes (extraction)</span></td>
         </tr>
         <tr>
           <td><strong>Analysis time</strong></td>
@@ -1473,16 +1473,16 @@
           <td><span class="bad">差</span></td>
           <td><span class="bad">差</span></td>
           <td><span class="good">佳</span></td>
-          <td>佳（Sample 乾燥後)</td>
+          <td>Good (after sample drying)</td>
           <td><span class="good">佳</span></td>
         </tr>
         <tr>
-          <td><strong>primary應用</strong></td>
+          <td><strong>primaryApplications</strong></td>
           <td>Sorting</td>
           <td>Routine ID</td>
           <td>NP boundary / FTIR supplement</td>
           <td>Quantification, mixtures</td>
-          <td>Plasticizers、寡聚物</td>
+          <td>plasticizers、Oligomers</td>
         </tr>
         <tr>
           <td><strong>Instrument cost</strong></td>
@@ -1493,7 +1493,7 @@
           <td>High</td>
         </tr>
       </table>
-      <p class="mini">Comprehensive microplastic studies typically employ a <span class="highlight">「Spectroscopy + mass spectrometry」雙軌</span>：FTIR/Raman 給顆粒類型與數量，Py-GC-MS 給總mass，LC-MS 給Chemical leaching物.</p>
+      <p class="mini">Comprehensive microplastic studies typically employ a <span class="highlight">「spectroscopy + mass spectrometry」dual track</span>：FTIR/Raman provides particle type and count, Py-GC-MS provides total mass, LC-MS provides leached chemicals.</p>
     </section>
 
     <!-- S35 決策樹 -->
@@ -1522,14 +1522,14 @@
           <path class="arrow" d="M 380 70 L 160 110"/>
           <text class="lbl" x="220" y="92">Particle type/count</text>
           <path class="arrow" d="M 420 70 L 640 110"/>
-          <text class="lbl" x="510" y="92">mass/Chemical leaching</text>
+          <text class="lbl" x="510" y="92">mass/chemical leaching</text>
 
           <rect class="node" x="40" y="115" width="240" height="50"/>
           <text class="qtext" x="160" y="145" text-anchor="middle">Particle size?</text>
 
           <rect class="node" x="520" y="115" width="240" height="50"/>
-          <text class="qtext" x="640" y="138" text-anchor="middle">塑膠本體mass</text>
-          <text class="qtext" x="640" y="158" text-anchor="middle">vs Additives/Plasticizers?</text>
+          <text class="qtext" x="640" y="138" text-anchor="middle">Plastic bulk mass</text>
+          <text class="qtext" x="640" y="158" text-anchor="middle">vs additives/plasticizers?</text>
 
           <!-- left side: size -->
           <path class="arrow" d="M 90 165 L 50 200"/>
@@ -1553,9 +1553,9 @@
 
           <!-- right side: mass vs additive -->
           <path class="arrow" d="M 580 165 L 540 200"/>
-          <text class="lbl" x="540" y="190">塑膠mass</text>
+          <text class="lbl" x="540" y="190">Plastic mass</text>
           <path class="arrow" d="M 700 165 L 740 200"/>
-          <text class="lbl" x="740" y="190">Chemical leaching</text>
+          <text class="lbl" x="740" y="190">chemical leaching</text>
 
           <rect class="ans" x="490" y="200" width="120" height="60"/>
           <text class="atext" x="550" y="225" text-anchor="middle">Py-GC-MS</text>
@@ -1567,70 +1567,70 @@
 
           <!-- bottom hints -->
           <rect class="node" x="40" y="310" width="720" height="50"/>
-          <text class="qtext" x="400" y="335" text-anchor="middle">複雜Sample （魚消化道、瓶裝水)：建議「Spectroscopy + Py-GC-MS」雙軌並行</text>
+          <text class="qtext" x="400" y="335" text-anchor="middle">Complex samples (fish digestive tract, bottled water): the parallel "spectroscopy + Py-GC-MS" dual-track approach is recommended</text>
 
           <rect class="node" x="40" y="380" width="720" height="50"/>
-          <text class="qtext" x="400" y="405" text-anchor="middle">奈米塑膠 (NP)：AF4 / ultracentrifugation濃縮 → Py-GC-MS (定量) + SERS / O-PTIR (定性)</text>
+          <text class="qtext" x="400" y="405" text-anchor="middle">Nanoplastics (NP): AF4 / ultracentrifugation concentration → Py-GC-MS (quantitative) + SERS / O-PTIR (qualitative)</text>
         </svg>
       </div>
     </section>
 
     <!-- S36 mass vs 顆粒 -->
     <section class="slide">
-      <h2>mass化 vs 顆粒化：報數據時要注意什麼?</h2>
+      <h2>massvs particle-based: what to report</h2>
       <div class="grid">
         <div class="card">
           <h3>Particle-based</h3>
           <ul>
-            <li>Unit: <span class="highlight">顆數 / L、顆數 / g Sample </span></li>
+            <li>Unit: <span class="highlight">particles/L, particles/g sample </span></li>
             <li>Source: FTIR, Raman chemical imaging</li>
             <li>Pros: intuitive, size distribution available, morphology visualized</li>
-            <li>Cons: <span class="warn">隨儀器Explanation度而變</span>（同一樣本，5 μm 截止 vs 20 μm 截止結果差 10–100 倍)</li>
+            <li>Cons: <span class="warn">depends on instrument resolution</span>（the same sample: 5 μm vs 20 μm cutoff differs by 10–100×)</li>
           </ul>
         </div>
         <div class="card">
-          <h3>mass化 (Mass-based)</h3>
+          <h3>mass(Mass-based)</h3>
           <ul>
             <li>Unit: <span class="highlight">μg/L、μg/g Sample </span></li>
             <li>Source: Py-GC-MS, TED-GC-MS</li>
             <li>Pros: aligned with toxicology study units, comparable across labs</li>
-            <li>Cons: 失去顆粒尺寸、形貌資訊</li>
+            <li>Cons: loses particle size and morphology information</li>
           </ul>
         </div>
       </div>
       <div class="card ref">
         <h3>Cowger et al. (2020) reporting guidelines</h3>
-        <p>建議論文同時報告：① 偵測下限粒徑、② 顆數濃度（每升或每克)、③ mass濃度（若可得)、④ 鑑定方法（FTIR/Raman/Py-GC-MS)、⑤ 比對庫名稱、⑥ 空白控制組數據、⑦ 回收率（spike-recovery).</p>
+        <p>Papers should simultaneously report: (1) lower size detection limit, (2) particle count concentration (per L or g), (3) mass concentration (if obtainable), (4) identification method (FTIR/Raman/Py-GC-MS), (5) library used for matching, (6) blank-control data, (7) recovery (spike-recovery).</p>
       </div>
       <p class="citation">Cowger W. et al. (2020) Reporting Guidelines to Increase the Reproducibility and Comparability of Research on Microplastics. <em>Appl Spectrosc</em> 74:1066–1077.</p>
     </section>
 
     <!-- S37 文獻案例：海鹽 -->
     <section class="slide">
-      <h2>文獻案例（一)：Yang et al. 中國市售食鹽</h2>
+      <h2>Literature case (1): Yang et al. — Chinese commercial table salt</h2>
       <div class="grid">
         <div class="card">
           <h3>Study design</h3>
           <ul>
-            <li>採購 15 種中國市售食鹽（海鹽、湖鹽、岩鹽)</li>
+            <li>Purchased 15 commercial Chinese salts (sea salt, lake salt, rock salt)</li>
             <li>250 g per sample dissolved in deionized water → filtered through 1.6 μm glass fiber filter</li>
             <li>Microscopy counting + μ-FTIR identification (45–4500 μm range)</li>
           </ul>
           <h3>Key results</h3>
           <ul>
-            <li>海鹽：550–681 顆/kg（最高)</li>
+            <li>Sea salt: 550–681 particles/kg (highest)</li>
             <li>Lake salt: 43–364 particles/kg</li>
             <li>Rock salt: 7–204 particles/kg</li>
-            <li>primary塑膠：<span class="highlight">PET, PE, cellophane</span></li>
+            <li>primaryPlastic:<span class="highlight">PET, PE, cellophane</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>Methodology and QA/QC</h3>
           <ul>
-            <li><span class="highlight">μ-FTIR</span>：粒徑 &gt; 45 μm，可逐顆鑑定</li>
+            <li><span class="highlight">μ-FTIR</span>：Particles &gt; 45 μm allow individual identification</li>
             <li>3 procedural blank filters per day for background subtraction</li>
             <li>Fibers and fragments counted separately</li>
-            <li>純棉實驗衣、避免塑膠容器（空氣纖維是最大污染源)</li>
+            <li>Pure cotton lab coats, avoid plastic containers (airborne fibers are the greatest contamination source)</li>
           </ul>
         </div>
       </div>
@@ -1639,12 +1639,12 @@
 
     <!-- S38 文獻案例：茶包 -->
     <section class="slide">
-      <h2>文獻案例（二)：Hernandez et al. 塑膠茶包釋出奈米塑膠</h2>
+      <h2>Literature case (2): Hernandez et al. — nanoplastic release from plastic tea bags</h2>
       <div class="grid">
         <div class="card">
           <h3>Study design</h3>
           <ul>
-            <li>四款市售「網狀」茶包（材質為 PA / PET)</li>
+            <li>Four commercial "mesh" tea bags (material: PA/PET)</li>
             <li>Tea leaves removed and bags rinsed; immersed in 95 °C water for 5 min</li>
             <li>Scanning electron microscopy (SEM) for morphology</li>
             <li><span class="highlight">μ-FTIR + μ-Raman</span> for material identification</li>
@@ -1654,14 +1654,14 @@
         <div class="card">
           <h3>Striking findings</h3>
           <ul>
-            <li>每杯（一個茶包)釋出：<br/>～<span class="bad">1.16 × 10⁹ MP</span> + <span class="bad">3.1 × 10⁹ NP</span></li>
-            <li>Released particles confirmed as <span class="highlight">PA + PET</span>（與茶包本體一致)</li>
+            <li>Per cup (one tea bag) released:<br/>～<span class="bad">1.16 × 10⁹ MP</span> + <span class="bad">3.1 × 10⁹ NP</span></li>
+            <li>Released particles confirmed as <span class="highlight">PA + PET</span>（(consistent with bag material)</li>
             <li>Daphnia exposure: behavioral and developmental abnormalities</li>
           </ul>
           <h3>Methodological highlights</h3>
           <ul>
             <li>FTIR for large particles, Raman for 1–10 μm particles — <span class="highlight">complementary use</span></li>
-            <li>NTA 解決奈米計數問題（但無化學身份)</li>
+            <li>NTA solves nano-counting (but provides no chemical identity)</li>
           </ul>
         </div>
       </div>
@@ -1670,7 +1670,7 @@
 
     <!-- S39 文獻案例：海鮮 -->
     <section class="slide">
-      <h2>文獻案例（三)：Ribeiro et al. 海鮮中的 Py-GC-MS 定量</h2>
+      <h2>Literature case (3): Ribeiro et al. — Py-GC-MS quantification in seafood</h2>
       <div class="grid">
         <div class="card">
           <h3>Study design</h3>
@@ -1682,18 +1682,18 @@
           </ul>
         </div>
         <div class="card">
-          <h3>結果（每克可食組織)</h3>
+          <h3>Results (per gram of edible tissue)</h3>
           <ul>
-            <li>Sardines: <span class="warn">0.3 mg/g</span>（最高，primary為 PVC)</li>
+            <li>Sardines: <span class="warn">0.3 mg/g</span>（highest, predominantly PVC)</li>
             <li>Oysters: 0.04 mg/g</li>
             <li>Shrimp: 0.07 mg/g</li>
             <li>Crabs: 0.03 mg/g</li>
-            <li>鮭魚：&lt; detection limits</li>
+            <li>Salmon: &lt; detection limit</li>
           </ul>
           <h3>Methodological highlights</h3>
           <ul>
             <li>Quantification unit is <span class="highlight">μg/g</span>, directly compatible with daily intake assessment</li>
-            <li>Use of <span class="highlight">¹³C-PS internal standard</span>校正基質效應</li>
+            <li>Use of <span class="highlight">¹³C-PS internal standard</span>corrects for matrix effects</li>
             <li>Recovery 80–110%</li>
           </ul>
         </div>
@@ -1701,70 +1701,70 @@
       <p class="citation">Ribeiro F. et al. (2020) Quantitative Analysis of Selected Plastics in High-Commercial-Value Australian Seafood by Pyrolysis Gas Chromatography Mass Spectrometry. <em>Environ Sci Technol</em> 54:9408–9417. https://doi.org/10.1021/acs.est.0c02337</p>
     </section>
 
-    <!-- S40 實驗設計題：Scenario介紹 -->
+    <!-- S40 實驗設計題：scenario介紹 -->
     <section class="slide">
       <h2>Comprehensive application: experimental design question</h2>
       <div class="card ref">
-        <h3>Scenario</h3>
-        <p>Analyze whether commercial infant feeding bottles (made of PP) <span class="highlight">release microplastics during 80 °C formula preparation</span>時，是否釋放微塑膠到沖泡液中」.</p>
-        <p>接下來四張投影片會分別問你四個設計問題，依序回答.</p>
+        <h3>scenario</h3>
+        <p>Analyze whether commercial infant feeding bottles (made of PP) <span class="highlight">release microplastics during 80 °C formula preparation</span>whether microplastics are released into the reconstituted formula.</p>
+        <p>The next four slides each pose one design question — answer them in sequence.</p>
       </div>
       <p class="citation">Reference study: Li D. et al. (2020) Microplastic release from PP feeding bottles during infant formula preparation. <em>Nat Food</em> 1:746–754.</p>
     </section>
 
-    <!-- S40a Q1 primary儀器 -->
+    <!-- S40a Q1 primaryinstrument -->
     <section class="slide">
-      <h2>實驗設計（1/4)：primary儀器</h2>
-      <p>Which <span class="highlight">primary儀器</span>?Why?</p>
+      <h2>Experimental design (1/4): primary instrument</h2>
+      <p>Which <span class="highlight">primaryinstrument</span>?Why?</p>
       <div class="card activity">
         <textarea data-key="q_design_1"></textarea>
       </div>
       <div class="card tip">
-        <p><strong>Reference answer: </strong>μ-FTIR 化學成像（鑑定 1–500 μm 顆粒類型與計數)+ Py-GC-MS（總mass-based quantification)；NP 範圍補 SEM + EDS.</p>
+        <p><strong>Reference answer: </strong>μ-FTIR chemical imaging (identify and count 1–500 μm particles) + Py-GC-MS (total mass-based quantification); supplement the NP range with SEM + EDS.</p>
       </div>
     </section>
 
     <!-- S40b Q2 空白組 -->
     <section class="slide">
-      <h2>實驗設計（2/4)：blanks and controls</h2>
+      <h2>Experimental design (2/4): blanks and controls</h2>
       <p>How would you design <span class="highlight">blanks and controls</span>?</p>
       <div class="card activity">
         <textarea data-key="q_design_2"></textarea>
       </div>
       <div class="card tip">
-        <p><strong>Reference answer: </strong>① 玻璃奶瓶（材質對照)；② 空氣沉降空白（同時開蓋暴露於空氣 30 分鐘)；③ 程序空白（試劑、容器、過濾全程序).</p>
+        <p><strong>Reference answer: </strong>① glass feeding bottle (material control); (2) airborne deposition blank (same exposure to air for 30 min with lid open); (3) procedural blank (full process — reagents, containers, filtration).</p>
       </div>
     </section>
 
-    <!-- S40c Q3 pre-process -->
+    <!-- S40c Q3 pre-processing -->
     <section class="slide">
-      <h2>實驗設計（3/4)：pre-process</h2>
-      <p>How would you <span class="highlight">pre-process</span>才能上機?</p>
+      <h2>Experimental design (3/4): sample preparation</h2>
+      <p>How would you <span class="highlight">pre-processing</span>before instrumental analysis?</p>
       <div class="card activity">
         <textarea data-key="q_design_3"></textarea>
       </div>
       <div class="card tip">
-        <p><strong>Reference answer: </strong>先 Ar 流氣下冷藏靜置 30 min 沉澱 → 過濾 1.2 μm Anodisc 濾膜 → 不化學消化（沖泡液乾淨)→ 直接顯微鏡掃描.</p>
+        <p><strong>Reference answer: </strong>Under Ar flow, refrigerate undisturbed for 30 min for sedimentation → filter through a 1.2 μm Anodisc membrane → no chemical digestion (the formula is clean) → direct microscopy.</p>
       </div>
     </section>
 
     <!-- S40d Q4 驗證 -->
     <section class="slide">
-      <h2>實驗設計（4/4)：validate accuracy</h2>
+      <h2>Experimental design (4/4): validate accuracy</h2>
       <p>How would you <span class="highlight">validate accuracy</span>?</p>
       <div class="card activity">
         <textarea data-key="q_design_4"></textarea>
       </div>
       <div class="card tip">
-        <p><strong>Reference answer: </strong>spike 已知數量 5、10、50 μm PP 顆粒測回收率 (80–120%)；平行三重複；參與國際循環比對（如 BAM、JRC).</p>
+        <p><strong>Reference answer: </strong>spike Spike-recovery using known numbers of 5, 10, and 50 μm PP particles (target 80–120%); analyze in triplicate; participate in international round-robin comparisons (e.g., BAM, JRC).</p>
       </div>
     </section>
 
-    <!-- S41 進階閱讀（一)Methodology overview + Vibrational Spectroscopy -->
+    <!-- S41 進階閱讀（一)methodology overview + vibrational spectroscopy -->
     <section class="slide">
-      <h2>進階閱讀（一)：Methodology overview + Vibrational Spectroscopy</h2>
+      <h2>Further reading (1): methodology overview + vibrational spectroscopy</h2>
       <div class="card">
-        <h3>Methodology overview</h3>
+        <h3>methodology overview</h3>
         <ul>
           <li>Primpke S. et al. (2020) Critical assessment of analytical methods. <em>Appl Spectrosc</em> 74:1012.</li>
           <li>Schwaferts C. et al. (2019) Nano- and submicrometer particles. <em>TrAC</em> 112:52.</li>
@@ -1772,7 +1772,7 @@
         </ul>
       </div>
       <div class="card">
-        <h3>Vibrational Spectroscopy (FTIR / Raman)</h3>
+        <h3>vibrational spectroscopy (FTIR / Raman)</h3>
         <ul>
           <li>Käppler A. et al. (2016) FTIR, Raman or both? <em>Anal Bioanal Chem</em> 408:8377.</li>
           <li>Xu G. et al. (2020) SERS for &lt;1 μm. <em>Environ Sci Technol</em> 54:15594.</li>
@@ -1783,7 +1783,7 @@
 
     <!-- S41a 進階閱讀（二)質譜 + 報告 -->
     <section class="slide">
-      <h2>進階閱讀（二)：質譜 + 報告標準</h2>
+      <h2>Further reading (2): Mass spectrometry + reporting standards</h2>
       <div class="card">
         <h3>Mass spectrometry (Py-GC-MS / LC-MS)</h3>
         <ul>
@@ -1797,7 +1797,7 @@
         <ul>
           <li>Cowger W. et al. (2020) Reporting Guidelines. <em>Appl Spectrosc</em> 74:1066.</li>
           <li>ISO/TR 21960:2020 — Plastics — Environmental aspects.</li>
-          <li>EU Drinking Water Directive 2020/2184 — Annex III 微塑膠監測方法草案.</li>
+          <li>EU Drinking Water Directive 2020/2184 — Annex III Draft microplastic monitoring methodology.</li>
         </ul>
       </div>
     </section>
@@ -1808,9 +1808,9 @@
       <div class="card ref">
         <h3>Three guiding principles</h3>
         <ol>
-          <li><strong>FTIR 看顆粒，Py-GC-MS 看mass.</strong></li>
-          <li><strong>大顆粒選 ATR，小顆粒選 μ-FTIR / Raman，奈米級選 Py-GC-MS + SERS.</strong></li>
-          <li><strong>空白組是命脈，未做空白的數據不可採信.</strong></li>
+          <li><strong>FTIR for particles, Py-GC-MS for mass.</strong></li>
+          <li><strong>Large particles → ATR; small particles → μ-FTIR / Raman; nano scale → Py-GC-MS + SERS.</strong></li>
+          <li><strong>Blanks are the lifeline — data without blanks cannot be trusted.</strong></li>
         </ol>
       </div>
       <div class="grid">
@@ -1818,15 +1818,15 @@
           <h3>Knowledge</h3>
           <ul>
             <li>Definitions and sources of MP vs NP</li>
-            <li>PE/PP/PET/PS/PVC 的 FTIR and  Raman Characteristic peaks</li>
-            <li>For the five techniques: <span class="highlight">Principle、極限、定量單位</span></li>
+            <li>PE/PP/PET/PS/PVC  FTIR and Raman characteristic peaks</li>
+            <li>For the five techniques: <span class="highlight">principle、limits, quantification units</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>Skills</h3>
           <ul>
             <li>Interpret FTIR / Raman / Py-GC-MS results and infer plastic types</li>
-            <li>根據Sample <span class="highlight">size, objective, and matrix</span>select the correct method</li>
+            <li>According to the sample's  <span class="highlight">size, objective, and matrix</span>select the correct method</li>
             <li>Design blanks and QA/QC workflows to avoid contamination</li>
           </ul>
         </div>
@@ -1836,7 +1836,7 @@
     <!-- S43 Exit Ticket Q1 -->
     <section class="slide">
       <h2>Exit Ticket（1/3)</h2>
-      <p>用一句話總結今天最重要的學習.</p>
+      <p>In one sentence, summarize the most important thing you learned today.</p>
       <div class="card activity">
         <textarea data-key="exit_1" style="min-height:140px;"></textarea>
       </div>
@@ -1845,7 +1845,7 @@
     <!-- S43a Exit Ticket Q2 -->
     <section class="slide">
       <h2>Exit Ticket（2/3)</h2>
-      <p>哪個概念你還不確定，希望老師再講一次?</p>
+      <p>Which concept are you still unsure about and would like the instructor to revisit?</p>
       <div class="card activity">
         <textarea data-key="exit_2" style="min-height:140px;"></textarea>
       </div>
@@ -1854,7 +1854,7 @@
     <!-- S43b Exit Ticket Q3 -->
     <section class="slide">
       <h2>Exit Ticket（3/3)</h2>
-      <p>如果讓你選一個技術深入學習，你會選?Why?</p>
+      <p>If you could deepen your study of one technique, which would you choose, and why?</p>
       <div class="card activity">
         <textarea data-key="exit_3" style="min-height:140px;"></textarea>
       </div>
@@ -1863,7 +1863,7 @@
     <!-- S44 致謝 -->
     <section class="slide" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
       <h1 style="font-size:80px;">Thank you!</h1>
-      <p class="subtitle" style="margin-top:20px;">提問、討論、批評，都歡迎.</p>
+      <p class="subtitle" style="margin-top:20px;">Questions, discussion, and critique are all welcome.</p>
     </section>
 
 
