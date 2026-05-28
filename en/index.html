@@ -1,0 +1,2237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Microplastic Detection in Food | NIR · FTIR · Raman · GC-MS · LC-MS</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --accent: #0ea5e9;   /* sky blue */
+      --accent2: #6366f1;  /* indigo */
+      --accent3: #ec4899;  /* pink */
+      --text: #0f172a;
+      --muted: #475569;
+      --good: #15803d;
+      --warn: #b45309;
+      --bad: #b91c1c;
+      --line: #e2e8f0;
+      --line-strong: #cbd5e1;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, #e0f2fe 0%, #f8fafc 40%, #fef3c7 100%);
+      color: var(--text);
+      overflow: hidden;
+    }
+    .deck { width: 100vw; height: 100vh; position: relative; }
+    .slide {
+      display: none;
+      width: 100vw; height: 100vh;
+      padding: 40px 64px 120px;
+      overflow-y: auto;
+      background: transparent;
+    }
+    .slide.active { display: block; animation: fade 0.22s ease-in-out; }
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1 { font-size: 50px; line-height: 1.18; margin: 0 0 22px; color: #0f172a; }
+    h2 { font-size: 36px; margin: 0 0 20px; color: #075985; }
+    h3 { font-size: 24px; margin: 16px 0 10px; color: #1e40af; }
+    p, li { font-size: 21px; line-height: 1.55; color: #1e293b; }
+    small, .mini { color: var(--muted); font-size: 16px; }
+    .subtitle { font-size: 25px; color: #475569; }
+    .tag {
+      display: inline-block; padding: 6px 12px; border-radius: 999px;
+      background: #e0f2fe; color: #075985;
+      font-size: 16px; margin: 5px 5px 5px 0;
+      border: 1px solid #7dd3fc; font-weight: 600;
+    }
+    .tag.purple { background: #ede9fe; color: #4c1d95; border-color: #c4b5fd; }
+    .tag.pink { background: #fce7f3; color: #831843; border-color: #f9a8d4; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+    .grid3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+    .grid4 { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; }
+    .card {
+      background: #ffffff;
+      border: 1px solid var(--line); border-radius: 16px;
+      padding: 20px; box-shadow: 0 4px 12px rgba(15,23,42,0.06), 0 2px 4px rgba(15,23,42,0.04);
+      margin-bottom: 16px;
+    }
+    .card p, .card li { font-size: 19px; }
+    .activity {
+      border-left: 6px solid var(--accent);
+      background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%);
+    }
+    .tip {
+      border-left: 6px solid #f59e0b;
+      background: linear-gradient(180deg, #fef3c7 0%, #ffffff 100%);
+    }
+    .tip::before {
+      content: "💡 Tip";
+      display: block; font-weight: 700; color: #b45309;
+      font-size: 16px; margin-bottom: 8px;
+    }
+    /* 含互動題的 slide：tip 卡預設隱藏，作答後 (.answered) 才顯示 */
+    .slide.has-activity:not(.answered) .card.tip {
+      background: #fef3c7; border-color: #fcd34d;
+    }
+    .slide.has-activity:not(.answered) .card.tip > * { display: none; }
+    .slide.has-activity:not(.answered) .card.tip::before {
+      content: "🔒 Reveals after answering";
+      color: #b45309; font-weight: 700; font-size: 16px;
+    }
+    .ref {
+      border-left: 6px solid var(--accent2);
+      background: linear-gradient(180deg, #eef2ff 0%, #ffffff 100%);
+    }
+    .highlight { color: #0369a1; font-weight: 700; }
+    .good { color: #15803d; font-weight: 700; }
+    .warn { color: #b45309; font-weight: 700; }
+    .bad { color: #b91c1c; font-weight: 700; }
+    .eq {
+      font-size: 27px; text-align: center; margin: 14px 0;
+      padding: 16px; border-radius: 14px;
+      background: #f1f5f9; border: 1px solid var(--line);
+      letter-spacing: 0.5px; color: #1e293b;
+    }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 18px; background: white; }
+    th, td { border: 1px solid var(--line); padding: 10px; vertical-align: top; }
+    th { background: #e0f2fe; color: #075985; font-weight: 700; }
+    td { background: white; color: #1e293b; }
+    tr:nth-child(even) td { background: #f8fafc; }
+    .controls {
+      position: fixed; left: 0; right: 0; bottom: 0; height: 64px;
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 24px; border-top: 1px solid var(--line-strong); z-index: 20;
+      box-shadow: 0 -4px 12px rgba(15,23,42,0.06);
+    }
+    button {
+      cursor: pointer; border: 0; border-radius: 10px;
+      padding: 10px 16px; font-size: 16px;
+      background: #0ea5e9; color: white; margin: 2px; font-weight: 600;
+      transition: all 0.15s; box-shadow: 0 2px 4px rgba(14,165,233,0.25);
+    }
+    button:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    button.secondary { background: #64748b; box-shadow: 0 2px 4px rgba(100,116,139,0.25); }
+    button.goodBtn { background: #16a34a; box-shadow: 0 2px 4px rgba(22,163,74,0.25); }
+    button.badBtn { background: #dc2626; box-shadow: 0 2px 4px rgba(220,38,38,0.25); }
+    button.warnBtn { background: #d97706; box-shadow: 0 2px 4px rgba(217,119,6,0.25); }
+    button.purpleBtn { background: #7c3aed; box-shadow: 0 2px 4px rgba(124,58,237,0.25); }
+    .choice {
+      display: block; width: 100%; text-align: left;
+      background: #ffffff; border: 1.5px solid var(--line-strong); color: #1e293b;
+      margin: 6px 0; padding: 12px 16px; white-space: normal;
+      font-size: 18px; box-shadow: 0 1px 2px rgba(15,23,42,0.05);
+    }
+    /* 活動卡內的選項 2 欄並排：用 grid wrapper 確保不會被 inline-block whitespace 擠掉 */
+    .choices-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 8px 0;
+    }
+    .choices-grid .choice { margin: 0; }
+    .choice:hover { background: #f1f5f9; border-color: var(--accent); }
+    .choice.selected { background: #e0f2fe; border-color: #0ea5e9; outline: 2px solid #38bdf8; color: #075985; font-weight: 600; }
+    .choice.correct { background: #dcfce7; border-color: #16a34a; outline: 2px solid #22c55e; color: #14532d; font-weight: 600; }
+    .choice.wrong { background: #fee2e2; border-color: #dc2626; outline: 2px solid #ef4444; color: #7f1d1d; font-weight: 600; }
+    textarea, input {
+      width: 100%; border-radius: 10px;
+      border: 1.5px solid var(--line-strong);
+      background: #ffffff; color: var(--text);
+      padding: 10px; font-size: 16px; margin: 4px 0 12px;
+      font-family: inherit;
+    }
+    textarea:focus, input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(14,165,233,0.12); }
+    textarea { min-height: 80px; resize: vertical; }
+    .resultBox {
+      margin-top: 8px; padding: 12px; border-radius: 10px;
+      background: #f1f5f9; border: 1px solid var(--line);
+      font-size: 18px; color: #1e293b;
+    }
+    .resultBox:empty { display: none; }
+    .reset-btn {
+      display: inline-block; margin-left: 12px;
+      padding: 4px 10px; font-size: 13px;
+      background: #ffffff; color: #475569;
+      border: 1px solid #cbd5e1; border-radius: 6px;
+      box-shadow: none; font-weight: 600;
+    }
+    .reset-btn:hover { background: #f1f5f9; transform: none; }
+    /* 評量模式 UI */
+    .eval-toggle {
+      position: fixed; top: 12px; right: 16px; z-index: 50;
+    }
+    .eval-toggle button {
+      padding: 8px 14px; font-size: 14px; border-radius: 999px;
+      background: rgba(255,255,255,0.95); color: #475569;
+      border: 1px solid #cbd5e1; font-weight: 600;
+      box-shadow: 0 2px 6px rgba(15,23,42,0.08);
+    }
+    .eval-toggle.active button {
+      background: #16a34a; color: white; border-color: #15803d;
+    }
+    .eval-modal {
+      position: fixed; inset: 0; z-index: 100;
+      display: none; align-items: center; justify-content: center;
+      background: rgba(15,23,42,0.55); backdrop-filter: blur(2px);
+    }
+    .eval-modal.open { display: flex; }
+    .eval-modal .panel {
+      background: white; padding: 28px; border-radius: 14px;
+      max-width: 460px; width: 90%;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+    .eval-modal h3 { margin: 0 0 8px; color: #075985; font-size: 22px; }
+    .eval-modal .desc { font-size: 15px; color: #475569; margin-bottom: 12px; }
+    .eval-modal label { display: block; margin: 12px 0 4px; font-weight: 600; color: #1e293b; font-size: 15px; }
+    .eval-modal .btns { display: flex; gap: 8px; margin-top: 20px; justify-content: flex-end; }
+    .eval-toast {
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+      padding: 10px 18px; border-radius: 8px; z-index: 200;
+      background: #1e293b; color: white; font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      opacity: 0; transition: opacity 0.25s;
+    }
+    .eval-toast.show { opacity: 1; }
+    @media print { .eval-toggle, .eval-modal, .eval-toast { display: none !important; } }
+    .progress {
+      position: fixed; left: 0; top: 0; height: 5px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+      width: 0%; z-index: 30; transition: width 0.3s;
+    }
+    .slideNo { color: var(--muted); font-size: 16px; font-weight: 600; }
+    .emSpectrum {
+      height: 70px; border-radius: 12px;
+      background: linear-gradient(90deg, #7c3aed, #2563eb, #06b6d4, #16a34a, #facc15, #f97316, #ef4444);
+      display: flex; align-items: center; justify-content: space-around;
+      color: white; font-weight: 800; margin: 18px 0;
+      border: 1px solid rgba(255,255,255,0.25); font-size: 16px;
+      box-shadow: 0 4px 12px rgba(15,23,42,0.15);
+    }
+    .specBox {
+      background: #ffffff; border: 1px solid var(--line-strong);
+      border-radius: 12px; padding: 14px; margin: 12px 0;
+      box-shadow: 0 2px 6px rgba(15,23,42,0.05);
+    }
+    .specBox svg { width: 100%; height: auto; max-height: 260px; display: block; }
+    .specBox.bigsvg svg { max-height: 680px; }
+    .specBox .spec-title {
+      font-size: 15px; color: #1e293b; font-weight: 600; margin-bottom: 6px;
+    }
+    .specBox .spec-source {
+      font-size: 12px; color: #64748b; margin-top: 6px; font-style: italic;
+    }
+    .legend {
+      display: flex; gap: 14px; font-size: 16px; flex-wrap: wrap;
+      margin-top: 8px; color: #1e293b; font-weight: 600;
+    }
+    .legend span::before { content: "■"; margin-right: 4px; }
+    .sizebar {
+      display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+      margin: 18px 0; border-radius: 10px; overflow: hidden;
+      box-shadow: 0 4px 10px rgba(15,23,42,0.1);
+    }
+    .sizebar .zone {
+      padding: 16px 8px; text-align: center; color: white;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+    .sizebar .zone-name { font-weight: 800; font-size: 18px; letter-spacing: 0.5px; }
+    .sizebar .zone-range { font-size: 14px; opacity: 0.95; margin-top: 4px; }
+    .sizebar .z1 { background: #ec4899; }
+    .sizebar .z2 { background: #8b5cf6; }
+    .sizebar .z3 { background: #06b6d4; }
+    .sizebar .z4 { background: #22c55e; }
+    .pill {
+      display: inline-block; padding: 4px 10px; border-radius: 999px;
+      font-size: 14px; font-weight: 700; margin: 3px;
+    }
+    .pill.cyan { background: #cffafe; color: #155e75; border: 1px solid #67e8f9; }
+    .pill.purple { background: #ede9fe; color: #5b21b6; border: 1px solid #c4b5fd; }
+    .pill.pink { background: #fce7f3; color: #9d174d; border: 1px solid #f9a8d4; }
+    .pill.green { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+    .pill.amber { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+    details {
+      background: #f8fafc; padding: 10px 14px;
+      border-radius: 10px; border: 1px solid var(--line);
+      margin: 8px 0;
+    }
+    details summary { cursor: pointer; font-weight: 700; font-size: 18px; color: #075985; }
+    details[open] summary { margin-bottom: 8px; }
+    /* 未作答時提示：Explanation鎖定 */
+    details:not([open]) {
+      background: #fff7ed; border-color: #fed7aa; opacity: 0.85;
+    }
+    details:not([open]) summary { color: #9a3412; }
+    details:not([open]) summary::after {
+      content: " 🔒 Reveals after answering";
+      font-size: 13px; color: #c2410c; font-weight: 500;
+      margin-left: 10px;
+    }
+    .citation {
+      font-size: 14px; color: #64748b; font-style: italic;
+      border-left: 3px solid #cbd5e1; padding-left: 8px; margin: 6px 0;
+    }
+    .twoCol {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start;
+    }
+    @media print {
+      body { overflow: visible; background: white; color: black; }
+      .slide { display: block !important; height: auto; page-break-after: always; color: black; background: white; padding: 28px; }
+      .controls, .progress, .scoreBoard { display: none !important; }
+      h1, h2, h3, p, li, small, td, th { color: black; }
+      .card { background: white; color: black; box-shadow: none; border: 1px solid #888; }
+      .eq { background: #f5f5f5; color: black; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+
+  <!-- 評量模式切換 -->
+  <div class="eval-toggle" id="evalToggle">
+    <button onclick="openEvalModal()">📝 Start Assessment</button>
+  </div>
+  <div class="eval-modal" id="evalModal">
+    <div class="panel">
+      <h3>Enter Assessment Mode</h3>
+      <p class="desc">After signing in with your Student ID, your answers are uploaded in real time. The instructor can view class-wide statistics on the dashboard.</p>
+      <label>Student ID <span style="color:#dc2626">*</span></label>
+      <input id="evalStudentId" type="text" placeholder="例：B11234567" />
+      <label>Class (optional)</label>
+      <input id="evalClassId" type="text" placeholder="例：113-1-食品分析-甲" />
+      <div class="btns">
+        <button class="secondary" onclick="closeEvalModal()">Cancel</button>
+        <button onclick="enterEvalMode()">Start</button>
+      </div>
+    </div>
+  </div>
+  <div class="eval-toast" id="evalToast"></div>
+
+  <div class="lang-switch" style="position:fixed;top:8px;left:12px;z-index:50;background:rgba(255,255,255,0.95);padding:4px 10px;border-radius:999px;border:1px solid #cbd5e1;box-shadow:0 2px 8px rgba(15,23,42,0.08);font-size:13px;">
+    <a href="../index.html" style="color:#4c1d95;text-decoration:none;font-weight:600;margin:0 4px;">中文</a>
+    <a href="index.html" style="color:white;background:#0ea5e9;padding:2px 8px;border-radius:999px;text-decoration:none;font-weight:600;margin:0 4px;">EN</a>
+  </div>
+
+  <main class="deck" id="studentDeck">
+
+    <!-- S1 封面 -->
+    <section class="slide active">
+      <h1>Microplastic Detection in Food</h1>
+      <p class="subtitle">NIR・FTIR・Raman・Py-GC-MS・LC-MS</p>
+      <div class="card">
+        <h3>Today you will learn</h3>
+        <ul>
+          <li>Sources, types, and health concerns of microplastics in food</li>
+          <li>三種Vibrational Spectroscopy各自的<span class="highlight">detection limits</span>與應用場景</li>
+          <li>Py-GC-MS、TED-GC-MS 如何進行<span class="highlight">mass-based quantification</span></li>
+          <li>LC-MS 在Plasticizers、寡聚物、Additives分析的角色</li>
+          <li>如何依Sample 特性與目標<span class="highlight">select the correct method</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- S2 Course Content -->
+    <section class="slide">
+      <h2>Course Content</h2>
+      <ul>
+        <li>Microplastics 101: definitions, sources, sample preparation</li>
+        <li>Vibrational Spectroscopy：NIR、FTIR、Raman</li>
+        <li>Mass spectrometry: Py-GC-MS, LC-MS</li>
+        <li>Method integration and decision tree</li>
+        <li>Summary and Exit Ticket</li>
+      </ul>
+    </section>
+
+    <!-- S3 暖身投票 -->
+    <section class="slide">
+      <h2>Warm-up: How many microplastics does an average adult ingest per week?</h2>
+      <div class="card activity">
+        <div class="choices-grid">
+        <button class="choice" onclick="selectChoice(this,'q_warmup','A')">A. 幾乎沒有（&lt; 0.01 g)</button>
+        <button class="choice" onclick="selectChoice(this,'q_warmup','B')">B. ~1 g (mass of an ATM card)</button>
+        <button class="choice" onclick="selectChoice(this,'q_warmup','C')">C. ~5 g (mass of a credit card)</button>
+        <button class="choice" onclick="selectChoice(this,'q_warmup','D')">D. ~50 g (mass of a toothbrush)</button>
+        </div>
+        <div class="resultBox" id="q_warmup_result"></div>
+      </div>
+      <details>
+        <summary>Research findings</summary>
+        <p>Senathirajah et al. (2021) systematic review estimated that adults <span class="highlight">ingest 0.1–5 g per week</span> (median 0.7 g/week) of microplastics — equivalent to the plastic mass of a credit card. Bottled water exposure is 3–4× higher than tap water.</p>
+        <p class="citation">Senathirajah K. et al. (2021) <em>J Hazard Mater</em> 404:124004.</p>
+      </details>
+    </section>
+
+    <!-- S4 微塑膠定義 -->
+    <section class="slide">
+      <h2>What are microplastics?</h2>
+      <div class="card">
+        <p><span class="highlight">微塑膠 (Microplastics, MP)</span>：粒徑 &lt; 5 mm 的塑膠顆粒（由 NOAA / GESAMP 定義；歐盟提案 1 μm – 5 mm).</p>
+        <p><span class="highlight">奈米塑膠 (Nanoplastics, NP)</span>：粒徑 &lt; 1 μm（或 &lt; 100 nm 嚴格定義)，來自微塑膠的進一步破碎或產品中的奈米添加.</p>
+      </div>
+      <div class="sizebar">
+        <div class="zone z1"><div class="zone-name">NP</div><div class="zone-range">&lt; 1 μm</div></div>
+        <div class="zone z2"><div class="zone-name">Small MP</div><div class="zone-range">1 – 100 μm</div></div>
+        <div class="zone z3"><div class="zone-name">Large MP</div><div class="zone-range">100 μm – 5 mm</div></div>
+        <div class="zone z4"><div class="zone-name">Plastic fragments</div><div class="zone-range">&gt; 5 mm</div></div>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <h3>Primary MP</h3>
+          <p>Manufactured directly as small particles: facial scrubs, toothpaste, industrial resin pellets, tire-wear particles, cosmetics.</p>
+        </div>
+        <div class="card">
+          <h3>Secondary MP</h3>
+          <p>Larger plastics broken down in the environment by UV, heat, or mechanical forces: bottle fragments, fishing-net debris, degraded agricultural film, fibers shed during laundry.</p>
+        </div>
+      </div>
+      <p class="citation">Cole M. et al. (2011) Microplastics as contaminants in the marine environment: a review. <em>Mar Pollut Bull</em> 62:2588–2597.</p>
+    </section>
+
+    <!-- S5 常見塑膠類型 -->
+    <section class="slide">
+      <h2>Most commonly detected plastics in food</h2>
+      <table>
+        <tr><th>Code</th><th>Name</th><th>Density (g/cm³)</th><th>Food applications</th><th>Characteristic bands</th></tr>
+        <tr><td><span class="pill cyan">PE</span></td><td>Polyethylene</td><td>0.91–0.96</td><td>Food bags, cling film, bottle caps</td><td>FTIR: 2915/2848/1463/720</td></tr>
+        <tr><td><span class="pill purple">PP</span></td><td>Polypropylene</td><td>0.90–0.91</td><td>Microwave containers, yogurt cups, tea bags</td><td>FTIR: 2950/1455/1377/998</td></tr>
+        <tr><td><span class="pill pink">PET</span></td><td>Polyethylene terephthalate</td><td>1.37</td><td>Water bottles, beverages, oil bottles</td><td>FTIR: 1715/1240/1090/720</td></tr>
+        <tr><td><span class="pill green">PS</span></td><td>Polystyrene</td><td>1.04–1.10</td><td>Disposable cutlery, foam boxes, yogurt cups</td><td>FTIR: 3025/1601/1493/696</td></tr>
+        <tr><td><span class="pill amber">PVC</span></td><td>Polyvinyl chloride</td><td>1.16–1.45</td><td>Cling film (some), pipes</td><td>FTIR: 1426/1330/690 (C-Cl)</td></tr>
+        <tr><td><span class="pill cyan">PA</span></td><td>Nylon (PA)</td><td>1.13–1.15</td><td>Tea bags, cooking bags, fishing-net debris</td><td>Py-GC-MS: 己內醯胺 (PA6)</td></tr>
+        <tr><td><span class="pill purple">PC</span></td><td>Polycarbonate</td><td>1.20</td><td>Baby bottles, 5-gallon containers</td><td>LC-MS: BPA 寡聚物</td></tr>
+      </table>
+      <p class="mini">Density information matters: it determines the choice of <span class="highlight">density flotation</span> salt solution (NaCl 1.2, NaI 1.6, ZnCl₂ 1.7, NaBr 1.4).</p>
+    </section>
+
+    <!-- S6 來源與暴露途徑 -->
+    <section class="slide">
+      <h2>Exposure routes for microplastics in food</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Water and beverages</h3>
+          <ul>
+            <li>Bottled water: 325 particles/L (median, Mason 2018)</li>
+            <li>Tap water: 5.5 particles/L</li>
+            <li>Beer and ready-to-drink tea are also positive</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Sea salt and seasonings</h3>
+          <ul>
+            <li>Sea salt: 550–681 particles/kg (Yang 2015)</li>
+            <li>Lake salt and rock salt: lower content</li>
+            <li>Mainly PET, PE, PP</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Seafood and shellfish</h3>
+          <ul>
+            <li>Mussels: 0.36 particles/g soft tissue</li>
+            <li>Oysters and clams accumulate suspended MP</li>
+            <li>Most reside in the digestive tract</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Packaging migration and brewing</h3>
+          <ul>
+            <li>Plastic tea bags (PA/PET): ~1.16 × 10⁹ NP per cup (Hernandez 2019)</li>
+            <li>Infant feeding bottles (PP) at 80°C: 1.6 × 10⁶ particles/L (Li 2020)</li>
+          </ul>
+        </div>
+      </div>
+      <p class="citation">Hernandez LM. et al. (2019) Plastic Teabags Release Billions of Microparticles and Nanoparticles into Tea. <em>Environ Sci Technol</em> 53:12300–12310.</p>
+    </section>
+
+    <!-- S7 健康疑慮 -->
+    <section class="slide">
+      <h2>Why should food analysts care?</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Particle-based effects</h3>
+          <ul>
+            <li>Nanoplastics can <span class="warn">cross the intestinal wall</span> and have been detected in blood, placenta, liver, and kidneys</li>
+            <li>Cellular: oxidative stress, inflammation, mitochondrial dysfunction</li>
+            <li>Leslie et al. (2022) first reported MP in human blood</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Chemical co-contaminants</h3>
+          <ul>
+            <li><span class="warn">Plasticizers</span>: phthalate esters (DEHP, DBP) — analyzed by LC-MS</li>
+            <li><span class="warn">Bisphenol A (BPA)</span>: endocrine disruptor</li>
+            <li><span class="warn">Antioxidants, UV stabilizers</span>: phenolic additives</li>
+            <li>Environmentally adsorbed PCBs and pesticide residues can be carried by MP</li>
+          </ul>
+        </div>
+      </div>
+      <p class="citation">Leslie HA. et al. (2022) Discovery and quantification of plastic particle pollution in human blood. <em>Environ Int</em> 163:107199.</p>
+    </section>
+
+    <!-- S8 Sample pre-process總覽 -->
+    <section class="slide">
+      <h2>Sample preparation: the most critical step before analysis</h2>
+      <p>Poor preparation can: (1) destroy the plastic itself, (2) introduce background contamination, (3) interfere with spectral interpretation.<span class="highlight">preparation quality dictates everything</span>.</p>
+      <table>
+        <tr><th>Step</th><th>Purpose</th><th>Common methods</th><th>Notes</th></tr>
+        <tr><td>1. Sampling</td><td>Avoid airborne contamination</td><td>Glass vessels, aluminum-foil cover, cotton-free lab coats</td><td>Always include <span class="bad">procedural blanks</span></td></tr>
+        <tr><td>2. Organic digestion</td><td>Remove proteins and lipids</td><td>10% KOH, 30% H₂O₂, Fenton, enzymatic</td><td>Avoid high temperature to prevent PA/PET damage</td></tr>
+        <tr><td>3. Density separation</td><td>Separate plastics from minerals</td><td>NaCl (1.2), NaI (1.6), ZnCl₂ (1.7)</td><td>NaCl cannot float PET/PVC</td></tr>
+        <tr><td>4. Filtration</td><td>Collect particles onto filter</td><td>Anodisc, Si filter, Au-coated</td><td>Filter material must be compatible with downstream instruments</td></tr>
+        <tr><td>5. ID/Quant</td><td>Obtain chemical identity</td><td>FTIR / Raman / Py-GC-MS</td><td>Quantification unit: count vs mass</td></tr>
+      </table>
+      <p class="citation">Prata JC. et al. (2019) Methods for sampling and detection of microplastics in water and sediment: A critical review. <em>TrAC</em> 110:150–159.</p>
+    </section>
+
+    <!-- S9 互動：消化方法 -->
+    <section class="slide">
+      <h2>For analysis of MP in the GI tract of 100 g fresh fish, which digestion method is most appropriate?</h2>
+      <div class="card activity">
+        <div class="choices-grid">
+        <button class="choice" onclick="checkMCQ(this,'q_digest','A',false)">A. Concentrated HNO₃ heated reflux</button>
+        <button class="choice" onclick="checkMCQ(this,'q_digest','B',true)">B. 10% KOH, 40 °C, 24–48 h</button>
+        <button class="choice" onclick="checkMCQ(this,'q_digest','C',false)">C. Soak directly in distilled water</button>
+        <button class="choice" onclick="checkMCQ(this,'q_digest','D',false)">D. 30% H₂O₂ heated to 80 °C for 24 h</button>
+        </div>
+        <div class="resultBox" id="q_digest_result"></div>
+      </div>
+      <details>
+        <summary>Why?</summary>
+        <ul>
+          <li><span class="bad">A is wrong</span>: Concentrated HNO₃ severely damages PA and PS plastics, <span class="warn">causing discoloration, deformation, or even dissolution</span>, distorting subsequent identification.</li>
+          <li><span class="good">B is best</span>：10% KOH 在 40°C 對魚組織有良好消化效率（&gt; 90%)，且對 PE、PP、PET、PS 等常見塑膠相對溫和.Karami et al. (2017) 的標準操作流程之一.</li>
+          <li><span class="bad">C is ineffective</span>: Water cannot digest proteins and lipids.</li>
+          <li><span class="warn">D is risky</span>: High-temperature H₂O₂ discolors PA and weakens PET; if H₂O₂ is required, prefer room-temperature long-duration digestion.</li>
+        </ul>
+        <p class="citation">Karami A. et al. (2017) A high-performance protocol for extraction of microplastics in fish. <em>Sci Total Environ</em> 578:485–494.</p>
+      </details>
+    </section>
+
+    <!-- S10 密度分離 -->
+    <section class="slide">
+      <h2>Choosing the density flotation solution</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Common flotation salt solutions</h3>
+          <table>
+            <tr><th>Solution</th><th>Density (g/cm³)</th><th>Plastics floated</th></tr>
+            <tr><td>NaCl saturated</td><td>1.20</td><td>PE, PP, PS</td></tr>
+            <tr><td>NaBr saturated</td><td>1.40</td><td>+ PA, PMMA</td></tr>
+            <tr><td>NaI saturated</td><td>1.60</td><td>+ PET, ABS</td></tr>
+            <tr><td>ZnCl₂ saturated</td><td>1.70</td><td>+ PVC, POM</td></tr>
+            <tr><td>ZnBr₂ saturated</td><td>1.71</td><td>Almost all</td></tr>
+            <tr><td>Sodium polytungstate</td><td>1.40–3.10</td><td>Tunable but expensive</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h3>Selection logic</h3>
+          <ul>
+            <li>Only need PE/PP/PS: <span class="highlight">NaCl is the economical choice</span>, but it misses PET and PVC</li>
+            <li>For complete plastic profile: prefer <span class="highlight">NaI or ZnCl₂</span></li>
+            <li>ZnCl₂ waste contains <span class="bad">heavy metals</span>with associated disposal cost</li>
+            <li>Nanoplastics: density separation is inefficient — often requires <span class="highlight">asymmetric flow field-flow fractionation (AF4)</span> or <span class="highlight">ultracentrifugation</span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="citation">Schwaferts C. et al. (2019) Methods for the analysis of submicrometer- and nanoplastic particles in the environment. <em>TrAC</em> 112:52–65.</p>
+    </section>
+
+    <!-- S11 Vibrational SpectroscopyPrinciple -->
+    <section class="slide">
+      <h2>Vibrational SpectroscopyPrinciple：分子在「跳什麼舞」?</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Energy levels</h3>
+          <p>When molecules absorb IR light, <span class="highlight">vibrational energy levels</span> transition from ground to excited states. Each chemical bond (C–H, C=O, C–O, C–Cl) has a characteristic frequency.</p>
+          <div class="eq">ν̃ (cm⁻¹) = 1/λ</div>
+          <p class="mini">Mid-infrared (MIR): ~4000–400 cm⁻¹; near-infrared (NIR): ~12500–4000 cm⁻¹.</p>
+        </div>
+        <div class="card">
+          <h3>Selection rules: absorption vs scattering</h3>
+          <ul>
+            <li><span class="highlight">IR-active</span>: vibration causes <span class="warn">change in dipole moment</span> → strong for C=O, O–H</li>
+            <li><span class="highlight">Raman-active</span>: vibration causes <span class="warn">change in polarizability</span> → strong for C=C, aromatic rings</li>
+            <li>For centrosymmetric molecules the two are complementary (<em>mutual exclusion</em>)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="emSpectrum">
+        <span>γ</span><span>X</span><span>UV</span><span>Vis</span><span style="background:rgba(0,0,0,0.3);padding:4px 8px;border-radius:8px">NIR</span><span style="background:rgba(0,0,0,0.3);padding:4px 8px;border-radius:8px">MIR/FTIR</span><span style="background:rgba(0,0,0,0.3);padding:4px 8px;border-radius:8px">Raman</span><span>μ波</span><span>RF</span>
+      </div>
+    </section>
+
+    <!-- S12 NIR -->
+    <section class="slide">
+      <h2>Near-infrared (NIR) spectroscopy: rapid screening</h2>
+      <div class="twoCol">
+        <div>
+          <div class="card">
+            <h3>Principle</h3>
+            <p>NIR spans <span class="highlight">12500–4000 cm⁻¹</span>（800–2500 nm)，primaryRecords the  C–H、O–H、N–H 鍵的<span class="warn">overtones</span> and <span class="warn">combination bands</span>.</p>
+            <p>Broad peaks, weak signal, low resolution → requires <span class="highlight">chemometrics</span>（PCA、PLS、SIMCA)建模辨識.</p>
+          </div>
+          <div class="card">
+            <h3>Role in food microplastic analysis</h3>
+            <ul>
+              <li>大尺寸塑膠 (&gt; 1 mm) <span class="highlight">recycling-line sorting</span> is the mainstream technology</li>
+              <li>Large-particle screening: HSI (hyperspectral imaging) 1000–2500 nm</li>
+              <li><span class="bad">Not suitable</span> &lt; 500 μm MP 分析</li>
+              <li>食品基質干擾大（水、油的 O–H、C–H 強吸收)</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="chart"
+               data-spec="nir_pe_bag1"
+               data-title="Plastic bag (PE) NIR spectrum — real measurement"
+               data-xlabel="Wavelength (nm)"
+               data-ylabel="Absorbance"
+               data-color="#0ea5e9"
+               data-markers="1210,1410,1730,2300"
+               data-source="Lab measurement on NeoSpectra/InnoSpectra (bag1_run1, 900–2400 nm)"></div>
+          <p class="mini">PE 在 NIR 的特徵：~1210、1410、1730 nm（C–H 第一倍頻)，~2310 nm（C–H 組合頻).本圖為實驗室自量數據，未做基線校正，因此 2300 nm 以後吸收急遽上升（Sample 厚度與儀器響應).</p>
+        </div>
+      </div>
+      <p class="citation">Serranti S. et al. (2018) The utilization of hyperspectral imaging for impurities detection in secondary plastics. <em>Open Waste Manag J</em>.</p>
+    </section>
+
+    <!-- S13 互動：NIR 適用Scenario -->
+    <section class="slide">
+      <h2>Interaction: When is NIR most suitable?</h2>
+      <div class="card activity">
+        <h3>請從以下Scenario選出 NIR 最合適的應用（可能不只一個正確答案，請選最佳)</h3>
+        <div class="choices-grid">
+        <button class="choice" onclick="checkMCQ(this,'q_nir','A',false)">A. Detecting 5 μm nano-scale PE particles in tap water</button>
+        <button class="choice" onclick="checkMCQ(this,'q_nir','B',true)">B. 工廠回收線高速分選 2 cm 大小的 PET and  HDPE 瓶片</button>
+        <button class="choice" onclick="checkMCQ(this,'q_nir','C',false)">C. Identifying 50 μm plastic fibers in sea salt</button>
+        <button class="choice" onclick="checkMCQ(this,'q_nir','D',false)">D. Detecting 0.5 μg of PS in fish muscle</button>
+        </div>
+        <div class="resultBox" id="q_nir_result"></div>
+      </div>
+      <details>
+        <summary>Explanation</summary>
+        <p>The core advantage of NIR is being <span class="highlight">fast, non-destructive, and amenable to inline monitoring</span>，但Explanation度與靈敏度都不如 FTIR / Raman.它最Suitable for <span class="highlight">大型塑膠（mm 以上)的分選與成分篩選</span>，例如回收業以高光譜成像 (HSI) 線上分選 PET、HDPE、PP.對於 ≤ 100 μm 的微塑膠或mass極低的樣本，NIR 的靈敏度不足.</p>
+      </details>
+    </section>
+
+    <!-- S14 FTIR Principle -->
+    <section class="slide">
+      <h2>Fourier-transform infrared spectroscopy (FTIR): the workhorse for microplastics</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>關鍵Principle</h3>
+          <ul>
+            <li>光源（globar)→ <span class="highlight">Michelson interferometer</span> → sample → detector</li>
+            <li>Records the <span class="highlight">interferogram</span></li>
+            <li>Fourier transform → absorption spectrum</li>
+            <li>All wavenumbers measured simultaneously → <span class="highlight">Fellgett multiplex SNR advantage</span></li>
+            <li>Explanation度可達 0.5 cm⁻¹</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Four sampling modes</h3>
+          <table>
+            <tr><th>Mode</th><th>Best for</th><th>Limitation</th></tr>
+            <tr><td>Transmission</td><td>Small particles on filter</td><td>Filter must be IR-transparent (Si/Anodisc)</td></tr>
+            <tr><td>ATR</td><td>大顆粒 &gt; 100 μm</td><td>需<span class="warn">crystal contact</span></td></tr>
+            <tr><td>Reflection</td><td>Metal-coated filter</td><td>RAB artifacts on thick samples</td></tr>
+            <tr><td>μ-FTIR</td><td>Individual particles 10 μm–mm</td><td>Slow, requires focus</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- S15 FTIR detection limits與化學成像 -->
+    <section class="slide">
+      <h2>FTIR 的detection limits與化學成像</h2>
+      <div class="card">
+        <h3>顯微 FTIR (μ-FTIR) and 化學成像</h3>
+        <p>傳統單點顯微 FTIR：detection limits約 <span class="highlight">10–20 μm</span>（受 IR 繞射極限限制).</p>
+        <p>Using a <span class="highlight">FPA 偵測器（Focal Plane Array)</span> enables 64 × 64 pixel chemical imaging in one shot; whole filters can be auto-scanned for <span class="highlight">chemical classification</span>（搭配 siMPle、PRIMPKE 等 open-source 軟體).</p>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <h3>QCL-IR: the next-generation technology</h3>
+          <ul>
+            <li>Quantum cascade laser (QCL) source</li>
+            <li>High intensity, enabling <span class="highlight">fast scanning</span> — a 1 cm² filter can be analyzed in 30 minutes</li>
+            <li>detection limits可達 ~5 μm</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>O-PTIR (Optical photothermal IR)</h3>
+          <ul>
+            <li>Combines IR source with visible probe</li>
+            <li>Breaks the diffraction limit, reaching <span class="highlight">~ 500 nm 空間Explanation度</span></li>
+            <li>Simultaneous Raman possible; high instrument cost</li>
+          </ul>
+        </div>
+      </div>
+      <p class="citation">Primpke S. et al. (2020) Critical assessment of analytical methods for the harmonized and cost-efficient analysis of microplastics. <em>Appl Spectrosc</em> 74:1012–1047.</p>
+    </section>
+
+    <!-- S16 PE FTIR -->
+    <section class="slide">
+      <h2><span class="pill cyan">PE</span> 聚乙烯 FTIR</h2>
+      <div class="chart" data-spec="ftir_pe" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#0284c7" data-xreverse="1" data-markers="2915,2848,1463,720"></div>
+      <div class="grid">
+        <div class="card">
+          <h3>Four characteristic peaks</h3>
+          <ul>
+            <li><strong>2915</strong>: CH₂ asymmetric stretch</li>
+            <li><strong>2848</strong>: CH₂ symmetric stretch</li>
+            <li><strong>1463</strong>: CH₂ scissoring</li>
+            <li><strong>720</strong>：CH₂ 搖動（HDPE 結晶會分裂為 730/720 雙峰)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Food applications</h3>
+          <p>食品袋、保鮮膜、瓶蓋、塑膠袋.<br/>
+          密度 0.91–0.96 g/cm³，NaCl is sufficient浮選.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S16a PP FTIR -->
+    <section class="slide">
+      <h2><span class="pill purple">PP</span> 聚丙烯 FTIR</h2>
+      <div class="chart" data-spec="ftir_pp" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#7c3aed" data-xreverse="1" data-markers="2950,1455,1377,998"></div>
+      <div class="grid">
+        <div class="card">
+          <h3>Characteristic peaks</h3>
+          <ul>
+            <li><strong>2950 / 2917</strong>：CH₃ and  CH₂ 伸縮</li>
+            <li><strong>1455</strong>: CH₂/CH₃ bends</li>
+            <li><strong>1377</strong>：<span class="highlight">CH₃ symmetric bend</span>（區分 PE/PP 的關鍵)</li>
+            <li><strong>998 / 974 / 840</strong>: backbone vibration triplet</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Food applications</h3>
+          <p>微波容器、優格杯、塑膠茶包、嬰兒奶瓶（80°C 沖泡會釋出 MP).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S16b PET FTIR -->
+    <section class="slide">
+      <h2><span class="pill pink">PET</span> 聚對苯二甲酸乙二酯 FTIR</h2>
+      <div class="chart" data-spec="ftir_pet" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#db2777" data-xreverse="1" data-markers="1715,1240,1090,723"></div>
+      <div class="grid">
+        <div class="card">
+          <h3>Signature peak group</h3>
+          <ul>
+            <li><strong>1715</strong>：<span class="highlight">strong ester C=O absorption</span>（PET 的招牌指紋)</li>
+            <li><strong>1240</strong>: C–O–C asymmetric stretch</li>
+            <li><strong>1090</strong>: C–O symmetric stretch</li>
+            <li><strong>723</strong>: para-substituted aromatic C–H bend</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Food applications</h3>
+          <p>PET bottles, beverage bottles, oil bottles; oceanic bottle fragments are <span class="highlight">a primary source of MP in sea salt</span>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S16c PS FTIR -->
+    <section class="slide">
+      <h2><span class="pill green">PS</span> 聚苯乙烯 FTIR</h2>
+      <div class="chart" data-spec="ftir_ps" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#16a34a" data-xreverse="1" data-markers="3025,1601,1493,696"></div>
+      <div class="grid">
+        <div class="card">
+          <h3>Aromatic ring features</h3>
+          <ul>
+            <li><strong>3025</strong>: aromatic C–H stretch</li>
+            <li><strong>1601 / 1493</strong>: aromatic ring backbone</li>
+            <li><strong>696</strong>：<span class="highlight">mono-substituted benzene C–H out-of-plane bend</span>（PS 招牌)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Food applications</h3>
+          <p>免洗杯/碗、發泡盒、優格杯.發泡 PS 有額外發泡劑訊號.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S16d PVC FTIR -->
+    <section class="slide">
+      <h2><span class="pill amber">PVC</span> 聚氯乙烯 FTIR</h2>
+      <div class="chart" data-spec="ftir_pvc" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#d97706" data-xreverse="1" data-markers="1426,1255,690,614"></div>
+      <div class="grid">
+        <div class="card">
+          <h3>C–Cl bond features</h3>
+          <ul>
+            <li><strong>1426</strong>: CH₂ bend</li>
+            <li><strong>1255</strong>: CH–Cl bend</li>
+            <li><strong>690 / 614</strong>：<span class="highlight">C–Cl stretch</span>（PVC 獨有指紋)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Food applications</h3>
+          <p>部分保鮮膜、輸送管、紅色血袋；含大量Plasticizers DEHP/DBP（LC-MS 分析).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S16e FTIR 對照表 -->
+    <section class="slide">
+      <h2>五大塑膠 FTIR Characteristic peaks速查</h2>
+      <table>
+        <tr><th>塑膠</th><th>關鍵Characteristic peaks (cm⁻¹)</th><th>歸屬</th><th>判讀重點</th></tr>
+        <tr><td><span class="pill cyan">PE</span></td><td>2915, 2848, 1463, 720</td><td>C–H stretch, CH₂ bend/rock</td><td>No 1377 band</td></tr>
+        <tr><td><span class="pill purple">PP</span></td><td>2950, 1455, <strong>1377</strong>, 998</td><td>CH₃ bend, backbone</td><td>1377 distinguishes from PE</td></tr>
+        <tr><td><span class="pill pink">PET</span></td><td><strong>1715</strong>, 1240, 1090, 723</td><td>C=O, C–O, aromatic C–H</td><td>Strong 1715 band</td></tr>
+        <tr><td><span class="pill green">PS</span></td><td>3025, 1601, 1493, <strong>696</strong></td><td>Aromatic C–H, ring</td><td>696 signature</td></tr>
+        <tr><td><span class="pill amber">PVC</span></td><td>1426, 1255, <strong>690</strong>, 614</td><td>CH–Cl, <strong>C–Cl</strong></td><td>C–Cl is unique</td></tr>
+      </table>
+      <p class="mini">X 軸 Wavenumber 高→低為 FTIR 慣例；Y 軸穿透率，峰朝下＝吸收.圖譜依 Käppler 2018、Jung 2018 文獻峰位重建.</p>
+    </section>
+
+    <!-- S17 互動：FTIR 圖譜辨識 1 -->
+    <section class="slide">
+      <h2>FTIR 圖譜辨識（一)：請判斷塑膠類型</h2>
+      <div class="card activity">
+        <div class="chart" data-spec="ftir_pe" data-title="Unknown plastic FTIR | main bands: 2915, 2848, 1463, 720 cm⁻¹" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#0c4a6e" data-xreverse="1" data-markers="2915,2848,1463,720"></div>
+        <div class="choices-grid">
+        <button class="choice" onclick="checkMCQ(this,'q_ftir1','PE',true)">A. Polyethylene (PE)</button>
+        <button class="choice" onclick="checkMCQ(this,'q_ftir1','PP',false)">B. Polypropylene (PP)</button>
+        <button class="choice" onclick="checkMCQ(this,'q_ftir1','PET',false)">C. Polyethylene terephthalate (PET)</button>
+        <button class="choice" onclick="checkMCQ(this,'q_ftir1','PS',false)">D. Polystyrene (PS)</button>
+        </div>
+        <div class="resultBox" id="q_ftir1_result"></div>
+      </div>
+      <details>
+        <summary>Reasoning</summary>
+        <ul>
+          <li><span class="good">PE is correct</span>：2915（CH₂ 不對稱伸縮)+ 2848（CH₂ 對稱伸縮)+ 1463（CH₂ 剪式變角)+ <span class="highlight">720</span>（CH₂ 搖動雙峰，分裂為 730/720 是 HDPE 結晶特徵)— 這是 PE 的「Four characteristic peaks」.</li>
+          <li><span class="bad">Not PP</span>：PP 一定要看到 1377 cm⁻¹（CH₃ symmetric bend)與 998/974/840 cm⁻¹ 三個骨架峰.</li>
+          <li><span class="bad">Not PET</span>：缺少 1715 cm⁻¹ 強烈的 C=O 吸收.</li>
+          <li><span class="bad">Not PS</span>：缺少 3025 cm⁻¹ 芳香 C–H、1601/1493 苯環、696 cm⁻¹.</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- S18 互動：FTIR 圖譜辨識 2 -->
+    <section class="slide">
+      <h2>FTIR 圖譜辨識（二)：海鹽中分離的 80 μm 透明顆粒</h2>
+      <div class="card activity">
+        <div class="chart" data-spec="ftir_pet" data-title="μ-FTIR | strong absorption at 1715, 1240, 1090, 720 cm⁻¹" data-xlabel="Wavenumber (cm⁻¹)" data-ylabel="Transmittance" data-color="#0c4a6e" data-xreverse="1" data-markers="1715,1240,1090,723"></div>
+        <div class="choices-grid">
+        <button class="choice" onclick="checkMCQ(this,'q_ftir2','PE',false)">A. Polyethylene (PE)</button>
+        <button class="choice" onclick="checkMCQ(this,'q_ftir2','PVC',false)">B. Polyvinyl chloride (PVC)</button>
+        <button class="choice" onclick="checkMCQ(this,'q_ftir2','PET',true)">C. Polyethylene terephthalate (PET)</button>
+        <button class="choice" onclick="checkMCQ(this,'q_ftir2','PA',false)">D. Nylon (PA)</button>
+        </div>
+        <div class="resultBox" id="q_ftir2_result"></div>
+      </div>
+      <details>
+        <summary>Reasoning</summary>
+        <ul>
+          <li><span class="good">PET is correct</span>: 1715 cm⁻¹ is the <span class="highlight">strong ester C=O absorption</span>的標記；1240（C–O–C 不對稱伸縮)+ 1090（C–O 對稱伸縮)+ 720（對位取代苯 C–H 變角)構成 PET 的標準四峰群.</li>
+          <li>Nylon (PA) also has C=O, but its amide C=O lies near <span class="highlight">1640 cm⁻¹</span>（amide I)，且伴隨 3300 cm⁻¹ 寬 N–H 峰，與 PET 不同.</li>
+          <li>PVC 的標誌是 690 cm⁻¹ 強 C–Cl stretch，本譜沒看到.</li>
+          <li>A particle of this type isolated from sea salt likely originates from <span class="warn">oceanic PET bottle fragments</span>，符合 Yang et al. (2015) 在中國市售食鹽中發現以 PET 為主的觀察.</li>
+        </ul>
+        <p class="citation">Yang D. et al. (2015) Microplastic Pollution in Table Salts from China. <em>Environ Sci Technol</em> 49:13622–13627.</p>
+      </details>
+    </section>
+
+    <!-- S19 Raman Principle -->
+    <section class="slide">
+      <h2>Raman spectroscopy: the power of scattering</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>關鍵Principle</h3>
+          <ul>
+            <li>Monochromatic laser illuminates the sample (commonly 532, 633, 785, or 1064 nm)</li>
+            <li>Most light undergoes <span class="highlight">Rayleigh scattering</span>（彈性，波長不變)</li>
+            <li>A small fraction undergoes <span class="highlight">Raman scattering</span>（非彈性，波長變化等於分子振動能量)</li>
+            <li>Stokes line ν₀ − νᵥ; anti-Stokes line ν₀ + νᵥ</li>
+          </ul>
+          <div class="eq">Δν̃ = (1/λ₀) − (1/λₛ)</div>
+        </div>
+        <div class="card">
+          <h3>Complementarity vs FTIR</h3>
+          <table>
+            <tr><th>Property</th><th>FTIR</th><th>Raman</th></tr>
+            <tr><td>選律</td><td>偶極變化</td><td>change in polarizability</td></tr>
+            <tr><td>Water signal</td><td>Severe interference</td><td>Almost none</td></tr>
+            <tr><td>detection limits</td><td>~10–20 μm</td><td>~1 μm</td></tr>
+            <tr><td>Fluorescence interference</td><td>None</td><td>Common issue</td></tr>
+            <tr><td>Symmetric bonds (C=C)</td><td>Weak</td><td>Strong</td></tr>
+            <tr><td>Analysis time</td><td>Seconds per particle</td><td>Tens of seconds per particle</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- S20 HDPE Raman -->
+    <section class="slide">
+      <h2><span class="pill cyan">PE</span> HDPE Raman</h2>
+      <div class="chart" data-spec="raman_hdpe" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#0284c7" data-markers="1296,1440,2848,2882" data-source="KU Leuven RDR doi:10.48804/FZNZMH"></div>
+      <div class="grid">
+        <div class="card">
+          <h3>Characteristic shifts</h3>
+          <ul>
+            <li><strong>1296</strong>: CH₂ twisting</li>
+            <li><strong>1440</strong>: CH₂ bend</li>
+            <li><strong>2848 / 2882</strong>：<span class="highlight">C–H stretch doublet</span>（PE 最強訊號)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Practical notes</h3>
+          <p>PE 缺少強芳香鍵，Raman 強度遠低於 PS、PET；分析時建議搭配 FTIR 互相驗證.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S20a PP Raman -->
+    <section class="slide">
+      <h2><span class="pill purple">PP</span> Raman</h2>
+      <div class="chart" data-spec="raman_pp" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#7c3aed" data-markers="808,973,2884,2953"></div>
+      <div class="grid">
+        <div class="card">
+          <h3>Characteristic shifts</h3>
+          <ul>
+            <li><strong>808</strong>: C–C backbone</li>
+            <li><strong>973</strong>：CH₃ 搖動（區分 PE 關鍵)</li>
+            <li><strong>2884 / 2953</strong>: C–H stretch</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Practical notes</h3>
+          <p>973 cm⁻¹ 是 PP 獨有訊號，PE 完全沒有.低結晶度 PP 的 808 峰會減弱.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S20b PS Raman -->
+    <section class="slide">
+      <h2><span class="pill green">PS</span> Raman ─ 招牌 1001 cm⁻¹</h2>
+      <div class="chart" data-spec="raman_ps" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#16a34a" data-markers="621,1001,1602,3050"></div>
+      <div class="grid">
+        <div class="card">
+          <h3>Characteristic shifts</h3>
+          <ul>
+            <li><strong>621</strong>: C–C bending</li>
+            <li><strong>1001</strong>：<span class="highlight">mono-substituted benzene ring breathing mode</span>（強度極高、極尖銳，PS 的招牌指紋)</li>
+            <li><strong>1602</strong>: aromatic C=C ring</li>
+            <li><strong>3050</strong>: aromatic C–H stretch</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Practical notes</h3>
+          <p>The 1001 cm⁻¹ signal is so intense that it is commonly used as the <span class="highlight">internal standard reference</span>.免洗杯、發泡盒判讀首選.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S20c PET Raman -->
+    <section class="slide">
+      <h2><span class="pill pink">PET</span> Raman</h2>
+      <div class="chart" data-spec="raman_pet" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#db2777" data-markers="1117,1613,1726,3082"></div>
+      <div class="grid">
+        <div class="card">
+          <h3>Characteristic shifts</h3>
+          <ul>
+            <li><strong>1117</strong>: C–O stretch</li>
+            <li><strong>1613</strong>: aromatic C=C ring</li>
+            <li><strong>1726</strong>：<span class="highlight">ester C=O stretch</span>（PET 識別關鍵)</li>
+            <li><strong>3082</strong>: aromatic C–H</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Practical notes</h3>
+          <p>同時看到 1613 (芳香) + 1726 (C=O) → is sufficient鎖定 PET，與 PA (僅 C=O 無芳香) 區分.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S20d PVC Raman -->
+    <section class="slide">
+      <h2><span class="pill amber">PVC</span> Raman ─ C–Cl 638/696</h2>
+      <div class="chart" data-spec="raman_pvc" data-xlabel="Raman shift (cm⁻¹)" data-ylabel="Normalized intensity" data-color="#d97706" data-markers="638,696,2913"></div>
+      <div class="grid">
+        <div class="card">
+          <h3>Characteristic shifts</h3>
+          <ul>
+            <li><strong>638 / 696</strong>：<span class="highlight">C–Cl stretch</span>（PVC 獨有，所有其他塑膠都沒有)</li>
+            <li><strong>2913</strong>: C–H stretch</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Practical notes</h3>
+          <p>低於 700 cm⁻¹ 的強峰是 PVC 直接證據；同時 FTIR 690 cm⁻¹ 也是 PVC 招牌.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S20e Raman 對照表 -->
+    <section class="slide">
+      <h2>Raman characteristic peak cheat sheet for the five plastics</h2>
+      <table>
+        <tr><th>Plastic</th><th>Key shifts (cm⁻¹)</th><th>Assignment</th><th>Interpretation focus</th></tr>
+        <tr><td><span class="pill cyan">PE</span></td><td>1296, 1440, 2848, 2882</td><td>C–H stretch doublet</td><td>訊號弱</td></tr>
+        <tr><td><span class="pill purple">PP</span></td><td>808, <strong>973</strong>, 2884, 2953</td><td>Backbone, CH₃ rocking</td><td>973 distinguishes from PE</td></tr>
+        <tr><td><span class="pill green">PS</span></td><td>621, <strong>1001</strong>, 1602, 3050</td><td>Aromatic ring breathing</td><td><strong>1001 is signature</strong></td></tr>
+        <tr><td><span class="pill pink">PET</span></td><td>1117, 1613, <strong>1726</strong>, 3082</td><td>C=O + aromatic</td><td>1613 + 1726 together</td></tr>
+        <tr><td><span class="pill amber">PVC</span></td><td><strong>638, 696</strong>, 2913</td><td><strong>C–Cl</strong></td><td>C–Cl is unique</td></tr>
+      </table>
+      <p class="mini">數據來源：KU Leuven RDR (doi:10.48804/FZNZMH)，EXIMIOUS 計畫 HPU Raman 光譜庫.</p>
+    </section>
+
+    <!-- S21 互動：Raman 圖譜辨識 -->
+    <section class="slide">
+      <h2>Raman ID: 30 μm particle scraped from a disposable cup</h2>
+      <p>Main bands at <span class="highlight">621, 1001, 1031, 1602, 3050 cm⁻¹</span></p>
+      <div class="card activity">
+        <div class="choices-grid">
+        <button class="choice" onclick="checkMCQ(this,'q_raman1','PE',false)">A. PE</button>
+        <button class="choice" onclick="checkMCQ(this,'q_raman1','PP',false)">B. PP</button>
+        <button class="choice" onclick="checkMCQ(this,'q_raman1','PS',true)">C. PS</button>
+        <button class="choice" onclick="checkMCQ(this,'q_raman1','PVC',false)">D. PVC</button>
+        </div>
+        <div class="resultBox" id="q_raman1_result"></div>
+      </div>
+      <details>
+        <summary>Reasoning</summary>
+        <ul>
+          <li><span class="good">PS is correct</span>：<span class="highlight">1001 cm⁻¹ 是mono-substituted benzene ring breathing mode</span>，PS 的招牌指紋；伴隨 621（C–C 變角)、1031（C–H 平面內變角)、1602（C=C 苯環骨架)、3050（芳香 C–H 伸縮).</li>
+          <li>PE/PP 無芳香環，沒有 1001 or  1602 峰.</li>
+          <li>PVC 的拉曼指紋為 638、696 cm⁻¹（C–Cl stretch)與 2920.</li>
+          <li>免洗杯材料以 PS 為主，符合常識.若用發泡杯，會額外看到發泡劑訊號.</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- S22 螢光干擾與 SERS -->
+    <section class="slide">
+      <h2>Two common Raman challenges</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Issue 1: fluorescence interference</h3>
+          <p>Food matrices, colored particles, and additive-loaded plastics emit strong <span class="bad">fluorescence background</span>，淹沒拉曼訊號.</p>
+          <h3>Remedies</h3>
+          <ul>
+            <li>Switch to <span class="highlight">785 nm or  1064 nm</span> 雷射（光子能量低，較少激發螢光)</li>
+            <li>Sample <span class="highlight">pre-bleaching</span>（H₂O₂ + UV)</li>
+            <li>SERDS (Shifted-Excitation Raman Difference Spectroscopy)</li>
+            <li>數學基線校正（asymmetric least squares)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Issue 2: nanoplastics too small</h3>
+          <p>常規 Raman 無法看到 &lt; 1 μm 顆粒.</p>
+          <h3>Remedies</h3>
+          <ul>
+            <li><span class="highlight">SERS</span> (Surface-Enhanced Raman)：將Sample 吸附於 Au/Ag 奈米基板上，訊號增強 10⁶–10¹⁰ 倍，可看到單分子</li>
+            <li><span class="highlight">TERS</span> (Tip-Enhanced)：結合 AFM 探針，Explanation度 ~20 nm</li>
+            <li>O-PTIR: reaches 500 nm, with simultaneous Raman acquisition</li>
+          </ul>
+        </div>
+      </div>
+      <p class="citation">Xu G. et al. (2020) Surface-Enhanced Raman Spectroscopy facilitates the detection of microplastics &lt;1 μm in the environment. <em>Environ Sci Technol</em> 54:15594–15603.</p>
+    </section>
+
+    <!-- S23 Module二整合是非題 -->
+    <section class="slide">
+      <h2>Vibrational Spectroscopy整合測驗（一)</h2>
+      <p>FTIR absorption at <span class="highlight">1715 cm⁻¹</span> 的強吸收，is a key marker for identifying PET.</p>
+      <div class="card activity">
+        <div class="choices-grid">
+        <button class="choice" onclick="checkMCQ(this,'q_tf1','T',true)">✓ True</button>
+        <button class="choice" onclick="checkMCQ(this,'q_tf1','F',false)">✗ False</button>
+        </div>
+        <div class="resultBox" id="q_tf1_result"></div>
+      </div>
+      <div class="card tip">
+        <p><strong>Answer: T</strong>　1715 cm⁻¹ 是strong ester C=O absorption，PET 的招牌指紋.</p>
+      </div>
+    </section>
+
+    <!-- Vibrational Spectroscopy整合測驗 2 -->
+    <section class="slide">
+      <h2>Vibrational Spectroscopy整合測驗（二)</h2>
+      <p>Raman Spectroscopy在水溶液中表現極差，所以無法分析水裡的微塑膠.</p>
+      <div class="card activity">
+        <div class="choices-grid">
+        <button class="choice" onclick="checkMCQ(this,'q_tf2','T',false)">✓ True</button>
+        <button class="choice" onclick="checkMCQ(this,'q_tf2','F',true)">✗ False</button>
+        </div>
+        <div class="resultBox" id="q_tf2_result"></div>
+      </div>
+      <div class="card tip">
+        <p><strong>Answer: F</strong>   Raman has <span class="highlight">weak water signal</span>反而是優勢，海水/飲用水中的 MP 分析常選 Raman 而非 FTIR-ATR.</p>
+      </div>
+    </section>
+
+    <!-- Vibrational Spectroscopy整合測驗 3 -->
+    <section class="slide">
+      <h2>Vibrational Spectroscopy整合測驗（三)</h2>
+      <p>顯微 FTIR 受紅外光繞射極限限制，傳統機型偵測下限約為 10–20 μm.</p>
+      <div class="card activity">
+        <div class="choices-grid">
+        <button class="choice" onclick="checkMCQ(this,'q_tf3','T',true)">✓ True</button>
+        <button class="choice" onclick="checkMCQ(this,'q_tf3','F',false)">✗ False</button>
+        </div>
+        <div class="resultBox" id="q_tf3_result"></div>
+      </div>
+      <div class="card tip">
+        <p><strong>Answer: T</strong>　突破繞射極限需要 QCL-IR、O-PTIR 等新技術，可達 5 μm 甚至 500 nm.</p>
+      </div>
+    </section>
+
+    <!-- Vibrational Spectroscopy整合測驗 4 -->
+    <section class="slide">
+      <h2>Vibrational Spectroscopy整合測驗（四)</h2>
+      <p>NIR Suitable for 用來分析 5 μm 以下的奈米塑膠.</p>
+      <div class="card activity">
+        <div class="choices-grid">
+        <button class="choice" onclick="checkMCQ(this,'q_tf4','T',false)">✓ True</button>
+        <button class="choice" onclick="checkMCQ(this,'q_tf4','F',true)">✗ False</button>
+        </div>
+        <div class="resultBox" id="q_tf4_result"></div>
+      </div>
+      <div class="card tip">
+        <p><strong>Answer: F</strong>　NIR Explanation度與靈敏度都不足以分析 ≤ 5 μm 顆粒，奈米塑膠應走 Raman/SERS、Py-GC-MS or  O-PTIR.</p>
+      </div>
+    </section>
+
+    <!-- Vibrational Spectroscopy整合測驗 5 -->
+    <section class="slide">
+      <h2>Vibrational Spectroscopy整合測驗（五)</h2>
+      <p>Switch to 785 or  1064 nm 雷射可降低 Raman 的螢光干擾.</p>
+      <div class="card activity">
+        <div class="choices-grid">
+        <button class="choice" onclick="checkMCQ(this,'q_tf5','T',true)">✓ True</button>
+        <button class="choice" onclick="checkMCQ(this,'q_tf5','F',false)">✗ False</button>
+        </div>
+        <div class="resultBox" id="q_tf5_result"></div>
+      </div>
+      <div class="card tip">
+        <p><strong>Answer: T</strong>　光子能量低，較少激發螢光；或可用 SERDS、數學基線校正.</p>
+      </div>
+    </section>
+
+    <!-- S24 休息 -->
+    <section class="slide">
+      <h2>☕ 10-minute break</h2>
+      <div class="card activity">
+        <h3>During the break, think about this</h3>
+        <p>FTIR / Raman 可以告訴你「這是 PET」，但無法直接告訴你「Sample 中有多少<span class="highlight">mass</span>的 PET」.Why?要怎麼解決?</p>
+        <textarea data-key="q_break" placeholder="寫下你的想法..."></textarea>
+      </div>
+    </section>
+
+    <!-- S25 為什麼需要 GC-MS -->
+    <section class="slide">
+      <h2>Why mass spectrometry? Is spectroscopy not enough?</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Inherent limitations of spectroscopy</h3>
+          <ul>
+            <li>Quantification unit is <span class="warn">"particles per filter area"</span>，不是「mass / Sample 重」</li>
+            <li>奈米塑膠 (&lt; 1 μm) 顆粒太多，個別計數不切實際</li>
+            <li>Sample 基質干擾大時，無法成像</li>
+            <li>Cannot distinguish <span class="warn">additives and oligomers</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>How MS fills the gap</h3>
+          <ul>
+            <li><span class="highlight">Py-GC-MS / TED-GC-MS</span>: pyrolyze plastic to small molecules; quantify by GC-MS to obtain <span class="highlight">mass-based quantification (μg)</span></li>
+            <li><span class="highlight">LC-MS</span>：分析Plasticizers、抗氧化劑、BPA、寡聚物</li>
+            <li>NP 範圍仍可分析（Sample 濃縮即可)</li>
+            <li>Food matrix can be injected directly after digestion</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card ref">
+        <h3>Complementarity</h3>
+        <p><span class="highlight">Spectroscopy</span> answers "<em>What is it? How many?</em>"; <span class="highlight">mass spectrometry</span> answers "<em>它有多少mass?帶了什麼化學物?</em>」.Comprehensive MP studies typically <span class="highlight">employ both in parallel</span>.</p>
+      </div>
+    </section>
+
+    <!-- S26 Py-GC-MS Principle -->
+    <section class="slide">
+      <h2>Py-GC-MS: Pyrolysis-Gas Chromatography-Mass Spectrometry</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Principle三步驟</h3>
+          <ol>
+            <li><span class="highlight">Pyrolysis</span>：在無氧條件下將Sample 加熱至 500–700°C，聚合物斷裂成小分子（單體、寡聚物、副產物)</li>
+            <li><span class="highlight">GC separation</span>: volatile pyrolysates separated on capillary column</li>
+            <li><span class="highlight">MS detection</span>: EI ionization (70 eV); spectra matched against NIST library</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>Key hardware</h3>
+          <ul>
+            <li>Pyrolyzer: <span class="highlight">Curie-point</span> or <span class="highlight">micro-furnace</span> are the two mainstream designs</li>
+            <li>典型Sample 量：<span class="highlight">0.1–50 μg</span> is sufficient</li>
+            <li>detection limits：~0.1 μg per polymer</li>
+            <li>Analysis time: ~30–60 min per sample</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Why "inert atmosphere"?</h3>
+        <p>Pyrolysis must occur in an <span class="highlight">惰性氣氛（He)</span>下進行.若混入 O₂，聚合物會發生<span class="warn">oxidative pyrolysis</span>，產生大量 CO₂、H₂O and 非特異性氧化產物，破壞「指標化合物」的特異性，無法做定性與定量.</p>
+      </div>
+      <p class="citation">Käppler A. et al. (2018) Analysis of environmental microplastics by vibrational microspectroscopy: FTIR, Raman or both? <em>Anal Bioanal Chem</em> 408:8377–8391.</p>
+    </section>
+
+    <!-- S27 各塑膠指標產物 -->
+    <section class="slide">
+      <h2>Indicator pyrolysates for each plastic</h2>
+      <table>
+        <tr><th>Plastic</th><th>Main indicator compound</th><th>m/z signature</th><th>Notes</th></tr>
+        <tr>
+          <td><span class="pill cyan">PE</span></td>
+          <td>α,ω-烯-烷雙峰序列（C₅–C₃₃ 三聯體)</td>
+          <td>系列 m/z = 12n+1</td>
+          <td>無唯一單體，依「三聯峰圖型」</td>
+        </tr>
+        <tr>
+          <td><span class="pill purple">PP</span></td>
+          <td><span class="highlight">2,4-dimethyl-1-heptene</span></td>
+          <td>126</td>
+          <td>頭尾連接 PP 三元體的標誌</td>
+        </tr>
+        <tr>
+          <td><span class="pill pink">PET</span></td>
+          <td><span class="highlight">vinyl benzoate</span>、benzoic acid、biphenyl</td>
+          <td>148、122、154</td>
+          <td>常用 vinyl benzoate 定量</td>
+        </tr>
+        <tr>
+          <td><span class="pill green">PS</span></td>
+          <td><span class="highlight">styrene monomer</span>、dimer、trimer</td>
+          <td>104、208、312</td>
+          <td>styrene trimer 特異性最高</td>
+        </tr>
+        <tr>
+          <td><span class="pill amber">PVC</span></td>
+          <td>HCl, benzene, toluene, naphthalene</td>
+          <td>78、92、128</td>
+          <td>HCl 釋出腐蝕儀器，需注意</td>
+        </tr>
+        <tr>
+          <td><span class="pill cyan">PA-6</span></td>
+          <td><span class="highlight">ε-caprolactam</span></td>
+          <td>113</td>
+          <td>PA-6 and  PA-66 各有特徵</td>
+        </tr>
+        <tr>
+          <td><span class="pill purple">PMMA</span></td>
+          <td>methyl methacrylate monomer</td>
+          <td>100</td>
+          <td>幾乎 100% 回收為單體</td>
+        </tr>
+        <tr>
+          <td><span class="pill pink">PC</span></td>
+          <td>bisphenol A, phenol</td>
+          <td>228、94</td>
+          <td>BPA 釋出，可同時與 LC-MS 對照</td>
+        </tr>
+      </table>
+      <p class="mini">Quantification: build a <span class="highlight">指標化合物峰面積 vs 標準聚合物mass</span>的檢量線，未知Sample mass可內插.內標常用 deuterated polystyrene-d5 or  ²H-PE.</p>
+    </section>
+
+    <!-- S28 互動：裂解產物配對 -->
+    <section class="slide">
+      <h2>Py-GC-MS pyrolysate matching</h2>
+      <p>某未知Sample 色譜圖最強峰質譜為 <span class="highlight">m/z = 104</span>，伴隨 m/z = 208、312 較小峰群.主成分塑膠是?</p>
+      <div class="card activity">
+        <div class="choices-grid">
+        <button class="choice" onclick="checkMCQ(this,'q_pygc1','PE',false)">A. PE</button>
+        <button class="choice" onclick="checkMCQ(this,'q_pygc1','PP',false)">B. PP</button>
+        <button class="choice" onclick="checkMCQ(this,'q_pygc1','PS',true)">C. PS</button>
+        <button class="choice" onclick="checkMCQ(this,'q_pygc1','PET',false)">D. PET</button>
+        </div>
+        <div class="resultBox" id="q_pygc1_result"></div>
+      </div>
+      <details>
+        <summary>Reasoning</summary>
+        <ul>
+          <li><span class="good">PS is correct</span>: m/z 104 is <span class="highlight">styrene monomer (C₈H₈)</span>；208 是雙聚體 (1,3-diphenylpropane)、312 是三聚體.三者並現是 PS 的招牌.</li>
+          <li>PP 的指標 m/z = 126 (2,4-dimethyl-1-heptene).</li>
+          <li>PE primary為烷-烯-雙烯三聯體，由 C₆₊ 起，無單一強峰.</li>
+          <li>PET 為 148 (vinyl benzoate)、122 (benzoic acid).</li>
+        </ul>
+        <p class="citation">Fischer M. & Scholz-Böttcher BM. (2017) Simultaneous Trace Identification and Quantification of Common Types of Microplastics in Environmental Samples by Pyrolysis-Gas Chromatography-Mass Spectrometry. <em>Environ Sci Technol</em> 51:5052–5060.</p>
+      </details>
+    </section>
+
+    <!-- S29 TED-GC-MS -->
+    <section class="slide">
+      <h2>TED-GC-MS：可處理較大Sample 的進階版</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Core difference</h3>
+          <p>TED = Thermal Extraction Desorption.Sample 在<span class="highlight">thermogravimetric analyzer (TGA)</span> under controlled heating, and the products are collected on a <span class="highlight">solid sorbent (PDMS strip)</span> 蒐集，再以熱脫附導入 GC-MS.</p>
+          <ul>
+            <li>Sample 量可達 <span class="highlight">100 mg</span>（傳統 Py-GC-MS 僅 0.1–50 μg)</li>
+            <li>Suitable for <span class="highlight">direct injection of complex matrices</span>（沉積物、土壤、消化後組織)</li>
+            <li>detection limits：~1 μg/g matrix</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Comparison with Py-GC-MS</h3>
+          <table>
+            <tr><th></th><th>Py-GC-MS</th><th>TED-GC-MS</th></tr>
+            <tr><td>Sample 量</td><td>0.1–50 μg</td><td>10–100 mg</td></tr>
+            <tr><td>LOD</td><td>~0.1 μg</td><td>~1 μg/g</td></tr>
+            <tr><td>Matrix tolerance</td><td>Low</td><td>High</td></tr>
+            <tr><td>Speed</td><td>~30 min/sample</td><td>~3 h/sample</td></tr>
+            <tr><td>儀器成本</td><td>Moderate</td><td>高（TGA+GC-MS)</td></tr>
+          </table>
+        </div>
+      </div>
+      <p class="citation">Dümichen E. et al. (2017) Fast identification of microplastics in complex environmental samples by a thermal degradation method. <em>Chemosphere</em> 174:572–584.</p>
+    </section>
+
+    <!-- S30 互動：方法選擇 1 -->
+    <section class="slide">
+      <h2>Scenario決策（一)：海鹽中的微塑膠</h2>
+      <p>You have 500 g of commercial sea salt and wish to determine the <span class="highlight">type and particle count</span>.請選最合適的<strong>primary</strong> analytical instrument:</p>
+      <div class="card activity">
+        <div class="choices-grid">
+        <button class="choice" onclick="checkMCQ(this,'q_dec1','ATR',false)">A. ATR-FTIR（一顆一顆量)</button>
+        <button class="choice" onclick="checkMCQ(this,'q_dec1','uFTIR',true)">B. μ-FTIR chemical imaging（FPA 偵測器)</button>
+        <button class="choice" onclick="checkMCQ(this,'q_dec1','Raman',false)">C. 顯微 Raman（一顆一顆量)</button>
+        <button class="choice" onclick="checkMCQ(this,'q_dec1','PyGC',false)">D. Py-GC-MS</button>
+        </div>
+        <div class="resultBox" id="q_dec1_result"></div>
+      </div>
+      <details>
+        <summary>Explanation</summary>
+        <ul>
+          <li><span class="good">μ-FTIR + FPA is best</span>：需要「類型 + 顆粒數」兩個資訊，且粒徑都在 FTIR detection limits (10–20 μm) 以上.FPA 化學成像可整片濾膜一次掃描、自動分類，<span class="highlight">highest efficiency</span>.</li>
+          <li>ATR-FTIR：Suitable for 單顆 &gt; 500 μm 顆粒，逐顆量太慢.</li>
+          <li>Raman：可行但分析時間長（每顆 30–60 秒，海鹽濾膜數百顆需數小時)；且部分海鹽顆粒帶色，螢光干擾.</li>
+          <li>Py-GC-MS：得到「總mass」但失去「顆粒數」資訊，不符問題需求.</li>
+        </ul>
+        <p class="citation">Karami A. et al. (2017) The presence of microplastics in commercial salts from different countries. <em>Sci Rep</em> 7:46173.</p>
+      </details>
+    </section>
+
+    <!-- S31 互動：方法選擇 2 -->
+    <section class="slide">
+      <h2>Scenario決策（二)：瓶裝水中的奈米塑膠</h2>
+      <p>Regulations require determination of the <span class="highlight">總mass濃度</span>（μg/L).請選最合適的方法組合：</p>
+      <div class="card activity">
+        <div class="choices-grid">
+        <button class="choice" onclick="checkMCQ(this,'q_dec2','ATR',false)">A. ATR-FTIR directly on water sample</button>
+        <button class="choice" onclick="checkMCQ(this,'q_dec2','uFTIR',false)">B. μ-FTIR chemical imaging</button>
+        <button class="choice" onclick="checkMCQ(this,'q_dec2','SERS',false)">C. Confocal Raman, particle-by-particle</button>
+        <button class="choice" onclick="checkMCQ(this,'q_dec2','PyGC',true)">D. AF4 場流分餾濃縮後進 Py-GC-MS（或 TED-GC-MS)</button>
+        </div>
+        <div class="resultBox" id="q_dec2_result"></div>
+      </div>
+      <details>
+        <summary>Explanation</summary>
+        <ul>
+          <li><span class="good">D is best</span>：100 nm – 1 μm 顆粒已遠低於 FTIR and 常規 Raman 的detection limits；要的是「mass濃度」而非「顆數」 → <span class="highlight">Py-GC-MS is the first choice</span>.pre-process用<span class="highlight">asymmetric flow field-flow fractionation (AF4)</span> or ultracentrifugation將水中奈米塑膠濃縮.</li>
+          <li>ATR-FTIR：水的 O–H 吸收會淹沒一切.</li>
+          <li>μ-FTIR：Explanation度極限在 ~10 μm，看不到 100 nm.</li>
+          <li>顯微 Raman：Explanation度 ~1 μm，邊界情況；數量太多無法計數，且即便用 SERS 也只能定性.</li>
+        </ul>
+        <p class="citation">Schwaferts C. et al. (2019) Methods for the analysis of submicrometer- and nanoplastic particles. <em>TrAC</em> 112:52–65.</p>
+      </details>
+    </section>
+
+    <!-- S32 LC-MS 角色 (一) -->
+    <section class="slide">
+      <h2>LC-MS：分析Plasticizers與寡聚物</h2>
+      <p>In microplastic analysis, LC-MS <span class="highlight">does not directly measure "plastic particles"</span>. Instead, it measures the chemicals leached from plastics:</p>
+      <div class="grid">
+        <div class="card">
+          <h3>Plasticizers (Plasticizers)</h3>
+          <p>phthalate esters (DEHP, DBP, BBP), citrate esters</p>
+        </div>
+        <div class="card">
+          <h3>Endocrine disruptors</h3>
+          <p>BPA, BPS, BPF</p>
+        </div>
+        <div class="card">
+          <h3>Oligomers</h3>
+          <p>PET cyclic trimer, PE waxy oligomers</p>
+        </div>
+        <div class="card">
+          <h3>Additives</h3>
+          <p>antioxidants (Irganox 1010), UV stabilizers (Tinuvin series)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S32a LC-MS 流程 + MRM -->
+    <section class="slide">
+      <h2>Typical LC-MS workflow and MRM quantification</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Typical workflow</h3>
+          <ol>
+            <li>Sample  → 有機溶劑萃取（MeOH、ACN、IPA)</li>
+            <li>Solid-phase extraction (SPE) cleanup (HLB, MCX)</li>
+            <li>UHPLC C18 column separation</li>
+            <li>ESI（+)或（−)離子化</li>
+            <li>Triple-quadrupole (QqQ) MRM quantification</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>Key MRM transitions</h3>
+          <table>
+            <tr><th>Compound</th><th>Ionization</th><th>Quantitation m/z</th></tr>
+            <tr><td>DEHP</td><td>ESI+</td><td>391 → 149</td></tr>
+            <tr><td>DBP</td><td>ESI+</td><td>279 → 149</td></tr>
+            <tr><td>BPA</td><td>ESI−</td><td>227 → 212</td></tr>
+            <tr><td>BPS</td><td>ESI−</td><td>249 → 108</td></tr>
+            <tr><td>PET cyclic trimer</td><td>ESI+</td><td>577 → 193</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- S33 Plasticizers與 BPA -->
+    <section class="slide">
+      <h2>Plasticizers與 BPA：為什麼食品分析師最在乎這兩類?</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Phthalate esters</h3>
+          <ul>
+            <li>Added to PVC, PET, PA to enhance flexibility</li>
+            <li><span class="warn">Non-covalent binding</span> → readily migrates into food</li>
+            <li>歐盟法規 (EU) 10/2011 嚴格規範：DEHP &lt; 1.5 mg/kg food</li>
+            <li>Taiwan FDA: residue limits set for DEHP, DBP, BBP, DINP, DIDP, DnOP</li>
+            <li>分析法：QuEChERS + GC-MS/MS or  LC-MS/MS</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Bisphenol A (BPA)</h3>
+          <ul>
+            <li>Monomer of PC baby bottles and epoxy can linings</li>
+            <li>Endocrine disruptor; <span class="warn">banned in food-contact materials in the EU starting 2024</span>（Reg (EU) 2024/3190)</li>
+            <li>Substitutes BPS, BPF have similar activity — should be monitored together</li>
+            <li>Analytical method: water sample → SPE → UHPLC-MS/MS (ESI−)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card tip">
+        <p><span class="highlight">微塑膠顆粒分析 → Spectroscopy + Py-GC-MS</span>；<span class="highlight">Plastic-derived chemical analysis → LC-MS</span>.目標、Sample pre-process、儀器設定完全不同.</p>
+      </div>
+      <p class="citation">Cao XL. (2010) Phthalate esters in foods: sources, occurrence, and analytical methods. <em>Compr Rev Food Sci Food Saf</em> 9:21–43.</p>
+    </section>
+
+    <!-- S34 五大技術綜合比較 -->
+    <section class="slide">
+      <h2>Comprehensive comparison of the five techniques</h2>
+      <table>
+        <tr><th></th><th>NIR</th><th>FTIR</th><th>Raman</th><th>Py-GC-MS</th><th>LC-MS</th></tr>
+        <tr>
+          <td><strong>detection limits</strong></td>
+          <td>~mm</td>
+          <td>10–20 μm</td>
+          <td>1 μm</td>
+          <td>0.1 μg</td>
+          <td>ng/L</td>
+        </tr>
+        <tr>
+          <td><strong>Quantitation unit</strong></td>
+          <td>Classification</td>
+          <td>Count</td>
+          <td>Count</td>
+          <td>mass</td>
+          <td>Concentration</td>
+        </tr>
+        <tr>
+          <td><strong>Sample 破壞</strong></td>
+          <td>No</td>
+          <td>No</td>
+          <td>No</td>
+          <td><span class="bad">是</span></td>
+          <td><span class="bad">是（萃取)</span></td>
+        </tr>
+        <tr>
+          <td><strong>Analysis time</strong></td>
+          <td>Seconds</td>
+          <td>Minutes</td>
+          <td>Min – hours</td>
+          <td>30–60 min</td>
+          <td>30 min</td>
+        </tr>
+        <tr>
+          <td><strong>Water tolerance</strong></td>
+          <td><span class="bad">差</span></td>
+          <td><span class="bad">差</span></td>
+          <td><span class="good">佳</span></td>
+          <td>佳（Sample 乾燥後)</td>
+          <td><span class="good">佳</span></td>
+        </tr>
+        <tr>
+          <td><strong>primary應用</strong></td>
+          <td>Sorting</td>
+          <td>Routine ID</td>
+          <td>NP boundary / FTIR supplement</td>
+          <td>Quantification, mixtures</td>
+          <td>Plasticizers、寡聚物</td>
+        </tr>
+        <tr>
+          <td><strong>Instrument cost</strong></td>
+          <td>Low</td>
+          <td>Moderate</td>
+          <td>Moderate</td>
+          <td>High</td>
+          <td>High</td>
+        </tr>
+      </table>
+      <p class="mini">Comprehensive microplastic studies typically employ a <span class="highlight">「Spectroscopy + mass spectrometry」雙軌</span>：FTIR/Raman 給顆粒類型與數量，Py-GC-MS 給總mass，LC-MS 給Chemical leaching物.</p>
+    </section>
+
+    <!-- S35 決策樹 -->
+    <section class="slide">
+      <h2>Method selection decision tree</h2>
+      <div class="specBox bigsvg">
+        <svg viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg">
+          <style>
+            .node { fill: #e0f2fe; stroke: #0ea5e9; stroke-width: 2; rx: 10; }
+            .ans { fill: #dcfce7; stroke: #16a34a; stroke-width: 2; }
+            .qtext { fill: #075985; font-size: 17px; font-weight: 700; }
+            .atext { fill: #14532d; font-size: 15px; font-weight: 700; }
+            .lbl { fill: #334155; font-size: 13px; font-weight: 600; }
+            .arrow { fill: none; stroke: #475569; stroke-width: 1.8; marker-end: url(#ah); }
+          </style>
+          <defs>
+            <marker id="ah" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L9,3 z" fill="#64748b"/>
+            </marker>
+          </defs>
+          <!-- root -->
+          <rect class="node" x="280" y="20" width="240" height="50"/>
+          <text class="qtext" x="400" y="50" text-anchor="middle">What question are you answering?</text>
+
+          <!-- branch: 顆數/類型 vs mass/化學物 -->
+          <path class="arrow" d="M 380 70 L 160 110"/>
+          <text class="lbl" x="220" y="92">Particle type/count</text>
+          <path class="arrow" d="M 420 70 L 640 110"/>
+          <text class="lbl" x="510" y="92">mass/Chemical leaching</text>
+
+          <rect class="node" x="40" y="115" width="240" height="50"/>
+          <text class="qtext" x="160" y="145" text-anchor="middle">Particle size?</text>
+
+          <rect class="node" x="520" y="115" width="240" height="50"/>
+          <text class="qtext" x="640" y="138" text-anchor="middle">塑膠本體mass</text>
+          <text class="qtext" x="640" y="158" text-anchor="middle">vs Additives/Plasticizers?</text>
+
+          <!-- left side: size -->
+          <path class="arrow" d="M 90 165 L 50 200"/>
+          <text class="lbl" x="40" y="190">&gt; 500 μm</text>
+          <path class="arrow" d="M 160 165 L 160 200"/>
+          <text class="lbl" x="165" y="190">10–500 μm</text>
+          <path class="arrow" d="M 230 165 L 280 200"/>
+          <text class="lbl" x="270" y="190">&lt; 10 μm</text>
+
+          <rect class="ans" x="10" y="200" width="100" height="60"/>
+          <text class="atext" x="60" y="225" text-anchor="middle">ATR-FTIR</text>
+          <text class="atext" x="60" y="245" text-anchor="middle">/ NIR sorting</text>
+
+          <rect class="ans" x="120" y="200" width="100" height="60"/>
+          <text class="atext" x="170" y="225" text-anchor="middle">μ-FTIR (FPA)</text>
+          <text class="atext" x="170" y="245" text-anchor="middle">/ Raman</text>
+
+          <rect class="ans" x="230" y="200" width="100" height="60"/>
+          <text class="atext" x="280" y="225" text-anchor="middle">Raman / SERS</text>
+          <text class="atext" x="280" y="245" text-anchor="middle">/ O-PTIR</text>
+
+          <!-- right side: mass vs additive -->
+          <path class="arrow" d="M 580 165 L 540 200"/>
+          <text class="lbl" x="540" y="190">塑膠mass</text>
+          <path class="arrow" d="M 700 165 L 740 200"/>
+          <text class="lbl" x="740" y="190">Chemical leaching</text>
+
+          <rect class="ans" x="490" y="200" width="120" height="60"/>
+          <text class="atext" x="550" y="225" text-anchor="middle">Py-GC-MS</text>
+          <text class="atext" x="550" y="245" text-anchor="middle">/ TED-GC-MS</text>
+
+          <rect class="ans" x="650" y="200" width="120" height="60"/>
+          <text class="atext" x="710" y="225" text-anchor="middle">LC-MS/MS</text>
+          <text class="atext" x="710" y="245" text-anchor="middle">(QqQ MRM)</text>
+
+          <!-- bottom hints -->
+          <rect class="node" x="40" y="310" width="720" height="50"/>
+          <text class="qtext" x="400" y="335" text-anchor="middle">複雜Sample （魚消化道、瓶裝水)：建議「Spectroscopy + Py-GC-MS」雙軌並行</text>
+
+          <rect class="node" x="40" y="380" width="720" height="50"/>
+          <text class="qtext" x="400" y="405" text-anchor="middle">奈米塑膠 (NP)：AF4 / ultracentrifugation濃縮 → Py-GC-MS (定量) + SERS / O-PTIR (定性)</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- S36 mass vs 顆粒 -->
+    <section class="slide">
+      <h2>mass化 vs 顆粒化：報數據時要注意什麼?</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Particle-based</h3>
+          <ul>
+            <li>Unit: <span class="highlight">顆數 / L、顆數 / g Sample </span></li>
+            <li>Source: FTIR, Raman chemical imaging</li>
+            <li>Pros: intuitive, size distribution available, morphology visualized</li>
+            <li>Cons: <span class="warn">隨儀器Explanation度而變</span>（同一樣本，5 μm 截止 vs 20 μm 截止結果差 10–100 倍)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>mass化 (Mass-based)</h3>
+          <ul>
+            <li>Unit: <span class="highlight">μg/L、μg/g Sample </span></li>
+            <li>Source: Py-GC-MS, TED-GC-MS</li>
+            <li>Pros: aligned with toxicology study units, comparable across labs</li>
+            <li>Cons: 失去顆粒尺寸、形貌資訊</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card ref">
+        <h3>Cowger et al. (2020) reporting guidelines</h3>
+        <p>建議論文同時報告：① 偵測下限粒徑、② 顆數濃度（每升或每克)、③ mass濃度（若可得)、④ 鑑定方法（FTIR/Raman/Py-GC-MS)、⑤ 比對庫名稱、⑥ 空白控制組數據、⑦ 回收率（spike-recovery).</p>
+      </div>
+      <p class="citation">Cowger W. et al. (2020) Reporting Guidelines to Increase the Reproducibility and Comparability of Research on Microplastics. <em>Appl Spectrosc</em> 74:1066–1077.</p>
+    </section>
+
+    <!-- S37 文獻案例：海鹽 -->
+    <section class="slide">
+      <h2>文獻案例（一)：Yang et al. 中國市售食鹽</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Study design</h3>
+          <ul>
+            <li>採購 15 種中國市售食鹽（海鹽、湖鹽、岩鹽)</li>
+            <li>250 g per sample dissolved in deionized water → filtered through 1.6 μm glass fiber filter</li>
+            <li>Microscopy counting + μ-FTIR identification (45–4500 μm range)</li>
+          </ul>
+          <h3>Key results</h3>
+          <ul>
+            <li>海鹽：550–681 顆/kg（最高)</li>
+            <li>Lake salt: 43–364 particles/kg</li>
+            <li>Rock salt: 7–204 particles/kg</li>
+            <li>primary塑膠：<span class="highlight">PET, PE, cellophane</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Methodology and QA/QC</h3>
+          <ul>
+            <li><span class="highlight">μ-FTIR</span>：粒徑 &gt; 45 μm，可逐顆鑑定</li>
+            <li>3 procedural blank filters per day for background subtraction</li>
+            <li>Fibers and fragments counted separately</li>
+            <li>純棉實驗衣、避免塑膠容器（空氣纖維是最大污染源)</li>
+          </ul>
+        </div>
+      </div>
+      <p class="citation">Yang D. et al. (2015) Microplastic Pollution in Table Salts from China. <em>Environ Sci Technol</em> 49:13622–13627. https://doi.org/10.1021/acs.est.5b03163</p>
+    </section>
+
+    <!-- S38 文獻案例：茶包 -->
+    <section class="slide">
+      <h2>文獻案例（二)：Hernandez et al. 塑膠茶包釋出奈米塑膠</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Study design</h3>
+          <ul>
+            <li>四款市售「網狀」茶包（材質為 PA / PET)</li>
+            <li>Tea leaves removed and bags rinsed; immersed in 95 °C water for 5 min</li>
+            <li>Scanning electron microscopy (SEM) for morphology</li>
+            <li><span class="highlight">μ-FTIR + μ-Raman</span> for material identification</li>
+            <li>Nanoparticle tracking analysis (NTA) for counting</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Striking findings</h3>
+          <ul>
+            <li>每杯（一個茶包)釋出：<br/>～<span class="bad">1.16 × 10⁹ MP</span> + <span class="bad">3.1 × 10⁹ NP</span></li>
+            <li>Released particles confirmed as <span class="highlight">PA + PET</span>（與茶包本體一致)</li>
+            <li>Daphnia exposure: behavioral and developmental abnormalities</li>
+          </ul>
+          <h3>Methodological highlights</h3>
+          <ul>
+            <li>FTIR for large particles, Raman for 1–10 μm particles — <span class="highlight">complementary use</span></li>
+            <li>NTA 解決奈米計數問題（但無化學身份)</li>
+          </ul>
+        </div>
+      </div>
+      <p class="citation">Hernandez LM. et al. (2019) Plastic Teabags Release Billions of Microparticles and Nanoparticles into Tea. <em>Environ Sci Technol</em> 53:12300–12310. https://doi.org/10.1021/acs.est.9b02540</p>
+    </section>
+
+    <!-- S39 文獻案例：海鮮 -->
+    <section class="slide">
+      <h2>文獻案例（三)：Ribeiro et al. 海鮮中的 Py-GC-MS 定量</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Study design</h3>
+          <ul>
+            <li>Five Australian high-commercial-value seafoods: wild oysters, farmed shrimp, farmed crabs, farmed salmon, wild sardines</li>
+            <li>10% KOH digestion, filtration, drying</li>
+            <li><span class="highlight">Double-shot Py-GC-MS</span>: 350 °C first to remove small molecules, then 700 °C for polymer pyrolysis</li>
+            <li>Simultaneous quantification of 5 plastics: PE, PP, PVC, PS, PMMA</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>結果（每克可食組織)</h3>
+          <ul>
+            <li>Sardines: <span class="warn">0.3 mg/g</span>（最高，primary為 PVC)</li>
+            <li>Oysters: 0.04 mg/g</li>
+            <li>Shrimp: 0.07 mg/g</li>
+            <li>Crabs: 0.03 mg/g</li>
+            <li>鮭魚：&lt; detection limits</li>
+          </ul>
+          <h3>Methodological highlights</h3>
+          <ul>
+            <li>Quantification unit is <span class="highlight">μg/g</span>, directly compatible with daily intake assessment</li>
+            <li>Use of <span class="highlight">¹³C-PS internal standard</span>校正基質效應</li>
+            <li>Recovery 80–110%</li>
+          </ul>
+        </div>
+      </div>
+      <p class="citation">Ribeiro F. et al. (2020) Quantitative Analysis of Selected Plastics in High-Commercial-Value Australian Seafood by Pyrolysis Gas Chromatography Mass Spectrometry. <em>Environ Sci Technol</em> 54:9408–9417. https://doi.org/10.1021/acs.est.0c02337</p>
+    </section>
+
+    <!-- S40 實驗設計題：Scenario介紹 -->
+    <section class="slide">
+      <h2>Comprehensive application: experimental design question</h2>
+      <div class="card ref">
+        <h3>Scenario</h3>
+        <p>Analyze whether commercial infant feeding bottles (made of PP) <span class="highlight">release microplastics during 80 °C formula preparation</span>時，是否釋放微塑膠到沖泡液中」.</p>
+        <p>接下來四張投影片會分別問你四個設計問題，依序回答.</p>
+      </div>
+      <p class="citation">Reference study: Li D. et al. (2020) Microplastic release from PP feeding bottles during infant formula preparation. <em>Nat Food</em> 1:746–754.</p>
+    </section>
+
+    <!-- S40a Q1 primary儀器 -->
+    <section class="slide">
+      <h2>實驗設計（1/4)：primary儀器</h2>
+      <p>Which <span class="highlight">primary儀器</span>?Why?</p>
+      <div class="card activity">
+        <textarea data-key="q_design_1"></textarea>
+      </div>
+      <div class="card tip">
+        <p><strong>Reference answer: </strong>μ-FTIR 化學成像（鑑定 1–500 μm 顆粒類型與計數)+ Py-GC-MS（總mass-based quantification)；NP 範圍補 SEM + EDS.</p>
+      </div>
+    </section>
+
+    <!-- S40b Q2 空白組 -->
+    <section class="slide">
+      <h2>實驗設計（2/4)：blanks and controls</h2>
+      <p>How would you design <span class="highlight">blanks and controls</span>?</p>
+      <div class="card activity">
+        <textarea data-key="q_design_2"></textarea>
+      </div>
+      <div class="card tip">
+        <p><strong>Reference answer: </strong>① 玻璃奶瓶（材質對照)；② 空氣沉降空白（同時開蓋暴露於空氣 30 分鐘)；③ 程序空白（試劑、容器、過濾全程序).</p>
+      </div>
+    </section>
+
+    <!-- S40c Q3 pre-process -->
+    <section class="slide">
+      <h2>實驗設計（3/4)：pre-process</h2>
+      <p>How would you <span class="highlight">pre-process</span>才能上機?</p>
+      <div class="card activity">
+        <textarea data-key="q_design_3"></textarea>
+      </div>
+      <div class="card tip">
+        <p><strong>Reference answer: </strong>先 Ar 流氣下冷藏靜置 30 min 沉澱 → 過濾 1.2 μm Anodisc 濾膜 → 不化學消化（沖泡液乾淨)→ 直接顯微鏡掃描.</p>
+      </div>
+    </section>
+
+    <!-- S40d Q4 驗證 -->
+    <section class="slide">
+      <h2>實驗設計（4/4)：validate accuracy</h2>
+      <p>How would you <span class="highlight">validate accuracy</span>?</p>
+      <div class="card activity">
+        <textarea data-key="q_design_4"></textarea>
+      </div>
+      <div class="card tip">
+        <p><strong>Reference answer: </strong>spike 已知數量 5、10、50 μm PP 顆粒測回收率 (80–120%)；平行三重複；參與國際循環比對（如 BAM、JRC).</p>
+      </div>
+    </section>
+
+    <!-- S41 進階閱讀（一)Methodology overview + Vibrational Spectroscopy -->
+    <section class="slide">
+      <h2>進階閱讀（一)：Methodology overview + Vibrational Spectroscopy</h2>
+      <div class="card">
+        <h3>Methodology overview</h3>
+        <ul>
+          <li>Primpke S. et al. (2020) Critical assessment of analytical methods. <em>Appl Spectrosc</em> 74:1012.</li>
+          <li>Schwaferts C. et al. (2019) Nano- and submicrometer particles. <em>TrAC</em> 112:52.</li>
+          <li>La Nasa J. et al. (2020) Challenges and developments. <em>J Hazard Mater</em> 401:123379.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Vibrational Spectroscopy (FTIR / Raman)</h3>
+        <ul>
+          <li>Käppler A. et al. (2016) FTIR, Raman or both? <em>Anal Bioanal Chem</em> 408:8377.</li>
+          <li>Xu G. et al. (2020) SERS for &lt;1 μm. <em>Environ Sci Technol</em> 54:15594.</li>
+          <li>Anger PM. et al. (2018) Raman microspectroscopy. <em>TrAC</em> 109:214.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- S41a 進階閱讀（二)質譜 + 報告 -->
+    <section class="slide">
+      <h2>進階閱讀（二)：質譜 + 報告標準</h2>
+      <div class="card">
+        <h3>Mass spectrometry (Py-GC-MS / LC-MS)</h3>
+        <ul>
+          <li>Fischer M. & Scholz-Böttcher BM. (2017) Py-GC-MS quantification. <em>Environ Sci Technol</em> 51:5052.</li>
+          <li>Dümichen E. et al. (2017) TED-GC-MS. <em>Chemosphere</em> 174:572.</li>
+          <li>Ribeiro F. et al. (2020) Seafood Py-GC-MS. <em>Environ Sci Technol</em> 54:9408.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Reporting and standardization</h3>
+        <ul>
+          <li>Cowger W. et al. (2020) Reporting Guidelines. <em>Appl Spectrosc</em> 74:1066.</li>
+          <li>ISO/TR 21960:2020 — Plastics — Environmental aspects.</li>
+          <li>EU Drinking Water Directive 2020/2184 — Annex III 微塑膠監測方法草案.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- S42 Course summary -->
+    <section class="slide">
+      <h2>Course summary</h2>
+      <div class="card ref">
+        <h3>Three guiding principles</h3>
+        <ol>
+          <li><strong>FTIR 看顆粒，Py-GC-MS 看mass.</strong></li>
+          <li><strong>大顆粒選 ATR，小顆粒選 μ-FTIR / Raman，奈米級選 Py-GC-MS + SERS.</strong></li>
+          <li><strong>空白組是命脈，未做空白的數據不可採信.</strong></li>
+        </ol>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <h3>Knowledge</h3>
+          <ul>
+            <li>Definitions and sources of MP vs NP</li>
+            <li>PE/PP/PET/PS/PVC 的 FTIR and  Raman Characteristic peaks</li>
+            <li>For the five techniques: <span class="highlight">Principle、極限、定量單位</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Skills</h3>
+          <ul>
+            <li>Interpret FTIR / Raman / Py-GC-MS results and infer plastic types</li>
+            <li>根據Sample <span class="highlight">size, objective, and matrix</span>select the correct method</li>
+            <li>Design blanks and QA/QC workflows to avoid contamination</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- S43 Exit Ticket Q1 -->
+    <section class="slide">
+      <h2>Exit Ticket（1/3)</h2>
+      <p>用一句話總結今天最重要的學習.</p>
+      <div class="card activity">
+        <textarea data-key="exit_1" style="min-height:140px;"></textarea>
+      </div>
+    </section>
+
+    <!-- S43a Exit Ticket Q2 -->
+    <section class="slide">
+      <h2>Exit Ticket（2/3)</h2>
+      <p>哪個概念你還不確定，希望老師再講一次?</p>
+      <div class="card activity">
+        <textarea data-key="exit_2" style="min-height:140px;"></textarea>
+      </div>
+    </section>
+
+    <!-- S43b Exit Ticket Q3 -->
+    <section class="slide">
+      <h2>Exit Ticket（3/3)</h2>
+      <p>如果讓你選一個技術深入學習，你會選?Why?</p>
+      <div class="card activity">
+        <textarea data-key="exit_3" style="min-height:140px;"></textarea>
+      </div>
+    </section>
+
+    <!-- S44 致謝 -->
+    <section class="slide" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
+      <h1 style="font-size:80px;">Thank you!</h1>
+      <p class="subtitle" style="margin-top:20px;">提問、討論、批評，都歡迎.</p>
+    </section>
+
+
+  <!-- ============== 控制列 ============== -->
+  <div class="controls">
+    <button onclick="prevSlide()">◀</button>
+    <div class="slideNo">
+      <span id="slideNow">1</span> / <span id="slideTotal">1</span>
+    </div>
+    <button onclick="nextSlide()">▶</button>
+  </div>
+
+<script type="application/json" id="specdata">{"nir_pe_bag1": {"x": [900.0, 910.0, 920.0, 930.0, 940.0, 950.0, 960.0, 970.0, 980.0, 990.0, 1000.0, 1010.0, 1020.0, 1030.0, 1040.0, 1050.0, 1060.0, 1070.0, 1080.0, 1090.0, 1100.0, 1110.0, 1120.0, 1130.0, 1140.0, 1150.0, 1160.0, 1170.0, 1180.0, 1190.0, 1200.0, 1210.0, 1220.0, 1230.0, 1240.0, 1250.0, 1260.0, 1270.0, 1280.0, 1290.0, 1300.0, 1310.0, 1320.0, 1330.0, 1340.0, 1350.0, 1360.0, 1370.0, 1380.0, 1390.0, 1400.0, 1410.0, 1420.0, 1430.0, 1440.0, 1450.0, 1460.0, 1470.0, 1480.0, 1490.0, 1500.0, 1510.0, 1520.0, 1530.0, 1540.0, 1550.0, 1560.0, 1570.0, 1580.0, 1590.0, 1600.0, 1610.0, 1620.0, 1630.0, 1640.0, 1650.0, 1660.0, 1670.0, 1680.0, 1690.0, 1700.0, 1710.0, 1720.0, 1730.0, 1740.0, 1750.0, 1760.0, 1770.0, 1780.0, 1790.0, 1800.0, 1810.0, 1820.0, 1830.0, 1840.0, 1850.0, 1860.0, 1870.0, 1880.0, 1890.0, 1900.0, 1910.0, 1920.0, 1930.0, 1940.0, 1950.0, 1960.0, 1970.0, 1980.0, 1990.0, 2000.0, 2010.0, 2020.0, 2030.0, 2040.0, 2050.0, 2060.0, 2070.0, 2080.0, 2090.0, 2100.0, 2110.0, 2120.0, 2130.0, 2140.0, 2150.0, 2160.0, 2170.0, 2180.0, 2190.0, 2200.0, 2210.0, 2220.0, 2230.0, 2240.0, 2250.0, 2260.0, 2270.0, 2280.0, 2290.0, 2300.0, 2310.0, 2320.0, 2330.0, 2340.0, 2350.0, 2360.0, 2370.0, 2380.0, 2390.0, 2400.0], "y": [0.0329, 0.0318, 0.0349, 0.0386, 0.0395, 0.0392, 0.0415, 0.0436, 0.0454, 0.0471, 0.0486, 0.049, 0.0496, 0.0504, 0.0508, 0.0511, 0.0502, 0.0491, 0.0484, 0.0481, 0.0465, 0.0457, 0.0447, 0.0438, 0.0437, 0.0448, 0.0475, 0.0505, 0.0544, 0.0604, 0.0722, 0.0869, 0.0823, 0.0652, 0.0569, 0.0536, 0.0517, 0.0513, 0.0507, 0.051, 0.0508, 0.0506, 0.0505, 0.0504, 0.0506, 0.0509, 0.0522, 0.0547, 0.0606, 0.0719, 0.0699, 0.0715, 0.0739, 0.0717, 0.0694, 0.066, 0.063, 0.0603, 0.0583, 0.0572, 0.0565, 0.0563, 0.0564, 0.0569, 0.0576, 0.0562, 0.0552, 0.0554, 0.0554, 0.0562, 0.0567, 0.0567, 0.0572, 0.0579, 0.0581, 0.0589, 0.0592, 0.0595, 0.0632, 0.0763, 0.1021, 0.1516, 0.221, 0.2631, 0.1984, 0.1562, 0.1703, 0.1561, 0.1281, 0.1212, 0.1234, 0.1234, 0.1207, 0.1154, 0.1091, 0.1019, 0.0949, 0.0918, 0.0915, 0.0922, 0.0947, 0.096, 0.0979, 0.0989, 0.099, 0.099, 0.1004, 0.0999, 0.0991, 0.0997, 0.1016, 0.1048, 0.1023, 0.0998, 0.0989, 0.0996, 0.0976, 0.0937, 0.0906, 0.088, 0.0866, 0.0843, 0.0828, 0.082, 0.0827, 0.0828, 0.0842, 0.0855, 0.0872, 0.091, 0.0939, 0.1001, 0.1074, 0.1195, 0.132, 0.1534, 0.1872, 0.2492, 0.3356, 0.4545, 0.6924, 0.9474, 0.6385, 0.546, 0.6554, 0.8257, 0.7087, 0.7286, 0.7941, 0.8289, 0.8172]}, "raman_hdpe": {"x": [100.8, 108.5, 116.2, 123.9, 131.7, 139.4, 147.1, 154.8, 162.5, 170.2, 177.9, 185.7, 193.4, 201.1, 208.8, 216.5, 224.2, 231.9, 239.6, 247.4, 255.1, 262.8, 270.5, 278.2, 285.9, 293.6, 301.4, 309.1, 316.8, 324.5, 332.2, 339.9, 347.6, 355.4, 363.1, 370.8, 378.5, 386.2, 393.9, 401.6, 409.4, 417.1, 424.8, 432.5, 440.2, 447.9, 455.6, 463.4, 471.1, 478.8, 486.5, 494.2, 501.9, 509.6, 517.3, 525.1, 532.8, 540.5, 548.2, 555.9, 563.6, 571.3, 579.1, 586.8, 594.5, 602.2, 609.9, 617.6, 625.3, 633.1, 640.8, 648.5, 656.2, 663.9, 671.6, 679.3, 687.1, 694.8, 702.5, 710.2, 717.9, 725.6, 733.3, 741.1, 748.8, 756.5, 764.2, 771.9, 779.6, 787.3, 795.0, 802.8, 810.5, 818.2, 825.9, 833.6, 841.3, 849.0, 856.8, 864.5, 872.2, 879.9, 887.6, 895.3, 903.0, 910.8, 918.5, 926.2, 933.9, 941.6, 949.3, 957.0, 964.8, 972.5, 980.2, 987.9, 995.6, 1003.3, 1011.0, 1018.8, 1026.5, 1034.2, 1041.9, 1049.6, 1057.3, 1065.0, 1072.7, 1080.5, 1088.2, 1095.9, 1103.6, 1111.3, 1119.0, 1126.7, 1134.5, 1142.2, 1149.9, 1157.6, 1165.3, 1173.0, 1180.7, 1188.5, 1196.2, 1203.9, 1211.6, 1219.3, 1227.0, 1234.7, 1242.5, 1250.2, 1257.9, 1265.6, 1273.3, 1281.0, 1288.7, 1296.4, 1304.2, 1311.9, 1319.6, 1327.3, 1335.0, 1342.7, 1350.4, 1358.2, 1365.9, 1373.6, 1381.3, 1389.0, 1396.7, 1404.4, 1412.2, 1419.9, 1427.6, 1435.3, 1443.0, 1450.7, 1458.4, 1466.2, 1473.9, 1481.6, 1489.3, 1497.0, 1504.7, 1512.4, 1520.2, 1527.9, 1535.6, 1543.3, 1551.0, 1558.7, 1566.4, 1574.1, 1581.9, 1589.6, 1597.3, 1605.0, 1612.7, 1620.4, 1628.1, 1635.9, 1643.6, 1651.3, 1659.0, 1666.7, 1674.4, 1682.1, 1689.9, 1697.6, 1705.3, 1713.0, 1720.7, 1728.4, 1736.1, 1743.9, 1751.6, 1759.3, 1767.0, 1774.7, 1782.4, 1790.1, 1797.8, 1805.6, 1813.3, 1821.0, 1828.7, 1836.4, 1844.1, 1851.8, 1859.6, 1867.3, 1875.0, 1882.7, 1890.4, 1898.1, 1905.8, 1913.6, 1921.3, 1929.0, 1936.7, 1944.4, 1952.1, 1959.8, 1967.6, 1975.3, 1983.0, 1990.7, 1998.4, 2006.1, 2013.8, 2021.6, 2029.3, 2037.0, 2044.7, 2052.4, 2060.1, 2067.8, 2075.5, 2083.3, 2091.0, 2098.7, 2106.4, 2114.1, 2121.8, 2129.5, 2137.3, 2145.0, 2152.7, 2160.4, 2168.1, 2175.8, 2183.5, 2191.3, 2199.0, 2206.7, 2214.4, 2222.1, 2229.8, 2237.5, 2245.3, 2253.0, 2260.7, 2268.4, 2276.1, 2283.8, 2291.5, 2299.3, 2307.0, 2314.7, 2322.4, 2330.1, 2337.8, 2345.5, 2353.2, 2361.0, 2368.7, 2376.4, 2384.1, 2391.8, 2399.5, 2407.2, 2415.0, 2422.7, 2430.4, 2438.1, 2445.8, 2453.5, 2461.2, 2469.0, 2476.7, 2484.4, 2492.1, 2499.8, 2507.5, 2515.2, 2523.0, 2530.7, 2538.4, 2546.1, 2553.8, 2561.5, 2569.2, 2577.0, 2584.7, 2592.4, 2600.1, 2607.8, 2615.5, 2623.2, 2630.9, 2638.7, 2646.4, 2654.1, 2661.8, 2669.5, 2677.2, 2684.9, 2692.7, 2700.4, 2708.1, 2715.8, 2723.5, 2731.2, 2738.9, 2746.7, 2754.4, 2762.1, 2769.8, 2777.5, 2785.2, 2792.9, 2800.7, 2808.4, 2816.1, 2823.8, 2831.5, 2839.2, 2846.9, 2854.7, 2862.4, 2870.1, 2877.8, 2885.5, 2893.2, 2900.9, 2908.6, 2916.4, 2924.1, 2931.8, 2939.5, 2947.2, 2954.9, 2962.6, 2970.4, 2978.1, 2985.8, 2993.5, 3001.2, 3008.9, 3016.6, 3024.4, 3032.1, 3039.8, 3047.5, 3055.2, 3062.9, 3070.6, 3078.4, 3086.1, 3093.8, 3101.5, 3109.2, 3116.9, 3124.6, 3132.3, 3140.1, 3147.8, 3155.5, 3163.2, 3170.9, 3178.6, 3186.3, 3194.1], "y": [0.0398, 0.0368, 0.0273, 0.0225, 0.0188, 0.0175, 0.0138, 0.0147, 0.0137, 0.0122, 0.0132, 0.0123, 0.013, 0.0117, 0.0122, 0.0116, 0.0102, 0.0084, 0.0074, 0.0063, 0.0063, 0.0059, 0.0064, 0.0051, 0.0057, 0.005, 0.0054, 0.0029, 0.0041, 0.0046, 0.0043, 0.0034, 0.0038, 0.0034, 0.0036, 0.0026, 0.0036, 0.0023, 0.0022, 0.0023, 0.0021, 0.0022, 0.0016, 0.002, 0.0013, 0.0001, 0.0022, 0.0016, 0.0019, 0.0012, 0.0014, 0.0016, 0.0007, 0.0002, 0.0006, 0.0014, 0.0014, 0.0018, 0.0002, 0.0004, 0.001, 0.0009, 0.0013, 0.0008, 0.001, 0.0003, 0.0015, 0.0006, 0.0001, 0.0011, 0.0008, 0.0004, 0.0, 0.0019, 0.0013, 0.002, 0.0005, 0.0021, 0.0022, 0.0019, 0.0037, 0.0042, 0.0035, 0.0033, 0.003, 0.0032, 0.0042, 0.0046, 0.0041, 0.0048, 0.005, 0.0052, 0.0059, 0.0058, 0.0069, 0.0069, 0.0079, 0.008, 0.0087, 0.0097, 0.0102, 0.01, 0.0103, 0.0106, 0.009, 0.0091, 0.0086, 0.0097, 0.0095, 0.0087, 0.0093, 0.009, 0.01, 0.009, 0.0088, 0.0101, 0.0113, 0.0125, 0.0121, 0.0133, 0.0135, 0.0145, 0.0161, 0.0218, 0.0736, 0.075, 0.0289, 0.0278, 0.0256, 0.0214, 0.0221, 0.0233, 0.0341, 0.1204, 0.0434, 0.0205, 0.0188, 0.02, 0.0328, 0.0257, 0.0176, 0.0169, 0.0163, 0.0161, 0.0166, 0.0171, 0.0171, 0.0168, 0.0178, 0.0179, 0.0203, 0.023, 0.0244, 0.0273, 0.0678, 0.1308, 0.0411, 0.0309, 0.0238, 0.0215, 0.0191, 0.0186, 0.0169, 0.0188, 0.0251, 0.0218, 0.0173, 0.0166, 0.0169, 0.0195, 0.0474, 0.0407, 0.0527, 0.1321, 0.1186, 0.0788, 0.091, 0.0773, 0.0404, 0.0275, 0.0208, 0.0186, 0.0186, 0.0181, 0.0172, 0.0181, 0.0168, 0.0172, 0.0165, 0.0171, 0.016, 0.0166, 0.0156, 0.0155, 0.0162, 0.016, 0.0158, 0.0163, 0.015, 0.0156, 0.0159, 0.0155, 0.0156, 0.015, 0.0141, 0.0148, 0.0153, 0.0156, 0.0159, 0.0154, 0.016, 0.0163, 0.0166, 0.0171, 0.0175, 0.0173, 0.0159, 0.0172, 0.0163, 0.0173, 0.0172, 0.0178, 0.0177, 0.0169, 0.0167, 0.0175, 0.0184, 0.0182, 0.0184, 0.0187, 0.0198, 0.0191, 0.0201, 0.021, 0.0211, 0.0204, 0.0207, 0.0209, 0.0217, 0.0224, 0.0231, 0.0236, 0.0241, 0.0248, 0.0246, 0.026, 0.0253, 0.0267, 0.0267, 0.0276, 0.0284, 0.0292, 0.0291, 0.0295, 0.03, 0.0315, 0.0318, 0.032, 0.0326, 0.0336, 0.033, 0.0326, 0.0351, 0.0353, 0.0345, 0.0353, 0.0358, 0.0351, 0.0371, 0.0396, 0.0422, 0.0395, 0.0369, 0.0367, 0.036, 0.0362, 0.0376, 0.0371, 0.0376, 0.0401, 0.039, 0.0373, 0.0381, 0.0385, 0.0374, 0.0374, 0.0367, 0.0346, 0.0355, 0.0352, 0.0335, 0.0327, 0.0318, 0.0322, 0.0324, 0.0317, 0.0316, 0.0316, 0.0314, 0.0306, 0.0309, 0.0305, 0.032, 0.0297, 0.0294, 0.0291, 0.0282, 0.0291, 0.0283, 0.0292, 0.0289, 0.0284, 0.0277, 0.0301, 0.0265, 0.0268, 0.0286, 0.0301, 0.0287, 0.029, 0.0324, 0.032, 0.0353, 0.0359, 0.0362, 0.0369, 0.037, 0.0362, 0.0359, 0.0381, 0.0409, 0.0428, 0.0397, 0.0415, 0.0417, 0.0441, 0.0502, 0.0587, 0.0723, 0.0901, 0.0935, 0.0711, 0.0547, 0.0456, 0.0427, 0.0435, 0.0413, 0.0422, 0.0433, 0.0448, 0.0489, 0.0537, 0.0651, 0.0923, 0.1914, 0.5241, 0.9276, 0.6752, 0.5062, 0.4874, 1.0, 0.8597, 0.5509, 0.4741, 0.3667, 0.3024, 0.2908, 0.2581, 0.1805, 0.0963, 0.0648, 0.0547, 0.0456, 0.0441, 0.0417, 0.0394, 0.0378, 0.0345, 0.0336, 0.0311, 0.0314, 0.0288, 0.0297, 0.0269, 0.026, 0.026, 0.0252, 0.0251, 0.0222, 0.0194, 0.0197, 0.0189, 0.0185, 0.0187, 0.0176, 0.0172, 0.0166, 0.0171, 0.0164, 0.0184, 0.0168, 0.0167]}, "raman_ldpe": {"x": [100.8, 108.5, 116.2, 123.9, 131.7, 139.4, 147.1, 154.8, 162.5, 170.2, 177.9, 185.7, 193.4, 201.1, 208.8, 216.5, 224.2, 231.9, 239.6, 247.4, 255.1, 262.8, 270.5, 278.2, 285.9, 293.6, 301.4, 309.1, 316.8, 324.5, 332.2, 339.9, 347.6, 355.4, 363.1, 370.8, 378.5, 386.2, 393.9, 401.6, 409.4, 417.1, 424.8, 432.5, 440.2, 447.9, 455.6, 463.4, 471.1, 478.8, 486.5, 494.2, 501.9, 509.6, 517.3, 525.1, 532.8, 540.5, 548.2, 555.9, 563.6, 571.3, 579.1, 586.8, 594.5, 602.2, 609.9, 617.6, 625.3, 633.1, 640.8, 648.5, 656.2, 663.9, 671.6, 679.3, 687.1, 694.8, 702.5, 710.2, 717.9, 725.6, 733.3, 741.1, 748.8, 756.5, 764.2, 771.9, 779.6, 787.3, 795.0, 802.8, 810.5, 818.2, 825.9, 833.6, 841.3, 849.0, 856.8, 864.5, 872.2, 879.9, 887.6, 895.3, 903.0, 910.8, 918.5, 926.2, 933.9, 941.6, 949.3, 957.0, 964.8, 972.5, 980.2, 987.9, 995.6, 1003.3, 1011.0, 1018.8, 1026.5, 1034.2, 1041.9, 1049.6, 1057.3, 1065.0, 1072.7, 1080.5, 1088.2, 1095.9, 1103.6, 1111.3, 1119.0, 1126.7, 1134.5, 1142.2, 1149.9, 1157.6, 1165.3, 1173.0, 1180.7, 1188.5, 1196.2, 1203.9, 1211.6, 1219.3, 1227.0, 1234.7, 1242.5, 1250.2, 1257.9, 1265.6, 1273.3, 1281.0, 1288.7, 1296.4, 1304.2, 1311.9, 1319.6, 1327.3, 1335.0, 1342.7, 1350.4, 1358.2, 1365.9, 1373.6, 1381.3, 1389.0, 1396.7, 1404.4, 1412.2, 1419.9, 1427.6, 1435.3, 1443.0, 1450.7, 1458.4, 1466.2, 1473.9, 1481.6, 1489.3, 1497.0, 1504.7, 1512.4, 1520.2, 1527.9, 1535.6, 1543.3, 1551.0, 1558.7, 1566.4, 1574.1, 1581.9, 1589.6, 1597.3, 1605.0, 1612.7, 1620.4, 1628.1, 1635.9, 1643.6, 1651.3, 1659.0, 1666.7, 1674.4, 1682.1, 1689.9, 1697.6, 1705.3, 1713.0, 1720.7, 1728.4, 1736.1, 1743.9, 1751.6, 1759.3, 1767.0, 1774.7, 1782.4, 1790.1, 1797.8, 1805.6, 1813.3, 1821.0, 1828.7, 1836.4, 1844.1, 1851.8, 1859.6, 1867.3, 1875.0, 1882.7, 1890.4, 1898.1, 1905.8, 1913.6, 1921.3, 1929.0, 1936.7, 1944.4, 1952.1, 1959.8, 1967.6, 1975.3, 1983.0, 1990.7, 1998.4, 2006.1, 2013.8, 2021.6, 2029.3, 2037.0, 2044.7, 2052.4, 2060.1, 2067.8, 2075.5, 2083.3, 2091.0, 2098.7, 2106.4, 2114.1, 2121.8, 2129.5, 2137.3, 2145.0, 2152.7, 2160.4, 2168.1, 2175.8, 2183.5, 2191.3, 2199.0, 2206.7, 2214.4, 2222.1, 2229.8, 2237.5, 2245.3, 2253.0, 2260.7, 2268.4, 2276.1, 2283.8, 2291.5, 2299.3, 2307.0, 2314.7, 2322.4, 2330.1, 2337.8, 2345.5, 2353.2, 2361.0, 2368.7, 2376.4, 2384.1, 2391.8, 2399.5, 2407.2, 2415.0, 2422.7, 2430.4, 2438.1, 2445.8, 2453.5, 2461.2, 2469.0, 2476.7, 2484.4, 2492.1, 2499.8, 2507.5, 2515.2, 2523.0, 2530.7, 2538.4, 2546.1, 2553.8, 2561.5, 2569.2, 2577.0, 2584.7, 2592.4, 2600.1, 2607.8, 2615.5, 2623.2, 2630.9, 2638.7, 2646.4, 2654.1, 2661.8, 2669.5, 2677.2, 2684.9, 2692.7, 2700.4, 2708.1, 2715.8, 2723.5, 2731.2, 2738.9, 2746.7, 2754.4, 2762.1, 2769.8, 2777.5, 2785.2, 2792.9, 2800.7, 2808.4, 2816.1, 2823.8, 2831.5, 2839.2, 2846.9, 2854.7, 2862.4, 2870.1, 2877.8, 2885.5, 2893.2, 2900.9, 2908.6, 2916.4, 2924.1, 2931.8, 2939.5, 2947.2, 2954.9, 2962.6, 2970.4, 2978.1, 2985.8, 2993.5, 3001.2, 3008.9, 3016.6, 3024.4, 3032.1, 3039.8, 3047.5, 3055.2, 3062.9, 3070.6, 3078.4, 3086.1, 3093.8, 3101.5, 3109.2, 3116.9, 3124.6, 3132.3, 3140.1, 3147.8, 3155.5, 3163.2, 3170.9, 3178.6, 3186.3, 3194.1], "y": [0.0359, 0.0294, 0.0227, 0.0184, 0.0155, 0.0135, 0.0124, 0.012, 0.0114, 0.0106, 0.0099, 0.0105, 0.0101, 0.0102, 0.0103, 0.0085, 0.0067, 0.0065, 0.0063, 0.0057, 0.0063, 0.0039, 0.0036, 0.0038, 0.0037, 0.0027, 0.0032, 0.003, 0.0012, 0.0036, 0.0024, 0.0026, 0.0021, 0.003, 0.0021, 0.003, 0.0029, 0.003, 0.0032, 0.0025, 0.0022, 0.0016, 0.0034, 0.0028, 0.003, 0.0029, 0.0026, 0.0018, 0.0, 0.0024, 0.0021, 0.0019, 0.0025, 0.0024, 0.0014, 0.0021, 0.0021, 0.0026, 0.0017, 0.0015, 0.0016, 0.0006, 0.0019, 0.0018, 0.0011, 0.002, 0.0032, 0.0027, 0.0021, 0.0023, 0.0022, 0.002, 0.0016, 0.002, 0.001, 0.0012, 0.0028, 0.0016, 0.0038, 0.0033, 0.0051, 0.0058, 0.0039, 0.0045, 0.0048, 0.0058, 0.0066, 0.0052, 0.0053, 0.0065, 0.0071, 0.0076, 0.0072, 0.0089, 0.009, 0.0098, 0.0107, 0.0101, 0.0111, 0.0114, 0.0131, 0.0119, 0.0143, 0.0135, 0.0121, 0.01, 0.0104, 0.0105, 0.0102, 0.0091, 0.0087, 0.0085, 0.0095, 0.0095, 0.0114, 0.0102, 0.0107, 0.0119, 0.0126, 0.0141, 0.0143, 0.016, 0.0179, 0.023, 0.065, 0.0677, 0.0288, 0.0309, 0.0277, 0.0211, 0.0223, 0.0233, 0.0343, 0.0922, 0.0383, 0.0233, 0.0191, 0.019, 0.025, 0.021, 0.0165, 0.0158, 0.0149, 0.0157, 0.0153, 0.017, 0.015, 0.0159, 0.0169, 0.0192, 0.0204, 0.0243, 0.0274, 0.031, 0.0647, 0.1311, 0.0537, 0.0418, 0.034, 0.0284, 0.0254, 0.026, 0.0265, 0.0284, 0.0354, 0.0318, 0.0288, 0.0284, 0.0304, 0.0334, 0.0529, 0.0632, 0.0728, 0.142, 0.1335, 0.1074, 0.1109, 0.0958, 0.0645, 0.0523, 0.0502, 0.0494, 0.0488, 0.0501, 0.0528, 0.0528, 0.0537, 0.0578, 0.0568, 0.0581, 0.0592, 0.0649, 0.0641, 0.0677, 0.07, 0.0728, 0.0744, 0.0763, 0.0793, 0.0811, 0.0851, 0.0894, 0.0908, 0.0952, 0.0993, 0.1035, 0.1069, 0.112, 0.1144, 0.1191, 0.1271, 0.1301, 0.1357, 0.1432, 0.1503, 0.1528, 0.1589, 0.1664, 0.1736, 0.1782, 0.1892, 0.193, 0.2027, 0.2114, 0.2175, 0.2282, 0.2364, 0.2409, 0.2514, 0.2635, 0.2698, 0.2769, 0.2856, 0.2951, 0.3049, 0.3118, 0.3252, 0.3345, 0.3458, 0.3557, 0.3679, 0.3823, 0.3956, 0.4065, 0.4226, 0.4319, 0.449, 0.4641, 0.4755, 0.4937, 0.5168, 0.5266, 0.5462, 0.5629, 0.5852, 0.5927, 0.608, 0.6266, 0.636, 0.6518, 0.6628, 0.6774, 0.685, 0.6915, 0.703, 0.7085, 0.7106, 0.7122, 0.7085, 0.7125, 0.7083, 0.7018, 0.6914, 0.6844, 0.673, 0.6671, 0.658, 0.6454, 0.6381, 0.619, 0.611, 0.5921, 0.579, 0.5649, 0.5545, 0.5379, 0.5232, 0.5139, 0.4984, 0.4838, 0.4697, 0.4629, 0.4525, 0.4443, 0.4294, 0.4235, 0.4135, 0.4021, 0.3982, 0.3909, 0.3842, 0.3756, 0.3697, 0.3641, 0.3564, 0.3537, 0.3475, 0.338, 0.3358, 0.3335, 0.3312, 0.3221, 0.3188, 0.3135, 0.308, 0.3057, 0.2984, 0.2984, 0.2928, 0.2874, 0.2863, 0.2862, 0.2818, 0.2789, 0.2766, 0.2739, 0.2685, 0.2642, 0.2636, 0.2574, 0.2635, 0.2593, 0.2523, 0.2519, 0.2525, 0.2532, 0.2555, 0.2543, 0.2695, 0.2786, 0.2795, 0.2598, 0.2426, 0.2341, 0.2295, 0.2264, 0.2218, 0.2231, 0.2237, 0.2194, 0.2205, 0.2263, 0.2294, 0.2487, 0.3176, 0.5944, 0.9285, 0.7476, 0.6128, 0.6088, 1.0, 0.8494, 0.657, 0.5932, 0.5062, 0.4544, 0.4402, 0.4115, 0.3441, 0.2602, 0.2311, 0.2143, 0.2017, 0.1915, 0.1868, 0.1829, 0.1814, 0.1769, 0.1798, 0.1789, 0.174, 0.1743, 0.1749, 0.1739, 0.1717, 0.1747, 0.1778, 0.1766, 0.1755, 0.1778, 0.1769, 0.1799, 0.1811, 0.1826, 0.1831, 0.1865, 0.1888, 0.191, 0.1932, 0.1956, 0.1989, 0.1995]}, "raman_pp": {"x": [100.8, 108.5, 116.2, 123.9, 131.7, 139.4, 147.1, 154.8, 162.5, 170.2, 177.9, 185.7, 193.4, 201.1, 208.8, 216.5, 224.2, 231.9, 239.6, 247.4, 255.1, 262.8, 270.5, 278.2, 285.9, 293.6, 301.4, 309.1, 316.8, 324.5, 332.2, 339.9, 347.6, 355.4, 363.1, 370.8, 378.5, 386.2, 393.9, 401.6, 409.4, 417.1, 424.8, 432.5, 440.2, 447.9, 455.6, 463.4, 471.1, 478.8, 486.5, 494.2, 501.9, 509.6, 517.3, 525.1, 532.8, 540.5, 548.2, 555.9, 563.6, 571.3, 579.1, 586.8, 594.5, 602.2, 609.9, 617.6, 625.3, 633.1, 640.8, 648.5, 656.2, 663.9, 671.6, 679.3, 687.1, 694.8, 702.5, 710.2, 717.9, 725.6, 733.3, 741.1, 748.8, 756.5, 764.2, 771.9, 779.6, 787.3, 795.0, 802.8, 810.5, 818.2, 825.9, 833.6, 841.3, 849.0, 856.8, 864.5, 872.2, 879.9, 887.6, 895.3, 903.0, 910.8, 918.5, 926.2, 933.9, 941.6, 949.3, 957.0, 964.8, 972.5, 980.2, 987.9, 995.6, 1003.3, 1011.0, 1018.8, 1026.5, 1034.2, 1041.9, 1049.6, 1057.3, 1065.0, 1072.7, 1080.5, 1088.2, 1095.9, 1103.6, 1111.3, 1119.0, 1126.7, 1134.5, 1142.2, 1149.9, 1157.6, 1165.3, 1173.0, 1180.7, 1188.5, 1196.2, 1203.9, 1211.6, 1219.3, 1227.0, 1234.7, 1242.5, 1250.2, 1257.9, 1265.6, 1273.3, 1281.0, 1288.7, 1296.4, 1304.2, 1311.9, 1319.6, 1327.3, 1335.0, 1342.7, 1350.4, 1358.2, 1365.9, 1373.6, 1381.3, 1389.0, 1396.7, 1404.4, 1412.2, 1419.9, 1427.6, 1435.3, 1443.0, 1450.7, 1458.4, 1466.2, 1473.9, 1481.6, 1489.3, 1497.0, 1504.7, 1512.4, 1520.2, 1527.9, 1535.6, 1543.3, 1551.0, 1558.7, 1566.4, 1574.1, 1581.9, 1589.6, 1597.3, 1605.0, 1612.7, 1620.4, 1628.1, 1635.9, 1643.6, 1651.3, 1659.0, 1666.7, 1674.4, 1682.1, 1689.9, 1697.6, 1705.3, 1713.0, 1720.7, 1728.4, 1736.1, 1743.9, 1751.6, 1759.3, 1767.0, 1774.7, 1782.4, 1790.1, 1797.8, 1805.6, 1813.3, 1821.0, 1828.7, 1836.4, 1844.1, 1851.8, 1859.6, 1867.3, 1875.0, 1882.7, 1890.4, 1898.1, 1905.8, 1913.6, 1921.3, 1929.0, 1936.7, 1944.4, 1952.1, 1959.8, 1967.6, 1975.3, 1983.0, 1990.7, 1998.4, 2006.1, 2013.8, 2021.6, 2029.3, 2037.0, 2044.7, 2052.4, 2060.1, 2067.8, 2075.5, 2083.3, 2091.0, 2098.7, 2106.4, 2114.1, 2121.8, 2129.5, 2137.3, 2145.0, 2152.7, 2160.4, 2168.1, 2175.8, 2183.5, 2191.3, 2199.0, 2206.7, 2214.4, 2222.1, 2229.8, 2237.5, 2245.3, 2253.0, 2260.7, 2268.4, 2276.1, 2283.8, 2291.5, 2299.3, 2307.0, 2314.7, 2322.4, 2330.1, 2337.8, 2345.5, 2353.2, 2361.0, 2368.7, 2376.4, 2384.1, 2391.8, 2399.5, 2407.2, 2415.0, 2422.7, 2430.4, 2438.1, 2445.8, 2453.5, 2461.2, 2469.0, 2476.7, 2484.4, 2492.1, 2499.8, 2507.5, 2515.2, 2523.0, 2530.7, 2538.4, 2546.1, 2553.8, 2561.5, 2569.2, 2577.0, 2584.7, 2592.4, 2600.1, 2607.8, 2615.5, 2623.2, 2630.9, 2638.7, 2646.4, 2654.1, 2661.8, 2669.5, 2677.2, 2684.9, 2692.7, 2700.4, 2708.1, 2715.8, 2723.5, 2731.2, 2738.9, 2746.7, 2754.4, 2762.1, 2769.8, 2777.5, 2785.2, 2792.9, 2800.7, 2808.4, 2816.1, 2823.8, 2831.5, 2839.2, 2846.9, 2854.7, 2862.4, 2870.1, 2877.8, 2885.5, 2893.2, 2900.9, 2908.6, 2916.4, 2924.1, 2931.8, 2939.5, 2947.2, 2954.9, 2962.6, 2970.4, 2978.1, 2985.8, 2993.5, 3001.2, 3008.9, 3016.6, 3024.4, 3032.1, 3039.8, 3047.5, 3055.2, 3062.9, 3070.6, 3078.4, 3086.1, 3093.8, 3101.5, 3109.2, 3116.9, 3124.6, 3132.3, 3140.1, 3147.8, 3155.5, 3163.2, 3170.9, 3178.6, 3186.3, 3194.1], "y": [0.0957, 0.0906, 0.0394, 0.0194, 0.0125, 0.0075, 0.0089, 0.0094, 0.0244, 0.041, 0.0385, 0.0186, 0.0101, 0.0072, 0.0072, 0.0055, 0.0065, 0.0088, 0.0133, 0.0209, 0.017, 0.013, 0.0078, 0.0065, 0.0054, 0.0072, 0.0089, 0.0113, 0.0219, 0.0207, 0.0118, 0.0102, 0.0095, 0.0111, 0.0104, 0.0123, 0.0138, 0.0254, 0.088, 0.0842, 0.0309, 0.0228, 0.0188, 0.0198, 0.0211, 0.0316, 0.0438, 0.0286, 0.0166, 0.0167, 0.0157, 0.016, 0.0159, 0.0193, 0.0258, 0.0379, 0.0341, 0.0214, 0.0198, 0.0183, 0.0173, 0.0173, 0.0176, 0.0189, 0.019, 0.0163, 0.0196, 0.0195, 0.0197, 0.0203, 0.0182, 0.0193, 0.0208, 0.0191, 0.0184, 0.0201, 0.0204, 0.021, 0.0234, 0.0224, 0.0239, 0.023, 0.0236, 0.0261, 0.0271, 0.0258, 0.029, 0.0263, 0.0315, 0.0358, 0.0494, 0.1121, 0.1929, 0.0609, 0.0624, 0.0903, 0.1766, 0.0634, 0.044, 0.0399, 0.0368, 0.0336, 0.034, 0.047, 0.044, 0.0337, 0.0333, 0.035, 0.044, 0.0599, 0.0408, 0.0373, 0.0502, 0.1132, 0.0491, 0.0414, 0.0781, 0.0544, 0.0404, 0.0404, 0.0459, 0.0738, 0.0669, 0.0461, 0.0387, 0.0369, 0.0366, 0.0359, 0.036, 0.038, 0.0437, 0.036, 0.0367, 0.0391, 0.0401, 0.0638, 0.1407, 0.1025, 0.1132, 0.0674, 0.0366, 0.0339, 0.0374, 0.0386, 0.0525, 0.083, 0.0461, 0.0346, 0.0354, 0.0434, 0.0412, 0.0332, 0.0349, 0.0348, 0.0438, 0.0551, 0.0581, 0.0468, 0.0695, 0.1728, 0.0915, 0.0513, 0.0508, 0.0942, 0.0588, 0.0529, 0.0382, 0.0304, 0.0282, 0.0255, 0.0256, 0.0287, 0.0428, 0.1131, 0.0829, 0.1371, 0.2251, 0.1143, 0.0467, 0.032, 0.0282, 0.0244, 0.0215, 0.02, 0.0191, 0.0209, 0.0208, 0.0187, 0.021, 0.0181, 0.0176, 0.0174, 0.0168, 0.0197, 0.0183, 0.0178, 0.0164, 0.0172, 0.0176, 0.0176, 0.0174, 0.0185, 0.0165, 0.0179, 0.018, 0.0173, 0.0186, 0.0184, 0.0149, 0.018, 0.0173, 0.0171, 0.0176, 0.0165, 0.0133, 0.0146, 0.0132, 0.0145, 0.0141, 0.0159, 0.0131, 0.0138, 0.0132, 0.0163, 0.0154, 0.014, 0.0128, 0.014, 0.0157, 0.0152, 0.0153, 0.0155, 0.0166, 0.0146, 0.0156, 0.0152, 0.0146, 0.0165, 0.0166, 0.0135, 0.0153, 0.0158, 0.0163, 0.0149, 0.0173, 0.0177, 0.017, 0.018, 0.0158, 0.0159, 0.0175, 0.019, 0.0175, 0.018, 0.017, 0.019, 0.0178, 0.0187, 0.0196, 0.0166, 0.0201, 0.0176, 0.0195, 0.0186, 0.0174, 0.0183, 0.0196, 0.0183, 0.0158, 0.0177, 0.0161, 0.0183, 0.0176, 0.0196, 0.0164, 0.0164, 0.0186, 0.0191, 0.021, 0.0196, 0.0186, 0.0195, 0.019, 0.0213, 0.0232, 0.0227, 0.0208, 0.0209, 0.0239, 0.0193, 0.0203, 0.0184, 0.0185, 0.017, 0.0148, 0.0171, 0.0161, 0.016, 0.0154, 0.0152, 0.0146, 0.013, 0.0135, 0.0142, 0.0113, 0.0127, 0.0132, 0.0107, 0.0111, 0.0117, 0.0117, 0.0107, 0.011, 0.0122, 0.0109, 0.0105, 0.0114, 0.0123, 0.0116, 0.0127, 0.0122, 0.0129, 0.0157, 0.0174, 0.0155, 0.0158, 0.0143, 0.0144, 0.0152, 0.0163, 0.0261, 0.0284, 0.0274, 0.0244, 0.0249, 0.0224, 0.0256, 0.0318, 0.0496, 0.0637, 0.0854, 0.0559, 0.042, 0.0327, 0.0276, 0.0213, 0.0166, 0.0175, 0.0198, 0.0214, 0.0252, 0.0334, 0.0453, 0.0717, 0.18, 0.4825, 0.3292, 0.2301, 0.4749, 0.6958, 0.8445, 1.0, 0.7405, 0.7391, 0.6767, 0.5091, 0.5533, 0.4063, 0.2492, 0.3851, 0.5216, 0.4678, 0.29, 0.1239, 0.065, 0.0404, 0.0257, 0.0216, 0.0172, 0.0125, 0.0081, 0.0077, 0.0073, 0.0069, 0.0063, 0.0043, 0.0027, 0.0011, 0.002, 0.0009, 0.0011, 0.0, 0.0014, 0.0003, 0.0012, 0.001, 0.0004, 0.0007, 0.0003, 0.0005, 0.0014, 0.0015]}, "raman_pet": {"x": [100.8, 108.5, 116.2, 123.9, 131.7, 139.4, 147.1, 154.8, 162.5, 170.2, 177.9, 185.7, 193.4, 201.1, 208.8, 216.5, 224.2, 231.9, 239.6, 247.4, 255.1, 262.8, 270.5, 278.2, 285.9, 293.6, 301.4, 309.1, 316.8, 324.5, 332.2, 339.9, 347.6, 355.4, 363.1, 370.8, 378.5, 386.2, 393.9, 401.6, 409.4, 417.1, 424.8, 432.5, 440.2, 447.9, 455.6, 463.4, 471.1, 478.8, 486.5, 494.2, 501.9, 509.6, 517.3, 525.1, 532.8, 540.5, 548.2, 555.9, 563.6, 571.3, 579.1, 586.8, 594.5, 602.2, 609.9, 617.6, 625.3, 633.1, 640.8, 648.5, 656.2, 663.9, 671.6, 679.3, 687.1, 694.8, 702.5, 710.2, 717.9, 725.6, 733.3, 741.1, 748.8, 756.5, 764.2, 771.9, 779.6, 787.3, 795.0, 802.8, 810.5, 818.2, 825.9, 833.6, 841.3, 849.0, 856.8, 864.5, 872.2, 879.9, 887.6, 895.3, 903.0, 910.8, 918.5, 926.2, 933.9, 941.6, 949.3, 957.0, 964.8, 972.5, 980.2, 987.9, 995.6, 1003.3, 1011.0, 1018.8, 1026.5, 1034.2, 1041.9, 1049.6, 1057.3, 1065.0, 1072.7, 1080.5, 1088.2, 1095.9, 1103.6, 1111.3, 1119.0, 1126.7, 1134.5, 1142.2, 1149.9, 1157.6, 1165.3, 1173.0, 1180.7, 1188.5, 1196.2, 1203.9, 1211.6, 1219.3, 1227.0, 1234.7, 1242.5, 1250.2, 1257.9, 1265.6, 1273.3, 1281.0, 1288.7, 1296.4, 1304.2, 1311.9, 1319.6, 1327.3, 1335.0, 1342.7, 1350.4, 1358.2, 1365.9, 1373.6, 1381.3, 1389.0, 1396.7, 1404.4, 1412.2, 1419.9, 1427.6, 1435.3, 1443.0, 1450.7, 1458.4, 1466.2, 1473.9, 1481.6, 1489.3, 1497.0, 1504.7, 1512.4, 1520.2, 1527.9, 1535.6, 1543.3, 1551.0, 1558.7, 1566.4, 1574.1, 1581.9, 1589.6, 1597.3, 1605.0, 1612.7, 1620.4, 1628.1, 1635.9, 1643.6, 1651.3, 1659.0, 1666.7, 1674.4, 1682.1, 1689.9, 1697.6, 1705.3, 1713.0, 1720.7, 1728.4, 1736.1, 1743.9, 1751.6, 1759.3, 1767.0, 1774.7, 1782.4, 1790.1, 1797.8, 1805.6, 1813.3, 1821.0, 1828.7, 1836.4, 1844.1, 1851.8, 1859.6, 1867.3, 1875.0, 1882.7, 1890.4, 1898.1, 1905.8, 1913.6, 1921.3, 1929.0, 1936.7, 1944.4, 1952.1, 1959.8, 1967.6, 1975.3, 1983.0, 1990.7, 1998.4, 2006.1, 2013.8, 2021.6, 2029.3, 2037.0, 2044.7, 2052.4, 2060.1, 2067.8, 2075.5, 2083.3, 2091.0, 2098.7, 2106.4, 2114.1, 2121.8, 2129.5, 2137.3, 2145.0, 2152.7, 2160.4, 2168.1, 2175.8, 2183.5, 2191.3, 2199.0, 2206.7, 2214.4, 2222.1, 2229.8, 2237.5, 2245.3, 2253.0, 2260.7, 2268.4, 2276.1, 2283.8, 2291.5, 2299.3, 2307.0, 2314.7, 2322.4, 2330.1, 2337.8, 2345.5, 2353.2, 2361.0, 2368.7, 2376.4, 2384.1, 2391.8, 2399.5, 2407.2, 2415.0, 2422.7, 2430.4, 2438.1, 2445.8, 2453.5, 2461.2, 2469.0, 2476.7, 2484.4, 2492.1, 2499.8, 2507.5, 2515.2, 2523.0, 2530.7, 2538.4, 2546.1, 2553.8, 2561.5, 2569.2, 2577.0, 2584.7, 2592.4, 2600.1, 2607.8, 2615.5, 2623.2, 2630.9, 2638.7, 2646.4, 2654.1, 2661.8, 2669.5, 2677.2, 2684.9, 2692.7, 2700.4, 2708.1, 2715.8, 2723.5, 2731.2, 2738.9, 2746.7, 2754.4, 2762.1, 2769.8, 2777.5, 2785.2, 2792.9, 2800.7, 2808.4, 2816.1, 2823.8, 2831.5, 2839.2, 2846.9, 2854.7, 2862.4, 2870.1, 2877.8, 2885.5, 2893.2, 2900.9, 2908.6, 2916.4, 2924.1, 2931.8, 2939.5, 2947.2, 2954.9, 2962.6, 2970.4, 2978.1, 2985.8, 2993.5, 3001.2, 3008.9, 3016.6, 3024.4, 3032.1, 3039.8, 3047.5, 3055.2, 3062.9, 3070.6, 3078.4, 3086.1, 3093.8, 3101.5, 3109.2, 3116.9, 3124.6, 3132.3, 3140.1, 3147.8, 3155.5, 3163.2, 3170.9, 3178.6, 3186.3, 3194.1], "y": [0.385, 0.3163, 0.2835, 0.3081, 0.2719, 0.1798, 0.1124, 0.0746, 0.0607, 0.0587, 0.0601, 0.0466, 0.0369, 0.0362, 0.0404, 0.0415, 0.0339, 0.0399, 0.0416, 0.0501, 0.0533, 0.0543, 0.0751, 0.1121, 0.0667, 0.0561, 0.0468, 0.0437, 0.0332, 0.0485, 0.0341, 0.0398, 0.0388, 0.0398, 0.0361, 0.042, 0.0385, 0.0409, 0.0401, 0.0549, 0.0438, 0.0414, 0.0385, 0.0479, 0.0429, 0.0448, 0.04, 0.0417, 0.0547, 0.0365, 0.0361, 0.0439, 0.0437, 0.0404, 0.0461, 0.0428, 0.0429, 0.0392, 0.0399, 0.0322, 0.0443, 0.053, 0.0371, 0.039, 0.0334, 0.0405, 0.0356, 0.0388, 0.0874, 0.1462, 0.0433, 0.0456, 0.0432, 0.0339, 0.0373, 0.0419, 0.0366, 0.044, 0.0843, 0.0426, 0.0309, 0.0425, 0.0339, 0.0301, 0.0289, 0.033, 0.0225, 0.0318, 0.0369, 0.0481, 0.0931, 0.0468, 0.0466, 0.0537, 0.052, 0.0616, 0.0853, 0.1467, 0.3271, 0.1298, 0.0767, 0.0614, 0.0549, 0.0411, 0.0377, 0.0297, 0.0355, 0.0268, 0.0263, 0.025, 0.0278, 0.0301, 0.0362, 0.0387, 0.0285, 0.048, 0.0593, 0.0561, 0.0449, 0.0472, 0.0443, 0.0385, 0.036, 0.041, 0.035, 0.0391, 0.0441, 0.0696, 0.1174, 0.1626, 0.1045, 0.1168, 0.1293, 0.0741, 0.057, 0.0467, 0.0392, 0.0332, 0.0411, 0.0643, 0.0799, 0.0887, 0.0539, 0.0314, 0.0391, 0.0331, 0.0353, 0.0354, 0.0441, 0.0445, 0.0761, 0.0957, 0.1756, 0.2651, 0.2876, 0.206, 0.131, 0.0966, 0.0747, 0.0508, 0.0412, 0.0471, 0.0369, 0.0377, 0.0396, 0.0409, 0.0358, 0.0447, 0.0338, 0.0543, 0.0749, 0.0613, 0.0479, 0.0408, 0.0628, 0.0709, 0.0685, 0.0464, 0.0481, 0.0317, 0.0433, 0.0244, 0.0354, 0.043, 0.026, 0.043, 0.0363, 0.0414, 0.0434, 0.0581, 0.0422, 0.0513, 0.061, 0.0739, 0.1181, 0.3214, 1.0, 0.3036, 0.0932, 0.0703, 0.057, 0.0662, 0.0466, 0.0371, 0.0586, 0.0573, 0.0516, 0.0715, 0.0909, 0.1982, 0.4414, 0.6096, 0.2696, 0.1482, 0.0848, 0.0701, 0.0615, 0.05, 0.054, 0.0436, 0.0405, 0.0435, 0.0381, 0.0406, 0.041, 0.0476, 0.0488, 0.0411, 0.047, 0.0475, 0.0369, 0.0348, 0.0436, 0.0373, 0.0482, 0.0407, 0.0489, 0.0354, 0.0515, 0.0421, 0.0414, 0.0357, 0.0377, 0.0413, 0.0394, 0.049, 0.0358, 0.0411, 0.039, 0.0401, 0.0477, 0.0475, 0.0532, 0.0473, 0.0436, 0.0416, 0.0487, 0.0359, 0.0438, 0.0382, 0.0432, 0.0424, 0.0362, 0.0442, 0.032, 0.0424, 0.0423, 0.0491, 0.043, 0.0406, 0.0452, 0.0504, 0.0356, 0.0426, 0.0478, 0.0358, 0.0387, 0.0443, 0.04, 0.035, 0.0397, 0.0388, 0.0473, 0.0395, 0.0444, 0.0424, 0.0384, 0.0457, 0.0409, 0.0342, 0.0343, 0.0382, 0.0356, 0.0496, 0.0468, 0.0541, 0.0367, 0.0487, 0.0472, 0.0414, 0.0434, 0.0436, 0.0438, 0.0367, 0.037, 0.0412, 0.0459, 0.0471, 0.0469, 0.0407, 0.0462, 0.0382, 0.0444, 0.0495, 0.04, 0.0356, 0.0433, 0.03, 0.0416, 0.0441, 0.0417, 0.0438, 0.045, 0.0424, 0.0428, 0.0472, 0.0372, 0.0447, 0.0434, 0.04, 0.0361, 0.0317, 0.0332, 0.0344, 0.0306, 0.0283, 0.0365, 0.0316, 0.0296, 0.0344, 0.0323, 0.0278, 0.0184, 0.0235, 0.0207, 0.0243, 0.0205, 0.0041, 0.0351, 0.0116, 0.0301, 0.0302, 0.0181, 0.0236, 0.0179, 0.0055, 0.0092, 0.0064, 0.0125, 0.0, 0.0042, 0.0336, 0.021, 0.0429, 0.055, 0.0262, 0.0345, 0.0321, 0.0481, 0.0822, 0.0959, 0.151, 0.1352, 0.0914, 0.0655, 0.0799, 0.1052, 0.0874, 0.0504, 0.0346, 0.0382, 0.0226, 0.0382, 0.0419, 0.0804, 0.1749, 0.3307, 0.2558, 0.1036, 0.0707, 0.0403, 0.048, 0.048, 0.0545, 0.0346, 0.054, 0.046, 0.0477, 0.0392, 0.0534, 0.0465, 0.0432]}, "raman_ps": {"x": [100.8, 108.5, 116.2, 123.9, 131.7, 139.4, 147.1, 154.8, 162.5, 170.2, 177.9, 185.7, 193.4, 201.1, 208.8, 216.5, 224.2, 231.9, 239.6, 247.4, 255.1, 262.8, 270.5, 278.2, 285.9, 293.6, 301.4, 309.1, 316.8, 324.5, 332.2, 339.9, 347.6, 355.4, 363.1, 370.8, 378.5, 386.2, 393.9, 401.6, 409.4, 417.1, 424.8, 432.5, 440.2, 447.9, 455.6, 463.4, 471.1, 478.8, 486.5, 494.2, 501.9, 509.6, 517.3, 525.1, 532.8, 540.5, 548.2, 555.9, 563.6, 571.3, 579.1, 586.8, 594.5, 602.2, 609.9, 617.6, 625.3, 633.1, 640.8, 648.5, 656.2, 663.9, 671.6, 679.3, 687.1, 694.8, 702.5, 710.2, 717.9, 725.6, 733.3, 741.1, 748.8, 756.5, 764.2, 771.9, 779.6, 787.3, 795.0, 802.8, 810.5, 818.2, 825.9, 833.6, 841.3, 849.0, 856.8, 864.5, 872.2, 879.9, 887.6, 895.3, 903.0, 910.8, 918.5, 926.2, 933.9, 941.6, 949.3, 957.0, 964.8, 972.5, 980.2, 987.9, 995.6, 1003.3, 1011.0, 1018.8, 1026.5, 1034.2, 1041.9, 1049.6, 1057.3, 1065.0, 1072.7, 1080.5, 1088.2, 1095.9, 1103.6, 1111.3, 1119.0, 1126.7, 1134.5, 1142.2, 1149.9, 1157.6, 1165.3, 1173.0, 1180.7, 1188.5, 1196.2, 1203.9, 1211.6, 1219.3, 1227.0, 1234.7, 1242.5, 1250.2, 1257.9, 1265.6, 1273.3, 1281.0, 1288.7, 1296.4, 1304.2, 1311.9, 1319.6, 1327.3, 1335.0, 1342.7, 1350.4, 1358.2, 1365.9, 1373.6, 1381.3, 1389.0, 1396.7, 1404.4, 1412.2, 1419.9, 1427.6, 1435.3, 1443.0, 1450.7, 1458.4, 1466.2, 1473.9, 1481.6, 1489.3, 1497.0, 1504.7, 1512.4, 1520.2, 1527.9, 1535.6, 1543.3, 1551.0, 1558.7, 1566.4, 1574.1, 1581.9, 1589.6, 1597.3, 1605.0, 1612.7, 1620.4, 1628.1, 1635.9, 1643.6, 1651.3, 1659.0, 1666.7, 1674.4, 1682.1, 1689.9, 1697.6, 1705.3, 1713.0, 1720.7, 1728.4, 1736.1, 1743.9, 1751.6, 1759.3, 1767.0, 1774.7, 1782.4, 1790.1, 1797.8, 1805.6, 1813.3, 1821.0, 1828.7, 1836.4, 1844.1, 1851.8, 1859.6, 1867.3, 1875.0, 1882.7, 1890.4, 1898.1, 1905.8, 1913.6, 1921.3, 1929.0, 1936.7, 1944.4, 1952.1, 1959.8, 1967.6, 1975.3, 1983.0, 1990.7, 1998.4, 2006.1, 2013.8, 2021.6, 2029.3, 2037.0, 2044.7, 2052.4, 2060.1, 2067.8, 2075.5, 2083.3, 2091.0, 2098.7, 2106.4, 2114.1, 2121.8, 2129.5, 2137.3, 2145.0, 2152.7, 2160.4, 2168.1, 2175.8, 2183.5, 2191.3, 2199.0, 2206.7, 2214.4, 2222.1, 2229.8, 2237.5, 2245.3, 2253.0, 2260.7, 2268.4, 2276.1, 2283.8, 2291.5, 2299.3, 2307.0, 2314.7, 2322.4, 2330.1, 2337.8, 2345.5, 2353.2, 2361.0, 2368.7, 2376.4, 2384.1, 2391.8, 2399.5, 2407.2, 2415.0, 2422.7, 2430.4, 2438.1, 2445.8, 2453.5, 2461.2, 2469.0, 2476.7, 2484.4, 2492.1, 2499.8, 2507.5, 2515.2, 2523.0, 2530.7, 2538.4, 2546.1, 2553.8, 2561.5, 2569.2, 2577.0, 2584.7, 2592.4, 2600.1, 2607.8, 2615.5, 2623.2, 2630.9, 2638.7, 2646.4, 2654.1, 2661.8, 2669.5, 2677.2, 2684.9, 2692.7, 2700.4, 2708.1, 2715.8, 2723.5, 2731.2, 2738.9, 2746.7, 2754.4, 2762.1, 2769.8, 2777.5, 2785.2, 2792.9, 2800.7, 2808.4, 2816.1, 2823.8, 2831.5, 2839.2, 2846.9, 2854.7, 2862.4, 2870.1, 2877.8, 2885.5, 2893.2, 2900.9, 2908.6, 2916.4, 2924.1, 2931.8, 2939.5, 2947.2, 2954.9, 2962.6, 2970.4, 2978.1, 2985.8, 2993.5, 3001.2, 3008.9, 3016.6, 3024.4, 3032.1, 3039.8, 3047.5, 3055.2, 3062.9, 3070.6, 3078.4, 3086.1, 3093.8, 3101.5, 3109.2, 3116.9, 3124.6, 3132.3, 3140.1, 3147.8, 3155.5, 3163.2, 3170.9, 3178.6, 3186.3, 3194.1], "y": [1.0, 0.7293, 0.5259, 0.3795, 0.2864, 0.2243, 0.1852, 0.1667, 0.1554, 0.1401, 0.1279, 0.1164, 0.1095, 0.1172, 0.1306, 0.1465, 0.1441, 0.1071, 0.0611, 0.0323, 0.0201, 0.0166, 0.0143, 0.0121, 0.0105, 0.0045, 0.0028, 0.0035, 0.0035, 0.0046, 0.0052, 0.0046, 0.004, 0.001, 0.0038, 0.0068, 0.0113, 0.0161, 0.0219, 0.0298, 0.0299, 0.0203, 0.0132, 0.0114, 0.0094, 0.0068, 0.0035, 0.0029, 0.0008, 0.0013, 0.0, 0.0023, 0.0025, 0.0036, 0.0036, 0.007, 0.0122, 0.0166, 0.0131, 0.0122, 0.012, 0.0122, 0.0095, 0.0087, 0.008, 0.0089, 0.0167, 0.1146, 0.045, 0.0144, 0.0074, 0.0064, 0.0057, 0.0041, 0.0038, 0.0037, 0.0055, 0.0069, 0.0112, 0.0069, 0.0079, 0.0102, 0.0251, 0.0394, 0.0494, 0.0633, 0.0579, 0.0511, 0.0542, 0.0919, 0.1247, 0.0747, 0.0453, 0.0269, 0.0202, 0.0316, 0.0438, 0.0301, 0.0265, 0.0269, 0.0251, 0.0237, 0.0246, 0.0297, 0.0424, 0.0323, 0.023, 0.0196, 0.0215, 0.0242, 0.0248, 0.0287, 0.0333, 0.0355, 0.0593, 0.1368, 0.523, 0.96, 0.0906, 0.0714, 0.2619, 0.2688, 0.0853, 0.0563, 0.0505, 0.0595, 0.0613, 0.0546, 0.0524, 0.0531, 0.0428, 0.0305, 0.0241, 0.0206, 0.0245, 0.0384, 0.098, 0.1172, 0.0687, 0.09, 0.188, 0.169, 0.2045, 0.175, 0.098, 0.0671, 0.0548, 0.0426, 0.0383, 0.0375, 0.0338, 0.0339, 0.035, 0.0354, 0.0369, 0.0457, 0.051, 0.0542, 0.0666, 0.0743, 0.0639, 0.048, 0.0441, 0.0442, 0.0426, 0.0422, 0.0299, 0.0222, 0.0221, 0.0227, 0.0212, 0.021, 0.0231, 0.0423, 0.0703, 0.086, 0.0367, 0.0242, 0.0214, 0.0224, 0.0243, 0.0242, 0.0216, 0.0195, 0.0214, 0.0229, 0.0224, 0.0228, 0.0241, 0.0267, 0.0313, 0.0488, 0.1492, 0.0768, 0.2319, 0.2358, 0.0581, 0.0403, 0.032, 0.0278, 0.0258, 0.025, 0.024, 0.0233, 0.0248, 0.0279, 0.0246, 0.0243, 0.0232, 0.0238, 0.0235, 0.0223, 0.0253, 0.0262, 0.024, 0.024, 0.0239, 0.0264, 0.0257, 0.0256, 0.0276, 0.0271, 0.0276, 0.0266, 0.0263, 0.0262, 0.0267, 0.0268, 0.0256, 0.0274, 0.0281, 0.028, 0.0285, 0.0275, 0.0289, 0.0296, 0.0298, 0.0314, 0.0304, 0.0302, 0.0321, 0.0313, 0.0306, 0.032, 0.0314, 0.0319, 0.0311, 0.0323, 0.0325, 0.0333, 0.0329, 0.0337, 0.0329, 0.0324, 0.0342, 0.034, 0.0339, 0.0336, 0.0367, 0.0356, 0.037, 0.0347, 0.0352, 0.036, 0.0363, 0.0373, 0.0369, 0.0375, 0.037, 0.0388, 0.0396, 0.0383, 0.0404, 0.0407, 0.037, 0.0421, 0.0389, 0.0399, 0.0409, 0.0411, 0.0435, 0.0432, 0.0428, 0.044, 0.0437, 0.0444, 0.0477, 0.0465, 0.0461, 0.0468, 0.047, 0.047, 0.0492, 0.0497, 0.05, 0.0513, 0.0505, 0.0527, 0.0523, 0.0521, 0.0524, 0.0542, 0.055, 0.0555, 0.0582, 0.0594, 0.0574, 0.0591, 0.0613, 0.0619, 0.0608, 0.0595, 0.0586, 0.0612, 0.0606, 0.059, 0.0614, 0.0643, 0.0663, 0.0698, 0.0671, 0.0705, 0.0718, 0.0729, 0.0739, 0.0754, 0.0733, 0.0755, 0.0726, 0.0722, 0.0746, 0.0748, 0.0744, 0.0732, 0.0744, 0.0754, 0.0765, 0.0754, 0.0771, 0.0763, 0.0782, 0.0791, 0.08, 0.0786, 0.079, 0.0772, 0.0818, 0.085, 0.0854, 0.083, 0.0837, 0.0858, 0.0887, 0.0897, 0.099, 0.1354, 0.2054, 0.2094, 0.1733, 0.1579, 0.1886, 0.242, 0.3091, 0.3626, 0.3602, 0.3247, 0.2783, 0.2389, 0.2082, 0.1661, 0.1497, 0.1426, 0.158, 0.1938, 0.1426, 0.1508, 0.2018, 0.1555, 0.1665, 0.261, 0.3989, 0.4696, 0.7871, 0.9433, 0.8074, 0.4498, 0.2649, 0.2041, 0.1614, 0.151, 0.1407, 0.1298, 0.1227, 0.1216, 0.1244, 0.123, 0.1299, 0.1523, 0.1289, 0.1226, 0.1236, 0.1333]}, "raman_pvc": {"x": [100.8, 108.5, 116.2, 123.9, 131.7, 139.4, 147.1, 154.8, 162.5, 170.2, 177.9, 185.7, 193.4, 201.1, 208.8, 216.5, 224.2, 231.9, 239.6, 247.4, 255.1, 262.8, 270.5, 278.2, 285.9, 293.6, 301.4, 309.1, 316.8, 324.5, 332.2, 339.9, 347.6, 355.4, 363.1, 370.8, 378.5, 386.2, 393.9, 401.6, 409.4, 417.1, 424.8, 432.5, 440.2, 447.9, 455.6, 463.4, 471.1, 478.8, 486.5, 494.2, 501.9, 509.6, 517.3, 525.1, 532.8, 540.5, 548.2, 555.9, 563.6, 571.3, 579.1, 586.8, 594.5, 602.2, 609.9, 617.6, 625.3, 633.1, 640.8, 648.5, 656.2, 663.9, 671.6, 679.3, 687.1, 694.8, 702.5, 710.2, 717.9, 725.6, 733.3, 741.1, 748.8, 756.5, 764.2, 771.9, 779.6, 787.3, 795.0, 802.8, 810.5, 818.2, 825.9, 833.6, 841.3, 849.0, 856.8, 864.5, 872.2, 879.9, 887.6, 895.3, 903.0, 910.8, 918.5, 926.2, 933.9, 941.6, 949.3, 957.0, 964.8, 972.5, 980.2, 987.9, 995.6, 1003.3, 1011.0, 1018.8, 1026.5, 1034.2, 1041.9, 1049.6, 1057.3, 1065.0, 1072.7, 1080.5, 1088.2, 1095.9, 1103.6, 1111.3, 1119.0, 1126.7, 1134.5, 1142.2, 1149.9, 1157.6, 1165.3, 1173.0, 1180.7, 1188.5, 1196.2, 1203.9, 1211.6, 1219.3, 1227.0, 1234.7, 1242.5, 1250.2, 1257.9, 1265.6, 1273.3, 1281.0, 1288.7, 1296.4, 1304.2, 1311.9, 1319.6, 1327.3, 1335.0, 1342.7, 1350.4, 1358.2, 1365.9, 1373.6, 1381.3, 1389.0, 1396.7, 1404.4, 1412.2, 1419.9, 1427.6, 1435.3, 1443.0, 1450.7, 1458.4, 1466.2, 1473.9, 1481.6, 1489.3, 1497.0, 1504.7, 1512.4, 1520.2, 1527.9, 1535.6, 1543.3, 1551.0, 1558.7, 1566.4, 1574.1, 1581.9, 1589.6, 1597.3, 1605.0, 1612.7, 1620.4, 1628.1, 1635.9, 1643.6, 1651.3, 1659.0, 1666.7, 1674.4, 1682.1, 1689.9, 1697.6, 1705.3, 1713.0, 1720.7, 1728.4, 1736.1, 1743.9, 1751.6, 1759.3, 1767.0, 1774.7, 1782.4, 1790.1, 1797.8, 1805.6, 1813.3, 1821.0, 1828.7, 1836.4, 1844.1, 1851.8, 1859.6, 1867.3, 1875.0, 1882.7, 1890.4, 1898.1, 1905.8, 1913.6, 1921.3, 1929.0, 1936.7, 1944.4, 1952.1, 1959.8, 1967.6, 1975.3, 1983.0, 1990.7, 1998.4, 2006.1, 2013.8, 2021.6, 2029.3, 2037.0, 2044.7, 2052.4, 2060.1, 2067.8, 2075.5, 2083.3, 2091.0, 2098.7, 2106.4, 2114.1, 2121.8, 2129.5, 2137.3, 2145.0, 2152.7, 2160.4, 2168.1, 2175.8, 2183.5, 2191.3, 2199.0, 2206.7, 2214.4, 2222.1, 2229.8, 2237.5, 2245.3, 2253.0, 2260.7, 2268.4, 2276.1, 2283.8, 2291.5, 2299.3, 2307.0, 2314.7, 2322.4, 2330.1, 2337.8, 2345.5, 2353.2, 2361.0, 2368.7, 2376.4, 2384.1, 2391.8, 2399.5, 2407.2, 2415.0, 2422.7, 2430.4, 2438.1, 2445.8, 2453.5, 2461.2, 2469.0, 2476.7, 2484.4, 2492.1, 2499.8, 2507.5, 2515.2, 2523.0, 2530.7, 2538.4, 2546.1, 2553.8, 2561.5, 2569.2, 2577.0, 2584.7, 2592.4, 2600.1, 2607.8, 2615.5, 2623.2, 2630.9, 2638.7, 2646.4, 2654.1, 2661.8, 2669.5, 2677.2, 2684.9, 2692.7, 2700.4, 2708.1, 2715.8, 2723.5, 2731.2, 2738.9, 2746.7, 2754.4, 2762.1, 2769.8, 2777.5, 2785.2, 2792.9, 2800.7, 2808.4, 2816.1, 2823.8, 2831.5, 2839.2, 2846.9, 2854.7, 2862.4, 2870.1, 2877.8, 2885.5, 2893.2, 2900.9, 2908.6, 2916.4, 2924.1, 2931.8, 2939.5, 2947.2, 2954.9, 2962.6, 2970.4, 2978.1, 2985.8, 2993.5, 3001.2, 3008.9, 3016.6, 3024.4, 3032.1, 3039.8, 3047.5, 3055.2, 3062.9, 3070.6, 3078.4, 3086.1, 3093.8, 3101.5, 3109.2, 3116.9, 3124.6, 3132.3, 3140.1, 3147.8, 3155.5, 3163.2, 3170.9, 3178.6, 3186.3, 3194.1], "y": [0.2292, 0.1752, 0.1294, 0.1004, 0.0851, 0.0698, 0.0614, 0.059, 0.0489, 0.0319, 0.0195, 0.0159, 0.0075, 0.0085, 0.0037, 0.0022, 0.0063, 0.0, 0.002, 0.0032, 0.0056, 0.003, 0.007, 0.008, 0.0146, 0.0216, 0.0315, 0.038, 0.043, 0.05, 0.0503, 0.0548, 0.069, 0.0929, 0.0974, 0.076, 0.0527, 0.0447, 0.0312, 0.0278, 0.0196, 0.0221, 0.0209, 0.0233, 0.0165, 0.0143, 0.017, 0.0155, 0.0147, 0.019, 0.0193, 0.0211, 0.0188, 0.0219, 0.024, 0.0243, 0.0294, 0.041, 0.0516, 0.0356, 0.0354, 0.0345, 0.0357, 0.0406, 0.0586, 0.1009, 0.1611, 0.1933, 0.2095, 0.2685, 0.2585, 0.1918, 0.1247, 0.0944, 0.1131, 0.1536, 0.1996, 0.213, 0.1852, 0.1327, 0.084, 0.056, 0.0431, 0.0298, 0.0264, 0.0238, 0.0247, 0.0191, 0.0183, 0.0205, 0.0231, 0.0207, 0.0285, 0.0245, 0.032, 0.0327, 0.0326, 0.0302, 0.0307, 0.0272, 0.0297, 0.0247, 0.0235, 0.0218, 0.0238, 0.0249, 0.0273, 0.0203, 0.0243, 0.0209, 0.0226, 0.0303, 0.0335, 0.0313, 0.0273, 0.0276, 0.0492, 0.0715, 0.0297, 0.0261, 0.0336, 0.0331, 0.0186, 0.0168, 0.0214, 0.0232, 0.0295, 0.0381, 0.0417, 0.0464, 0.0491, 0.0452, 0.0576, 0.0412, 0.0146, 0.0082, 0.0057, 0.0107, 0.0334, 0.0383, 0.0454, 0.0374, 0.0347, 0.0241, 0.0159, 0.0058, 0.0094, 0.0108, 0.0171, 0.0201, 0.0293, 0.0275, 0.0346, 0.026, 0.0319, 0.0536, 0.0694, 0.0643, 0.0665, 0.0667, 0.0625, 0.0403, 0.0256, 0.0246, 0.0174, 0.0125, 0.0119, 0.0067, 0.0016, 0.007, 0.0283, 0.0642, 0.1281, 0.1323, 0.0739, 0.0385, 0.0234, 0.0173, 0.0148, 0.0149, 0.0206, 0.0248, 0.0297, 0.0328, 0.0237, 0.0209, 0.0206, 0.018, 0.0128, 0.0208, 0.0178, 0.0194, 0.0265, 0.0224, 0.0298, 0.0369, 0.0252, 0.0214, 0.0293, 0.038, 0.0432, 0.0501, 0.0563, 0.0887, 0.0479, 0.0336, 0.0286, 0.0285, 0.0251, 0.0251, 0.03, 0.0274, 0.0327, 0.0328, 0.0271, 0.0275, 0.0284, 0.0288, 0.0274, 0.0263, 0.0285, 0.0288, 0.0261, 0.0268, 0.0287, 0.0293, 0.0303, 0.0283, 0.0278, 0.0262, 0.0299, 0.0279, 0.0326, 0.0258, 0.0312, 0.0295, 0.0249, 0.0255, 0.0261, 0.0311, 0.0291, 0.0312, 0.0286, 0.0271, 0.0293, 0.0297, 0.0293, 0.0244, 0.0284, 0.029, 0.0301, 0.0275, 0.028, 0.0277, 0.0306, 0.0259, 0.0273, 0.0311, 0.0264, 0.0256, 0.0287, 0.0273, 0.0289, 0.0266, 0.0231, 0.0262, 0.0273, 0.0289, 0.026, 0.0309, 0.0254, 0.0278, 0.0284, 0.0255, 0.0315, 0.0296, 0.0297, 0.0345, 0.0323, 0.0317, 0.0344, 0.0294, 0.0276, 0.0293, 0.0302, 0.0276, 0.0229, 0.0324, 0.029, 0.0297, 0.0317, 0.0279, 0.0226, 0.0309, 0.0285, 0.0303, 0.0291, 0.0293, 0.0293, 0.0291, 0.0341, 0.0278, 0.0245, 0.031, 0.0252, 0.0249, 0.0241, 0.0321, 0.0257, 0.0276, 0.0265, 0.0286, 0.024, 0.0269, 0.0258, 0.0246, 0.0228, 0.0249, 0.0262, 0.0239, 0.0279, 0.0273, 0.0273, 0.0285, 0.0303, 0.0319, 0.0351, 0.0308, 0.0312, 0.0313, 0.0323, 0.0318, 0.033, 0.0354, 0.0383, 0.036, 0.0361, 0.0428, 0.0455, 0.0412, 0.0502, 0.05, 0.0517, 0.0456, 0.0391, 0.0385, 0.0327, 0.036, 0.0316, 0.0326, 0.0381, 0.0464, 0.0643, 0.07, 0.0924, 0.1452, 0.1825, 0.1809, 0.1597, 0.1582, 0.1796, 0.2003, 0.2782, 0.5349, 0.9253, 1.0, 0.7654, 0.6661, 0.638, 0.5339, 0.4065, 0.3461, 0.3751, 0.3139, 0.2239, 0.164, 0.1336, 0.1075, 0.0878, 0.0749, 0.0717, 0.0657, 0.0719, 0.083, 0.0776, 0.0589, 0.0448, 0.0369, 0.0282, 0.0302, 0.0291, 0.0313, 0.0333, 0.0291, 0.0259, 0.0291, 0.0294, 0.027, 0.0285, 0.0267, 0.0271, 0.0307]}, "ftir_pe": {"x": [400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 1032, 1040, 1048, 1056, 1064, 1072, 1080, 1088, 1096, 1104, 1112, 1120, 1128, 1136, 1144, 1152, 1160, 1168, 1176, 1184, 1192, 1200, 1208, 1216, 1224, 1232, 1240, 1248, 1256, 1264, 1272, 1280, 1288, 1296, 1304, 1312, 1320, 1328, 1336, 1344, 1352, 1360, 1368, 1376, 1384, 1392, 1400, 1408, 1416, 1424, 1432, 1440, 1448, 1456, 1464, 1472, 1480, 1488, 1496, 1504, 1512, 1520, 1528, 1536, 1544, 1552, 1560, 1568, 1576, 1584, 1592, 1600, 1608, 1616, 1624, 1632, 1640, 1648, 1656, 1664, 1672, 1680, 1688, 1696, 1704, 1712, 1720, 1728, 1736, 1744, 1752, 1760, 1768, 1776, 1784, 1792, 1800, 1808, 1816, 1824, 1832, 1840, 1848, 1856, 1864, 1872, 1880, 1888, 1896, 1904, 1912, 1920, 1928, 1936, 1944, 1952, 1960, 1968, 1976, 1984, 1992, 2000, 2008, 2016, 2024, 2032, 2040, 2048, 2056, 2064, 2072, 2080, 2088, 2096, 2104, 2112, 2120, 2128, 2136, 2144, 2152, 2160, 2168, 2176, 2184, 2192, 2200, 2208, 2216, 2224, 2232, 2240, 2248, 2256, 2264, 2272, 2280, 2288, 2296, 2304, 2312, 2320, 2328, 2336, 2344, 2352, 2360, 2368, 2376, 2384, 2392, 2400, 2408, 2416, 2424, 2432, 2440, 2448, 2456, 2464, 2472, 2480, 2488, 2496, 2504, 2512, 2520, 2528, 2536, 2544, 2552, 2560, 2568, 2576, 2584, 2592, 2600, 2608, 2616, 2624, 2632, 2640, 2648, 2656, 2664, 2672, 2680, 2688, 2696, 2704, 2712, 2720, 2728, 2736, 2744, 2752, 2760, 2768, 2776, 2784, 2792, 2800, 2808, 2816, 2824, 2832, 2840, 2848, 2856, 2864, 2872, 2880, 2888, 2896, 2904, 2912, 2920, 2928, 2936, 2944, 2952, 2960, 2968, 2976, 2984, 2992, 3000, 3008, 3016, 3024, 3032, 3040, 3048, 3056, 3064, 3072, 3080, 3088, 3096, 3104, 3112, 3120, 3128, 3136, 3144, 3152, 3160, 3168, 3176, 3184, 3192, 3200, 3208, 3216, 3224, 3232, 3240, 3248, 3256, 3264, 3272, 3280, 3288, 3296, 3304, 3312, 3320, 3328, 3336, 3344, 3352, 3360, 3368, 3376, 3384, 3392, 3400, 3408, 3416, 3424, 3432, 3440, 3448, 3456, 3464, 3472, 3480, 3488, 3496, 3504, 3512, 3520, 3528, 3536, 3544, 3552, 3560, 3568, 3576, 3584, 3592, 3600, 3608, 3616, 3624, 3632, 3640, 3648, 3656, 3664, 3672, 3680, 3688, 3696, 3704, 3712, 3720, 3728, 3736, 3744, 3752, 3760, 3768, 3776, 3784, 3792, 3800, 3808, 3816, 3824, 3832, 3840, 3848, 3856, 3864, 3872, 3880, 3888, 3896, 3904, 3912, 3920, 3928, 3936, 3944, 3952, 3960, 3968, 3976, 3984, 3992, 4000], "y": [0.9995, 0.9995, 0.9994, 0.9994, 0.9994, 0.9994, 0.9993, 0.9993, 0.9993, 0.9992, 0.9992, 0.9991, 0.9991, 0.999, 0.9989, 0.9989, 0.9988, 0.9987, 0.9986, 0.9985, 0.9983, 0.9981, 0.998, 0.9977, 0.9975, 0.9972, 0.9968, 0.9963, 0.9957, 0.995, 0.994, 0.9927, 0.991, 0.9885, 0.9848, 0.9789, 0.9687, 0.9491, 0.9039, 0.7753, 0.5327, 0.5424, 0.7378, 0.8909, 0.9442, 0.9664, 0.9776, 0.984, 0.9879, 0.9906, 0.9924, 0.9938, 0.9948, 0.9955, 0.9961, 0.9966, 0.997, 0.9973, 0.9976, 0.9978, 0.998, 0.9981, 0.9983, 0.9984, 0.9985, 0.9986, 0.9987, 0.9987, 0.9988, 0.9988, 0.9989, 0.9989, 0.9989, 0.999, 0.999, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.999, 0.999, 0.999, 0.999, 0.999, 0.9989, 0.9989, 0.9989, 0.9988, 0.9988, 0.9987, 0.9987, 0.9986, 0.9986, 0.9985, 0.9984, 0.9983, 0.9982, 0.9981, 0.998, 0.9978, 0.9977, 0.9975, 0.9973, 0.9971, 0.9968, 0.9964, 0.9961, 0.9956, 0.995, 0.9944, 0.9936, 0.9925, 0.9912, 0.9895, 0.9873, 0.9842, 0.9799, 0.9735, 0.9634, 0.9465, 0.9154, 0.8522, 0.7232, 0.5784, 0.5898, 0.7435, 0.8629, 0.9206, 0.9492, 0.965, 0.9744, 0.9805, 0.9847, 0.9876, 0.9898, 0.9914, 0.9927, 0.9937, 0.9945, 0.9951, 0.9957, 0.9961, 0.9965, 0.9968, 0.9971, 0.9973, 0.9975, 0.9977, 0.9979, 0.998, 0.9981, 0.9982, 0.9983, 0.9984, 0.9985, 0.9986, 0.9986, 0.9987, 0.9988, 0.9988, 0.9988, 0.9989, 0.9989, 0.999, 0.999, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.999, 0.999, 0.999, 0.999, 0.999, 0.9989, 0.9989, 0.9989, 0.9989, 0.9988, 0.9988, 0.9988, 0.9988, 0.9987, 0.9987, 0.9987, 0.9986, 0.9986, 0.9985, 0.9985, 0.9985, 0.9984, 0.9984, 0.9983, 0.9983, 0.9982, 0.9981, 0.9981, 0.998, 0.9979, 0.9978, 0.9978, 0.9977, 0.9976, 0.9975, 0.9974, 0.9973, 0.9971, 0.997, 0.9969, 0.9967, 0.9966, 0.9964, 0.9962, 0.996, 0.9958, 0.9955, 0.9953, 0.995, 0.9947, 0.9943, 0.9939, 0.9935, 0.993, 0.9925, 0.9919, 0.9912, 0.9904, 0.9896, 0.9885, 0.9874, 0.986, 0.9844, 0.9824, 0.9801, 0.9773, 0.9737, 0.9692, 0.9633, 0.9556, 0.9448, 0.9294, 0.9062, 0.8692, 0.8062, 0.6958, 0.5246, 0.4062, 0.5046, 0.653, 0.7338, 0.754, 0.7241, 0.6375, 0.4852, 0.3352, 0.3706, 0.5516, 0.7071, 0.8043, 0.8628, 0.8993, 0.9231, 0.9394, 0.951, 0.9596, 0.966, 0.971, 0.975, 0.9782, 0.9808, 0.983, 0.9848, 0.9863, 0.9876, 0.9887, 0.9897, 0.9906, 0.9913, 0.992, 0.9926, 0.9931, 0.9936, 0.994, 0.9944, 0.9947, 0.995, 0.9953, 0.9956, 0.9958, 0.996, 0.9963, 0.9964, 0.9966, 0.9968, 0.9969, 0.9971, 0.9972, 0.9973, 0.9974, 0.9975, 0.9976, 0.9977, 0.9978, 0.9979, 0.998, 0.9981, 0.9981, 0.9982, 0.9983, 0.9983, 0.9984, 0.9984, 0.9985, 0.9985, 0.9986, 0.9986, 0.9987, 0.9987, 0.9987, 0.9988, 0.9988, 0.9988, 0.9989, 0.9989, 0.9989, 0.999, 0.999, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9991, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997]}, "ftir_pp": {"x": [400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 1032, 1040, 1048, 1056, 1064, 1072, 1080, 1088, 1096, 1104, 1112, 1120, 1128, 1136, 1144, 1152, 1160, 1168, 1176, 1184, 1192, 1200, 1208, 1216, 1224, 1232, 1240, 1248, 1256, 1264, 1272, 1280, 1288, 1296, 1304, 1312, 1320, 1328, 1336, 1344, 1352, 1360, 1368, 1376, 1384, 1392, 1400, 1408, 1416, 1424, 1432, 1440, 1448, 1456, 1464, 1472, 1480, 1488, 1496, 1504, 1512, 1520, 1528, 1536, 1544, 1552, 1560, 1568, 1576, 1584, 1592, 1600, 1608, 1616, 1624, 1632, 1640, 1648, 1656, 1664, 1672, 1680, 1688, 1696, 1704, 1712, 1720, 1728, 1736, 1744, 1752, 1760, 1768, 1776, 1784, 1792, 1800, 1808, 1816, 1824, 1832, 1840, 1848, 1856, 1864, 1872, 1880, 1888, 1896, 1904, 1912, 1920, 1928, 1936, 1944, 1952, 1960, 1968, 1976, 1984, 1992, 2000, 2008, 2016, 2024, 2032, 2040, 2048, 2056, 2064, 2072, 2080, 2088, 2096, 2104, 2112, 2120, 2128, 2136, 2144, 2152, 2160, 2168, 2176, 2184, 2192, 2200, 2208, 2216, 2224, 2232, 2240, 2248, 2256, 2264, 2272, 2280, 2288, 2296, 2304, 2312, 2320, 2328, 2336, 2344, 2352, 2360, 2368, 2376, 2384, 2392, 2400, 2408, 2416, 2424, 2432, 2440, 2448, 2456, 2464, 2472, 2480, 2488, 2496, 2504, 2512, 2520, 2528, 2536, 2544, 2552, 2560, 2568, 2576, 2584, 2592, 2600, 2608, 2616, 2624, 2632, 2640, 2648, 2656, 2664, 2672, 2680, 2688, 2696, 2704, 2712, 2720, 2728, 2736, 2744, 2752, 2760, 2768, 2776, 2784, 2792, 2800, 2808, 2816, 2824, 2832, 2840, 2848, 2856, 2864, 2872, 2880, 2888, 2896, 2904, 2912, 2920, 2928, 2936, 2944, 2952, 2960, 2968, 2976, 2984, 2992, 3000, 3008, 3016, 3024, 3032, 3040, 3048, 3056, 3064, 3072, 3080, 3088, 3096, 3104, 3112, 3120, 3128, 3136, 3144, 3152, 3160, 3168, 3176, 3184, 3192, 3200, 3208, 3216, 3224, 3232, 3240, 3248, 3256, 3264, 3272, 3280, 3288, 3296, 3304, 3312, 3320, 3328, 3336, 3344, 3352, 3360, 3368, 3376, 3384, 3392, 3400, 3408, 3416, 3424, 3432, 3440, 3448, 3456, 3464, 3472, 3480, 3488, 3496, 3504, 3512, 3520, 3528, 3536, 3544, 3552, 3560, 3568, 3576, 3584, 3592, 3600, 3608, 3616, 3624, 3632, 3640, 3648, 3656, 3664, 3672, 3680, 3688, 3696, 3704, 3712, 3720, 3728, 3736, 3744, 3752, 3760, 3768, 3776, 3784, 3792, 3800, 3808, 3816, 3824, 3832, 3840, 3848, 3856, 3864, 3872, 3880, 3888, 3896, 3904, 3912, 3920, 3928, 3936, 3944, 3952, 3960, 3968, 3976, 3984, 3992, 4000], "y": [0.9996, 0.9996, 0.9996, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9993, 0.9993, 0.9993, 0.9993, 0.9992, 0.9992, 0.9992, 0.9992, 0.9991, 0.9991, 0.9991, 0.999, 0.999, 0.9989, 0.9989, 0.9988, 0.9987, 0.9987, 0.9986, 0.9985, 0.9984, 0.9983, 0.9981, 0.998, 0.9978, 0.9976, 0.9973, 0.997, 0.9966, 0.996, 0.9953, 0.9943, 0.9928, 0.9904, 0.9861, 0.9778, 0.9576, 0.8974, 0.7971, 0.8968, 0.9565, 0.9761, 0.9838, 0.9873, 0.9888, 0.9892, 0.9889, 0.9878, 0.9858, 0.9824, 0.9768, 0.9668, 0.9465, 0.8967, 0.7505, 0.6274, 0.775, 0.7159, 0.6379, 0.8425, 0.9274, 0.9582, 0.9721, 0.9795, 0.9837, 0.9863, 0.9879, 0.9889, 0.9893, 0.9892, 0.9886, 0.9875, 0.9855, 0.9822, 0.9765, 0.9661, 0.9448, 0.8949, 0.7757, 0.7078, 0.8462, 0.9254, 0.9574, 0.9721, 0.9797, 0.984, 0.9866, 0.9883, 0.9892, 0.9898, 0.99, 0.9899, 0.9895, 0.9889, 0.9879, 0.9865, 0.9845, 0.9818, 0.9778, 0.9719, 0.9625, 0.9465, 0.916, 0.8494, 0.6856, 0.443, 0.6159, 0.8122, 0.8888, 0.9166, 0.9219, 0.9101, 0.8746, 0.7905, 0.6155, 0.494, 0.6721, 0.827, 0.9005, 0.9365, 0.956, 0.9677, 0.9752, 0.9802, 0.9838, 0.9865, 0.9885, 0.9901, 0.9914, 0.9924, 0.9932, 0.9939, 0.9945, 0.995, 0.9954, 0.9958, 0.9961, 0.9964, 0.9966, 0.9968, 0.997, 0.9972, 0.9974, 0.9975, 0.9976, 0.9978, 0.9979, 0.998, 0.9981, 0.9981, 0.9982, 0.9983, 0.9983, 0.9984, 0.9985, 0.9985, 0.9986, 0.9986, 0.9986, 0.9987, 0.9987, 0.9987, 0.9988, 0.9988, 0.9988, 0.9989, 0.9989, 0.9989, 0.9989, 0.9989, 0.9989, 0.999, 0.999, 0.999, 0.999, 0.999, 0.999, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.999, 0.999, 0.999, 0.999, 0.999, 0.999, 0.999, 0.999, 0.999, 0.999, 0.9989, 0.9989, 0.9989, 0.9989, 0.9989, 0.9989, 0.9988, 0.9988, 0.9988, 0.9988, 0.9987, 0.9987, 0.9987, 0.9987, 0.9986, 0.9986, 0.9986, 0.9985, 0.9985, 0.9985, 0.9984, 0.9984, 0.9983, 0.9983, 0.9982, 0.9982, 0.9981, 0.9981, 0.998, 0.9979, 0.9979, 0.9978, 0.9977, 0.9976, 0.9975, 0.9974, 0.9973, 0.9972, 0.9971, 0.997, 0.9968, 0.9967, 0.9965, 0.9964, 0.9962, 0.996, 0.9957, 0.9955, 0.9952, 0.995, 0.9946, 0.9943, 0.9939, 0.9935, 0.993, 0.9925, 0.9919, 0.9912, 0.9904, 0.9895, 0.9885, 0.9873, 0.9858, 0.9841, 0.9821, 0.9796, 0.9764, 0.9724, 0.967, 0.9598, 0.9495, 0.9341, 0.9091, 0.8656, 0.7853, 0.6627, 0.6131, 0.6629, 0.6473, 0.5551, 0.5591, 0.6654, 0.7136, 0.6837, 0.5723, 0.4039, 0.3591, 0.4804, 0.5534, 0.5336, 0.5464, 0.6696, 0.786, 0.8573, 0.8991, 0.9248, 0.9416, 0.9532, 0.9616, 0.9678, 0.9726, 0.9763, 0.9793, 0.9818, 0.9838, 0.9855, 0.9869, 0.9882, 0.9892, 0.9901, 0.991, 0.9917, 0.9923, 0.9928, 0.9933, 0.9938, 0.9942, 0.9945, 0.9949, 0.9952, 0.9954, 0.9957, 0.9959, 0.9961, 0.9963, 0.9965, 0.9967, 0.9968, 0.997, 0.9971, 0.9972, 0.9974, 0.9975, 0.9976, 0.9977, 0.9978, 0.9978, 0.9979, 0.998, 0.9981, 0.9981, 0.9982, 0.9983, 0.9983, 0.9984, 0.9984, 0.9985, 0.9985, 0.9986, 0.9986, 0.9987, 0.9987, 0.9987, 0.9988, 0.9988, 0.9988, 0.9989, 0.9989, 0.9989, 0.999, 0.999, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997]}, "ftir_pet": {"x": [400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 1032, 1040, 1048, 1056, 1064, 1072, 1080, 1088, 1096, 1104, 1112, 1120, 1128, 1136, 1144, 1152, 1160, 1168, 1176, 1184, 1192, 1200, 1208, 1216, 1224, 1232, 1240, 1248, 1256, 1264, 1272, 1280, 1288, 1296, 1304, 1312, 1320, 1328, 1336, 1344, 1352, 1360, 1368, 1376, 1384, 1392, 1400, 1408, 1416, 1424, 1432, 1440, 1448, 1456, 1464, 1472, 1480, 1488, 1496, 1504, 1512, 1520, 1528, 1536, 1544, 1552, 1560, 1568, 1576, 1584, 1592, 1600, 1608, 1616, 1624, 1632, 1640, 1648, 1656, 1664, 1672, 1680, 1688, 1696, 1704, 1712, 1720, 1728, 1736, 1744, 1752, 1760, 1768, 1776, 1784, 1792, 1800, 1808, 1816, 1824, 1832, 1840, 1848, 1856, 1864, 1872, 1880, 1888, 1896, 1904, 1912, 1920, 1928, 1936, 1944, 1952, 1960, 1968, 1976, 1984, 1992, 2000, 2008, 2016, 2024, 2032, 2040, 2048, 2056, 2064, 2072, 2080, 2088, 2096, 2104, 2112, 2120, 2128, 2136, 2144, 2152, 2160, 2168, 2176, 2184, 2192, 2200, 2208, 2216, 2224, 2232, 2240, 2248, 2256, 2264, 2272, 2280, 2288, 2296, 2304, 2312, 2320, 2328, 2336, 2344, 2352, 2360, 2368, 2376, 2384, 2392, 2400, 2408, 2416, 2424, 2432, 2440, 2448, 2456, 2464, 2472, 2480, 2488, 2496, 2504, 2512, 2520, 2528, 2536, 2544, 2552, 2560, 2568, 2576, 2584, 2592, 2600, 2608, 2616, 2624, 2632, 2640, 2648, 2656, 2664, 2672, 2680, 2688, 2696, 2704, 2712, 2720, 2728, 2736, 2744, 2752, 2760, 2768, 2776, 2784, 2792, 2800, 2808, 2816, 2824, 2832, 2840, 2848, 2856, 2864, 2872, 2880, 2888, 2896, 2904, 2912, 2920, 2928, 2936, 2944, 2952, 2960, 2968, 2976, 2984, 2992, 3000, 3008, 3016, 3024, 3032, 3040, 3048, 3056, 3064, 3072, 3080, 3088, 3096, 3104, 3112, 3120, 3128, 3136, 3144, 3152, 3160, 3168, 3176, 3184, 3192, 3200, 3208, 3216, 3224, 3232, 3240, 3248, 3256, 3264, 3272, 3280, 3288, 3296, 3304, 3312, 3320, 3328, 3336, 3344, 3352, 3360, 3368, 3376, 3384, 3392, 3400, 3408, 3416, 3424, 3432, 3440, 3448, 3456, 3464, 3472, 3480, 3488, 3496, 3504, 3512, 3520, 3528, 3536, 3544, 3552, 3560, 3568, 3576, 3584, 3592, 3600, 3608, 3616, 3624, 3632, 3640, 3648, 3656, 3664, 3672, 3680, 3688, 3696, 3704, 3712, 3720, 3728, 3736, 3744, 3752, 3760, 3768, 3776, 3784, 3792, 3800, 3808, 3816, 3824, 3832, 3840, 3848, 3856, 3864, 3872, 3880, 3888, 3896, 3904, 3912, 3920, 3928, 3936, 3944, 3952, 3960, 3968, 3976, 3984, 3992, 4000], "y": [0.9991, 0.999, 0.999, 0.999, 0.9989, 0.9989, 0.9989, 0.9988, 0.9988, 0.9987, 0.9987, 0.9986, 0.9986, 0.9985, 0.9984, 0.9984, 0.9983, 0.9982, 0.9981, 0.998, 0.9978, 0.9977, 0.9975, 0.9973, 0.9971, 0.9968, 0.9965, 0.9961, 0.9957, 0.9951, 0.9943, 0.9933, 0.992, 0.9901, 0.9874, 0.983, 0.9757, 0.9616, 0.93, 0.842, 0.603, 0.6738, 0.8736, 0.9399, 0.9649, 0.9763, 0.9823, 0.9857, 0.9876, 0.9886, 0.989, 0.9887, 0.9878, 0.9861, 0.9829, 0.9769, 0.9646, 0.9345, 0.8444, 0.6943, 0.8441, 0.9338, 0.9634, 0.9753, 0.9809, 0.9836, 0.9848, 0.9851, 0.9847, 0.9835, 0.9815, 0.9783, 0.9732, 0.9647, 0.9488, 0.9152, 0.834, 0.6929, 0.7572, 0.8713, 0.9137, 0.9233, 0.9142, 0.8841, 0.8147, 0.6612, 0.4518, 0.5474, 0.7546, 0.8611, 0.9108, 0.9359, 0.9494, 0.9568, 0.9605, 0.9615, 0.9601, 0.9564, 0.9495, 0.938, 0.919, 0.8862, 0.8261, 0.7096, 0.5016, 0.3416, 0.5015, 0.7093, 0.8255, 0.8852, 0.9172, 0.935, 0.9443, 0.947, 0.9424, 0.9247, 0.875, 0.7637, 0.7646, 0.8776, 0.929, 0.948, 0.9527, 0.9468, 0.924, 0.8607, 0.7472, 0.8051, 0.9055, 0.948, 0.9665, 0.9758, 0.9811, 0.9844, 0.9866, 0.9881, 0.9892, 0.9899, 0.9905, 0.9908, 0.9911, 0.9912, 0.9912, 0.9911, 0.9908, 0.9905, 0.9901, 0.9895, 0.9887, 0.9877, 0.9865, 0.985, 0.983, 0.9805, 0.9772, 0.9728, 0.9667, 0.9582, 0.9457, 0.9265, 0.895, 0.8395, 0.7346, 0.5349, 0.2816, 0.3335, 0.596, 0.768, 0.857, 0.9049, 0.9327, 0.95, 0.9614, 0.9693, 0.975, 0.9792, 0.9824, 0.9849, 0.9869, 0.9885, 0.9899, 0.991, 0.9919, 0.9927, 0.9933, 0.9939, 0.9944, 0.9948, 0.9952, 0.9955, 0.9959, 0.9961, 0.9964, 0.9966, 0.9968, 0.997, 0.9971, 0.9973, 0.9974, 0.9975, 0.9976, 0.9978, 0.9979, 0.9979, 0.998, 0.9981, 0.9982, 0.9983, 0.9983, 0.9984, 0.9984, 0.9985, 0.9985, 0.9986, 0.9986, 0.9987, 0.9987, 0.9988, 0.9988, 0.9988, 0.9989, 0.9989, 0.9989, 0.9989, 0.999, 0.999, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9992, 0.9992, 0.9992, 0.9992, 0.9991, 0.9991, 0.9991, 0.999, 0.999, 0.9989, 0.9989, 0.9988, 0.9987, 0.9986, 0.9985, 0.9984, 0.9982, 0.9981, 0.9979, 0.9976, 0.9973, 0.997, 0.9966, 0.996, 0.9953, 0.9944, 0.9932, 0.9916, 0.9892, 0.9857, 0.9801, 0.9709, 0.9541, 0.9217, 0.8641, 0.8198, 0.8641, 0.9218, 0.9541, 0.9709, 0.9802, 0.9857, 0.9892, 0.9916, 0.9933, 0.9945, 0.9954, 0.9961, 0.9966, 0.9971, 0.9974, 0.9977, 0.9979, 0.9981, 0.9983, 0.9985, 0.9986, 0.9987, 0.9988, 0.9989, 0.999, 0.999, 0.9991, 0.9991, 0.9992, 0.9992, 0.9993, 0.9993, 0.9994, 0.9994, 0.9994, 0.9994, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999]}, "ftir_ps": {"x": [400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 1032, 1040, 1048, 1056, 1064, 1072, 1080, 1088, 1096, 1104, 1112, 1120, 1128, 1136, 1144, 1152, 1160, 1168, 1176, 1184, 1192, 1200, 1208, 1216, 1224, 1232, 1240, 1248, 1256, 1264, 1272, 1280, 1288, 1296, 1304, 1312, 1320, 1328, 1336, 1344, 1352, 1360, 1368, 1376, 1384, 1392, 1400, 1408, 1416, 1424, 1432, 1440, 1448, 1456, 1464, 1472, 1480, 1488, 1496, 1504, 1512, 1520, 1528, 1536, 1544, 1552, 1560, 1568, 1576, 1584, 1592, 1600, 1608, 1616, 1624, 1632, 1640, 1648, 1656, 1664, 1672, 1680, 1688, 1696, 1704, 1712, 1720, 1728, 1736, 1744, 1752, 1760, 1768, 1776, 1784, 1792, 1800, 1808, 1816, 1824, 1832, 1840, 1848, 1856, 1864, 1872, 1880, 1888, 1896, 1904, 1912, 1920, 1928, 1936, 1944, 1952, 1960, 1968, 1976, 1984, 1992, 2000, 2008, 2016, 2024, 2032, 2040, 2048, 2056, 2064, 2072, 2080, 2088, 2096, 2104, 2112, 2120, 2128, 2136, 2144, 2152, 2160, 2168, 2176, 2184, 2192, 2200, 2208, 2216, 2224, 2232, 2240, 2248, 2256, 2264, 2272, 2280, 2288, 2296, 2304, 2312, 2320, 2328, 2336, 2344, 2352, 2360, 2368, 2376, 2384, 2392, 2400, 2408, 2416, 2424, 2432, 2440, 2448, 2456, 2464, 2472, 2480, 2488, 2496, 2504, 2512, 2520, 2528, 2536, 2544, 2552, 2560, 2568, 2576, 2584, 2592, 2600, 2608, 2616, 2624, 2632, 2640, 2648, 2656, 2664, 2672, 2680, 2688, 2696, 2704, 2712, 2720, 2728, 2736, 2744, 2752, 2760, 2768, 2776, 2784, 2792, 2800, 2808, 2816, 2824, 2832, 2840, 2848, 2856, 2864, 2872, 2880, 2888, 2896, 2904, 2912, 2920, 2928, 2936, 2944, 2952, 2960, 2968, 2976, 2984, 2992, 3000, 3008, 3016, 3024, 3032, 3040, 3048, 3056, 3064, 3072, 3080, 3088, 3096, 3104, 3112, 3120, 3128, 3136, 3144, 3152, 3160, 3168, 3176, 3184, 3192, 3200, 3208, 3216, 3224, 3232, 3240, 3248, 3256, 3264, 3272, 3280, 3288, 3296, 3304, 3312, 3320, 3328, 3336, 3344, 3352, 3360, 3368, 3376, 3384, 3392, 3400, 3408, 3416, 3424, 3432, 3440, 3448, 3456, 3464, 3472, 3480, 3488, 3496, 3504, 3512, 3520, 3528, 3536, 3544, 3552, 3560, 3568, 3576, 3584, 3592, 3600, 3608, 3616, 3624, 3632, 3640, 3648, 3656, 3664, 3672, 3680, 3688, 3696, 3704, 3712, 3720, 3728, 3736, 3744, 3752, 3760, 3768, 3776, 3784, 3792, 3800, 3808, 3816, 3824, 3832, 3840, 3848, 3856, 3864, 3872, 3880, 3888, 3896, 3904, 3912, 3920, 3928, 3936, 3944, 3952, 3960, 3968, 3976, 3984, 3992, 4000], "y": [0.999, 0.999, 0.9989, 0.9989, 0.9988, 0.9987, 0.9987, 0.9986, 0.9985, 0.9984, 0.9983, 0.9982, 0.9981, 0.9979, 0.9978, 0.9976, 0.9974, 0.9972, 0.9969, 0.9966, 0.9963, 0.9958, 0.9953, 0.9948, 0.994, 0.9931, 0.992, 0.9905, 0.9886, 0.9859, 0.9821, 0.9765, 0.9674, 0.9515, 0.9198, 0.8438, 0.6173, 0.2403, 0.6124, 0.8327, 0.9, 0.9166, 0.901, 0.8282, 0.589, 0.5058, 0.8001, 0.9092, 0.9489, 0.9669, 0.9766, 0.9823, 0.9861, 0.9886, 0.9905, 0.9918, 0.9929, 0.9937, 0.9943, 0.9948, 0.9952, 0.9955, 0.9957, 0.9958, 0.9959, 0.9959, 0.9959, 0.9957, 0.9955, 0.9951, 0.9945, 0.9937, 0.9923, 0.9902, 0.9865, 0.9794, 0.9639, 0.9215, 0.7984, 0.7985, 0.9216, 0.964, 0.9796, 0.9868, 0.9905, 0.9927, 0.9942, 0.9951, 0.9958, 0.9962, 0.9966, 0.9969, 0.9971, 0.9972, 0.9973, 0.9974, 0.9975, 0.9975, 0.9975, 0.9975, 0.9975, 0.9974, 0.9974, 0.9973, 0.9973, 0.9972, 0.997, 0.9969, 0.9967, 0.9966, 0.9963, 0.9961, 0.9958, 0.9955, 0.9951, 0.9946, 0.9941, 0.9934, 0.9926, 0.9916, 0.9904, 0.9889, 0.9869, 0.9842, 0.9806, 0.9753, 0.9675, 0.9547, 0.9319, 0.8855, 0.7764, 0.5438, 0.5332, 0.74, 0.8055, 0.7552, 0.5616, 0.5137, 0.7525, 0.874, 0.9243, 0.948, 0.9601, 0.9664, 0.9688, 0.9677, 0.9621, 0.948, 0.9138, 0.8264, 0.6961, 0.7926, 0.9023, 0.9475, 0.9674, 0.9775, 0.9834, 0.9871, 0.9896, 0.9913, 0.9926, 0.9936, 0.9944, 0.9951, 0.9956, 0.996, 0.9964, 0.9967, 0.9969, 0.9972, 0.9974, 0.9975, 0.9977, 0.9978, 0.998, 0.9981, 0.9982, 0.9983, 0.9984, 0.9984, 0.9985, 0.9986, 0.9986, 0.9987, 0.9987, 0.9988, 0.9988, 0.9989, 0.9989, 0.9989, 0.999, 0.999, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9991, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9991, 0.9991, 0.9991, 0.9991, 0.9991, 0.999, 0.999, 0.999, 0.9989, 0.9989, 0.9989, 0.9988, 0.9988, 0.9987, 0.9987, 0.9987, 0.9986, 0.9985, 0.9985, 0.9984, 0.9983, 0.9983, 0.9982, 0.9981, 0.998, 0.9979, 0.9977, 0.9976, 0.9974, 0.9973, 0.9971, 0.9969, 0.9966, 0.9963, 0.996, 0.9957, 0.9952, 0.9947, 0.9941, 0.9934, 0.9926, 0.9915, 0.9901, 0.9884, 0.986, 0.9828, 0.9782, 0.9711, 0.9597, 0.9398, 0.9021, 0.8337, 0.7684, 0.8083, 0.8778, 0.9147, 0.9274, 0.9239, 0.9028, 0.853, 0.7595, 0.6873, 0.762, 0.8584, 0.9122, 0.9394, 0.9536, 0.9607, 0.9633, 0.9618, 0.9552, 0.9397, 0.9033, 0.8125, 0.6766, 0.7631, 0.8528, 0.8513, 0.7719, 0.7628, 0.8116, 0.7742, 0.8348, 0.9164, 0.9522, 0.9687, 0.9775, 0.9829, 0.9864, 0.9888, 0.9906, 0.9919, 0.993, 0.9938, 0.9945, 0.9951, 0.9956, 0.996, 0.9963, 0.9966, 0.9969, 0.9971, 0.9973, 0.9975, 0.9977, 0.9978, 0.9979, 0.998, 0.9982, 0.9983, 0.9983, 0.9984, 0.9985, 0.9986, 0.9986, 0.9987, 0.9988, 0.9988, 0.9989, 0.9989, 0.9989, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9992, 0.9992, 0.9992, 0.9992, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998]}, "ftir_pvc": {"x": [400, 408, 416, 424, 432, 440, 448, 456, 464, 472, 480, 488, 496, 504, 512, 520, 528, 536, 544, 552, 560, 568, 576, 584, 592, 600, 608, 616, 624, 632, 640, 648, 656, 664, 672, 680, 688, 696, 704, 712, 720, 728, 736, 744, 752, 760, 768, 776, 784, 792, 800, 808, 816, 824, 832, 840, 848, 856, 864, 872, 880, 888, 896, 904, 912, 920, 928, 936, 944, 952, 960, 968, 976, 984, 992, 1000, 1008, 1016, 1024, 1032, 1040, 1048, 1056, 1064, 1072, 1080, 1088, 1096, 1104, 1112, 1120, 1128, 1136, 1144, 1152, 1160, 1168, 1176, 1184, 1192, 1200, 1208, 1216, 1224, 1232, 1240, 1248, 1256, 1264, 1272, 1280, 1288, 1296, 1304, 1312, 1320, 1328, 1336, 1344, 1352, 1360, 1368, 1376, 1384, 1392, 1400, 1408, 1416, 1424, 1432, 1440, 1448, 1456, 1464, 1472, 1480, 1488, 1496, 1504, 1512, 1520, 1528, 1536, 1544, 1552, 1560, 1568, 1576, 1584, 1592, 1600, 1608, 1616, 1624, 1632, 1640, 1648, 1656, 1664, 1672, 1680, 1688, 1696, 1704, 1712, 1720, 1728, 1736, 1744, 1752, 1760, 1768, 1776, 1784, 1792, 1800, 1808, 1816, 1824, 1832, 1840, 1848, 1856, 1864, 1872, 1880, 1888, 1896, 1904, 1912, 1920, 1928, 1936, 1944, 1952, 1960, 1968, 1976, 1984, 1992, 2000, 2008, 2016, 2024, 2032, 2040, 2048, 2056, 2064, 2072, 2080, 2088, 2096, 2104, 2112, 2120, 2128, 2136, 2144, 2152, 2160, 2168, 2176, 2184, 2192, 2200, 2208, 2216, 2224, 2232, 2240, 2248, 2256, 2264, 2272, 2280, 2288, 2296, 2304, 2312, 2320, 2328, 2336, 2344, 2352, 2360, 2368, 2376, 2384, 2392, 2400, 2408, 2416, 2424, 2432, 2440, 2448, 2456, 2464, 2472, 2480, 2488, 2496, 2504, 2512, 2520, 2528, 2536, 2544, 2552, 2560, 2568, 2576, 2584, 2592, 2600, 2608, 2616, 2624, 2632, 2640, 2648, 2656, 2664, 2672, 2680, 2688, 2696, 2704, 2712, 2720, 2728, 2736, 2744, 2752, 2760, 2768, 2776, 2784, 2792, 2800, 2808, 2816, 2824, 2832, 2840, 2848, 2856, 2864, 2872, 2880, 2888, 2896, 2904, 2912, 2920, 2928, 2936, 2944, 2952, 2960, 2968, 2976, 2984, 2992, 3000, 3008, 3016, 3024, 3032, 3040, 3048, 3056, 3064, 3072, 3080, 3088, 3096, 3104, 3112, 3120, 3128, 3136, 3144, 3152, 3160, 3168, 3176, 3184, 3192, 3200, 3208, 3216, 3224, 3232, 3240, 3248, 3256, 3264, 3272, 3280, 3288, 3296, 3304, 3312, 3320, 3328, 3336, 3344, 3352, 3360, 3368, 3376, 3384, 3392, 3400, 3408, 3416, 3424, 3432, 3440, 3448, 3456, 3464, 3472, 3480, 3488, 3496, 3504, 3512, 3520, 3528, 3536, 3544, 3552, 3560, 3568, 3576, 3584, 3592, 3600, 3608, 3616, 3624, 3632, 3640, 3648, 3656, 3664, 3672, 3680, 3688, 3696, 3704, 3712, 3720, 3728, 3736, 3744, 3752, 3760, 3768, 3776, 3784, 3792, 3800, 3808, 3816, 3824, 3832, 3840, 3848, 3856, 3864, 3872, 3880, 3888, 3896, 3904, 3912, 3920, 3928, 3936, 3944, 3952, 3960, 3968, 3976, 3984, 3992, 4000], "y": [0.9985, 0.9984, 0.9983, 0.9982, 0.998, 0.9979, 0.9977, 0.9976, 0.9973, 0.9971, 0.9968, 0.9965, 0.9961, 0.9956, 0.995, 0.9943, 0.9934, 0.9922, 0.9907, 0.9885, 0.9855, 0.9808, 0.9732, 0.9596, 0.9313, 0.8594, 0.6418, 0.4749, 0.7761, 0.8975, 0.9368, 0.9495, 0.9486, 0.9337, 0.8901, 0.7572, 0.4282, 0.61, 0.8472, 0.9254, 0.9562, 0.9709, 0.9791, 0.984, 0.9873, 0.9895, 0.9911, 0.9923, 0.9932, 0.9939, 0.9944, 0.9948, 0.9951, 0.9953, 0.9955, 0.9956, 0.9956, 0.9956, 0.9955, 0.9953, 0.995, 0.9946, 0.9939, 0.993, 0.9916, 0.9892, 0.9851, 0.9768, 0.9566, 0.8965, 0.7963, 0.8961, 0.9558, 0.9755, 0.9833, 0.9869, 0.9886, 0.9891, 0.989, 0.9882, 0.9866, 0.9839, 0.9795, 0.9717, 0.9569, 0.9247, 0.8453, 0.7066, 0.7742, 0.8931, 0.9426, 0.9635, 0.9734, 0.9785, 0.981, 0.9821, 0.9821, 0.9812, 0.9792, 0.9761, 0.9711, 0.9633, 0.9506, 0.9285, 0.8863, 0.7976, 0.6188, 0.4942, 0.6692, 0.8206, 0.8898, 0.9196, 0.9292, 0.9229, 0.8922, 0.8041, 0.6453, 0.7262, 0.8662, 0.9246, 0.9489, 0.9595, 0.9633, 0.962, 0.9549, 0.9375, 0.8964, 0.792, 0.6084, 0.6998, 0.8594, 0.9266, 0.9556, 0.9701, 0.9783, 0.9834, 0.9867, 0.9891, 0.9908, 0.9922, 0.9932, 0.994, 0.9946, 0.9952, 0.9956, 0.996, 0.9964, 0.9966, 0.9969, 0.9971, 0.9973, 0.9975, 0.9976, 0.9978, 0.9979, 0.998, 0.9981, 0.9982, 0.9983, 0.9984, 0.9984, 0.9985, 0.9986, 0.9986, 0.9987, 0.9987, 0.9988, 0.9988, 0.9989, 0.9989, 0.9989, 0.999, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9991, 0.9992, 0.9992, 0.9992, 0.9992, 0.9992, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9994, 0.9993, 0.9993, 0.9993, 0.9993, 0.9993, 0.9992, 0.9992, 0.9992, 0.9992, 0.9991, 0.9991, 0.9991, 0.999, 0.999, 0.999, 0.9989, 0.9989, 0.9988, 0.9988, 0.9987, 0.9986, 0.9986, 0.9985, 0.9984, 0.9983, 0.9982, 0.9981, 0.9979, 0.9978, 0.9976, 0.9974, 0.9972, 0.997, 0.9967, 0.9963, 0.9959, 0.9955, 0.9949, 0.9943, 0.9935, 0.9924, 0.9911, 0.9895, 0.9872, 0.9841, 0.9796, 0.9727, 0.9615, 0.9417, 0.9043, 0.8382, 0.7862, 0.8315, 0.8897, 0.9164, 0.9196, 0.9019, 0.8541, 0.762, 0.6908, 0.7665, 0.8639, 0.9188, 0.9476, 0.9636, 0.9733, 0.9796, 0.9839, 0.9869, 0.9891, 0.9908, 0.9922, 0.9932, 0.9941, 0.9947, 0.9953, 0.9958, 0.9962, 0.9966, 0.9969, 0.9971, 0.9974, 0.9976, 0.9977, 0.9979, 0.9981, 0.9982, 0.9983, 0.9984, 0.9985, 0.9986, 0.9987, 0.9987, 0.9988, 0.9989, 0.9989, 0.999, 0.999, 0.9991, 0.9991, 0.9991, 0.9992, 0.9992, 0.9992, 0.9993, 0.9993, 0.9993, 0.9993, 0.9994, 0.9994, 0.9994, 0.9994, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9995, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9997, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999]}}</script>
+<script>
+  const state = {
+    answers: {},
+  };
+
+  // ===== Supabase 評量模式設定 =====
+  // 部署時請將下方兩個值替換為您的 Supabase 專案資訊
+  const SUPABASE_URL = 'https://qmldcjkllisvfgegkfsz.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbGRjamtsbGlzdmZnZWdrZnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMjM5ODYsImV4cCI6MjA4NjY5OTk4Nn0.Bfj0W7HN_n_vcjGe5502Chamk0YV-de8a0fxF4Nyczk';
+
+  let supabaseClient = null;
+  const evalMode = {
+    active: false,
+    studentId: null,
+    classId: null,
+    sessionId: null,
+    answeredCount: 0,
+  };
+  const retryCounts = {};
+
+  async function initSupabase() {
+    if (SUPABASE_URL.startsWith('YOUR_') || SUPABASE_ANON_KEY.startsWith('YOUR_')) {
+      console.warn('Supabase 尚未設定，評量模式無法上傳資料.');
+      return;
+    }
+    try {
+      const mod = await import('https://esm.sh/@supabase/supabase-js@2');
+      supabaseClient = mod.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } catch (e) {
+      console.error('Supabase 載入失敗:', e);
+    }
+  }
+
+  function showToast(msg, durationMs = 2200) {
+    const t = document.getElementById('evalToast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(showToast._timer);
+    showToast._timer = setTimeout(() => t.classList.remove('show'), durationMs);
+  }
+
+  function openEvalModal() {
+    if (evalMode.active) {
+      // 已在評量模式 → 詢問是否退出
+      if (confirm(`你目前以Student ID「${evalMode.studentId}」作答，Answered ${evalMode.answeredCount} 題.要退出評量模式嗎?`)) {
+        exitEvalMode();
+      }
+      return;
+    }
+    document.getElementById('evalModal').classList.add('open');
+    setTimeout(() => document.getElementById('evalStudentId').focus(), 50);
+  }
+
+  function closeEvalModal() {
+    document.getElementById('evalModal').classList.remove('open');
+  }
+
+  function enterEvalMode() {
+    const sid = document.getElementById('evalStudentId').value.trim();
+    const cid = document.getElementById('evalClassId').value.trim();
+    if (!sid) { alert('請輸入Student ID'); return; }
+    evalMode.active = true;
+    evalMode.studentId = sid;
+    evalMode.classId = cid || null;
+    evalMode.sessionId = crypto.randomUUID();
+    evalMode.answeredCount = 0;
+    closeEvalModal();
+    updateEvalToggle();
+    showToast(`✅ 已Enter Assessment Mode｜Student ID ${sid}`);
+  }
+
+  function exitEvalMode() {
+    evalMode.active = false;
+    evalMode.studentId = null;
+    evalMode.classId = null;
+    evalMode.sessionId = null;
+    evalMode.answeredCount = 0;
+    updateEvalToggle();
+    showToast('Exited assessment mode');
+  }
+
+  function updateEvalToggle() {
+    const el = document.getElementById('evalToggle');
+    const btn = el.querySelector('button');
+    if (evalMode.active) {
+      el.classList.add('active');
+      btn.textContent = `📊 ${evalMode.studentId} ｜ Answered ${evalMode.answeredCount}`;
+    } else {
+      el.classList.remove('active');
+      btn.textContent = '📝 Start Assessment';
+    }
+  }
+
+  async function logAttempt(payload) {
+    if (!evalMode.active || !supabaseClient) return;
+    const data = {
+      student_id: evalMode.studentId,
+      class_id: evalMode.classId,
+      session_id: evalMode.sessionId,
+      question_key: payload.key,
+      question_type: payload.type,
+      answer: payload.answer == null ? null : String(payload.answer),
+      is_correct: payload.isCorrect ?? null,
+      retry_count: retryCounts[payload.key] || 0,
+      user_agent: navigator.userAgent.slice(0, 200),
+    };
+    try {
+      const { error } = await supabaseClient.from('attempts').insert(data);
+      if (error) {
+        console.error('logAttempt error:', error);
+        showToast('⚠️ Upload failed，請檢查網路');
+        return;
+      }
+      evalMode.answeredCount++;
+      updateEvalToggle();
+    } catch (e) {
+      console.error('logAttempt exception:', e);
+      showToast('⚠️ Upload exception');
+    }
+  }
+
+  function getDeck() {
+    return document.getElementById('studentDeck');
+  }
+
+  function getSlides() {
+    return getDeck().querySelectorAll('.slide');
+  }
+
+  function currentIdx() {
+    const slides = Array.from(getSlides());
+    return slides.findIndex(s => s.classList.contains('active'));
+  }
+
+  function showSlide(idx) {
+    const slides = Array.from(getSlides());
+    if (idx < 0 || idx >= slides.length) return;
+    slides.forEach(s => s.classList.remove('active'));
+    slides[idx].classList.add('active');
+    slides[idx].scrollTop = 0;
+    document.getElementById('slideNow').textContent = idx + 1;
+    document.getElementById('slideTotal').textContent = slides.length;
+    document.getElementById('progress').style.width = ((idx + 1) / slides.length * 100) + '%';
+  }
+
+  function nextSlide() { showSlide(currentIdx() + 1); }
+  function prevSlide() { showSlide(currentIdx() - 1); }
+  function goSlide(i) { showSlide(i); }
+
+  // ===== 光譜圖渲染 =====
+  let SPECTRA = null;
+  function loadSpectra() {
+    if (SPECTRA) return SPECTRA;
+    const el = document.getElementById('specdata');
+    if (!el) return null;
+    SPECTRA = JSON.parse(el.textContent);
+    return SPECTRA;
+  }
+
+  function renderChart(div) {
+    const spec = loadSpectra();
+    if (!spec) return;
+    const key = div.dataset.spec;
+    const data = spec[key];
+    if (!data) {
+      div.innerHTML = '<p style="color:#b91c1c">缺光譜資料：' + key + '</p>';
+      return;
+    }
+    const xs = data.x, ys = data.y;
+    const title = div.dataset.title || '';
+    const xlabel = div.dataset.xlabel || 'x';
+    const ylabel = div.dataset.ylabel || 'y';
+    const color = div.dataset.color || '#0ea5e9';
+    const xreverse = div.dataset.xreverse === '1';
+    const source = div.dataset.source || '';
+    const markers = (div.dataset.markers || '').split(',').filter(Boolean).map(Number);
+
+    const W = 600, PL = 52, PR = 16, PB = 40, DATA_H = 150;
+    const xmin = Math.min(...xs), xmax = Math.max(...xs);
+    const ymin = Math.min(...ys), ymax = Math.max(...ys);
+    const xspan = xmax - xmin || 1, yspan = (ymax - ymin) || 1;
+    const xToPx = x => {
+      let t = (x - xmin) / xspan;
+      if (xreverse) t = 1 - t;
+      return PL + t * (W - PL - PR);
+    };
+
+    // ===== 碰撞偵測：替每個標籤決定列 =====
+    const validMarkers = markers.filter(m => m >= xmin && m <= xmax).slice().sort((a,b) => a - b);
+    const ROW_H = 14;
+    // Estimate label half-width by digit count (~5.5px per digit at font-size 11)
+    const labelHalfW = m => String(m).length * 5.5 / 2 + 4;
+    const placed = []; // {x, row, halfW}
+    const labelRows = {};
+    validMarkers.forEach(m => {
+      const px = xToPx(m), hw = labelHalfW(m);
+      let row = 0;
+      while (placed.some(p => p.row === row && Math.abs(p.x - px) < p.halfW + hw + 2)) row++;
+      placed.push({x: px, row, halfW: hw});
+      labelRows[m] = row;
+    });
+    const maxRow = placed.length ? Math.max(...placed.map(p => p.row)) : 0;
+    const labelBandH = (maxRow + 1) * ROW_H + 6;
+    const PT = labelBandH + 4;
+    const H = PT + DATA_H + PB;
+
+    const sy = y => PT + (1 - (y - ymin) / yspan) * DATA_H;
+
+    // Polyline path
+    let d = '';
+    for (let i = 0; i < xs.length; i++) {
+      d += (i === 0 ? 'M ' : ' L ') + xToPx(xs[i]).toFixed(1) + ' ' + sy(ys[i]).toFixed(1);
+    }
+    // X-axis ticks (自動選漂亮間隔，目標 8-12 個 tick)
+    let ticks = '';
+    const tickSteps = [0.05, 0.1, 0.2, 0.25, 0.5, 1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000];
+    let tickStep = tickSteps[tickSteps.length - 1];
+    for (const s of tickSteps) {
+      if (xspan / s <= 12) { tickStep = s; break; }
+    }
+    const firstTick = Math.ceil(xmin / tickStep) * tickStep;
+    for (let t = firstTick; t <= xmax + 1e-6; t += tickStep) {
+      const px = xToPx(t);
+      const label = Math.abs(t) >= 10 ? Math.round(t).toString() : t.toFixed(1);
+      ticks += `<line x1="${px}" y1="${PT+DATA_H}" x2="${px}" y2="${PT+DATA_H+4}" stroke="#64748b"/>`;
+      ticks += `<text x="${px}" y="${PT+DATA_H+16}" fill="#475569" font-size="11" text-anchor="middle">${label}</text>`;
+    }
+    // Marker vertical lines + labels (rows stacked top-down)
+    let mlines = '';
+    validMarkers.forEach(m => {
+      const px = xToPx(m);
+      const row = labelRows[m];
+      const yText = 4 + row * ROW_H + 10;        // text baseline
+      const yLineTop = yText + 3;                 // start of dashed line
+      mlines += `<line x1="${px}" y1="${yLineTop}" x2="${px}" y2="${PT+DATA_H}" stroke="#ef4444" stroke-width="0.7" stroke-dasharray="3,3" opacity="0.55"/>`;
+      // White background rect for readability when label crosses chart frame
+      const hw = labelHalfW(m);
+      mlines += `<rect x="${px-hw}" y="${yText-9}" width="${hw*2}" height="12" fill="#ffffff" opacity="0.95" rx="2"/>`;
+      mlines += `<text x="${px}" y="${yText}" fill="#b91c1c" font-size="11" text-anchor="middle" font-weight="700">${m}</text>`;
+    });
+
+    const titleHTML = title ? `<div class="spec-title">${title}</div>` : '';
+    const sourceHTML = source ? `<div class="spec-source">資料來源：${source}</div>` : '';
+    div.innerHTML = `${titleHTML}
+      <svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+        <rect x="${PL}" y="${PT}" width="${W-PL-PR}" height="${DATA_H}" fill="#fafbfd" stroke="#e2e8f0"/>
+        ${mlines}
+        <path d="${d}" fill="none" stroke="${color}" stroke-width="1.6"/>
+        <line x1="${PL}" y1="${PT+DATA_H}" x2="${W-PR}" y2="${PT+DATA_H}" stroke="#64748b"/>
+        <line x1="${PL}" y1="${PT}" x2="${PL}" y2="${PT+DATA_H}" stroke="#64748b"/>
+        ${ticks}
+        <text x="${(PL+W-PR)/2}" y="${H-6}" fill="#475569" font-size="12" text-anchor="middle">${xlabel}${xreverse ? ' (high → low)' : ''}</text>
+        <text x="14" y="${PT+DATA_H/2}" fill="#475569" font-size="12" text-anchor="middle" transform="rotate(-90,14,${PT+DATA_H/2})">${ylabel}</text>
+      </svg>
+      ${sourceHTML}`;
+    div.classList.add('specBox');
+  }
+
+  function renderAllCharts() {
+    document.querySelectorAll('.chart[data-spec]').forEach(renderChart);
+  }
+
+  const RESET_BTN = ' <button class="reset-btn" onclick="resetQuestion(\'KEY\')">↺ Retry</button>';
+
+  // 作答後自動展開該 slide 的所有Explanation details + 顯示 tip 卡
+  function revealSlideDetails(el) {
+    const slide = el?.closest?.('.slide');
+    if (!slide) return;
+    slide.querySelectorAll('details').forEach(d => { d.open = true; });
+    slide.classList.add('answered');
+  }
+
+  function selectChoice(btn, key, value) {
+    const group = btn.parentElement.querySelectorAll('.choice');
+    group.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    state.answers[key] = value;
+    const result = document.getElementById(key + '_result');
+    if (result) result.innerHTML = '✅ Recorded: <strong>' + value + '</strong>' + RESET_BTN.replace('KEY', key);
+    revealSlideDetails(btn);
+    logAttempt({ key, type: 'select', answer: value, isCorrect: null });
+  }
+
+  function checkMCQ(btn, key, value, isCorrect) {
+    const group = btn.parentElement.querySelectorAll('.choice');
+    group.forEach(b => { b.classList.remove('selected','correct','wrong'); });
+    btn.classList.add('selected');
+    btn.classList.add(isCorrect ? 'correct' : 'wrong');
+    state.answers[key] = { value, correct: isCorrect };
+    const result = document.getElementById(key + '_result');
+    if (result) {
+      const msg = isCorrect
+        ? '🎉 <strong style="color:#15803d">Correct!</strong>'
+        : '🤔 <strong style="color:#b91c1c">Not the best answer</strong>. See explanation.';
+      result.innerHTML = msg + RESET_BTN.replace('KEY', key);
+    }
+    revealSlideDetails(btn);
+    const type = key.startsWith('q_tf') ? 'tf' : 'mcq';
+    logAttempt({ key, type, answer: value, isCorrect });
+  }
+
+  function resetQuestion(key) {
+    delete state.answers[key];
+    retryCounts[key] = (retryCounts[key] || 0) + 1;
+    const result = document.getElementById(key + '_result');
+    if (!result) return;
+    result.innerHTML = '';
+    const card = result.closest('.card.activity');
+    if (card) {
+      card.querySelectorAll('.choice').forEach(b => b.classList.remove('selected','correct','wrong'));
+      // textarea reset
+      const ta = card.querySelector('textarea[data-key="' + key + '"]');
+      if (ta) ta.value = '';
+    } else {
+      // textarea-only activity (e.g. design questions, exit ticket)
+      const ta = document.querySelector('textarea[data-key="' + key + '"]');
+      if (ta) ta.value = '';
+    }
+  }
+
+  // 鍵盤翻頁
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prevSlide(); }
+    if (e.key === 'Home') { e.preventDefault(); goSlide(0); }
+    if (e.key === 'End') { e.preventDefault(); const slides = getSlides(); goSlide(slides.length - 1); }
+  });
+
+  // textarea 失去焦點時上傳 (限評量模式 + 內容長度 > 5)
+  document.addEventListener('focusout', e => {
+    if (e.target.tagName !== 'TEXTAREA' || !e.target.dataset.key) return;
+    const text = e.target.value.trim();
+    if (text.length <= 5) return;
+    logAttempt({
+      key: e.target.dataset.key,
+      type: 'free',
+      answer: text,
+      isCorrect: null,
+    });
+  }, true);
+
+  // 初始化
+  window.addEventListener('DOMContentLoaded', () => {
+    loadSpectra();
+    renderAllCharts();
+    // Explanation details / tip 預設收起 → 學生作答後 (透過 revealSlideDetails) 才自動展開
+    // 標記含互動題的 slide，讓 CSS 可控制 tip 卡的鎖定顯示
+    document.querySelectorAll('.slide').forEach(s => {
+      if (s.querySelector('.card.activity')) s.classList.add('has-activity');
+    });
+    showSlide(0);
+    initSupabase();
+  });
+</script>
+</body>
+</html>
