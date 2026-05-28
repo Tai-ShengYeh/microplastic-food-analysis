@@ -78,13 +78,13 @@
       font-size: 16px; margin-bottom: 8px;
     }
     /* 含互動題的 slide：tip 卡預設隱藏，作答後 (.answered) 才顯示 */
-    .slide:has(.card.activity) .card.tip {
-      background: #fff7ed; opacity: 0.9;
+    .slide.has-activity:not(.answered) .card.tip {
+      background: #fef3c7; border-color: #fcd34d;
     }
-    .slide:has(.card.activity):not(.answered) .card.tip > * { display: none; }
-    .slide:has(.card.activity):not(.answered) .card.tip::before {
+    .slide.has-activity:not(.answered) .card.tip > * { display: none; }
+    .slide.has-activity:not(.answered) .card.tip::before {
       content: "🔒 作答後才會顯示答案";
-      color: #c2410c;
+      color: #b45309; font-weight: 700; font-size: 16px;
     }
     .ref {
       border-left: 6px solid var(--accent2);
@@ -2221,7 +2221,11 @@
   window.addEventListener('DOMContentLoaded', () => {
     loadSpectra();
     renderAllCharts();
-    // 解析 details 預設收起 → 學生作答後 (透過 revealSlideDetails) 才自動展開
+    // 解析 details / tip 預設收起 → 學生作答後 (透過 revealSlideDetails) 才自動展開
+    // 標記含互動題的 slide，讓 CSS 可控制 tip 卡的鎖定顯示
+    document.querySelectorAll('.slide').forEach(s => {
+      if (s.querySelector('.card.activity')) s.classList.add('has-activity');
+    });
     showSlide(0);
     initSupabase();
   });
