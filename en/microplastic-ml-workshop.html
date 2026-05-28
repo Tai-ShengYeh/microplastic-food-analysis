@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>微塑膠機器學習實作工作坊｜NIR + Raman + Orange</title>
+  <title>Microplastic Machine Learning Workshop | NIR + Raman + Orange</title>
   <style>
     :root {
       --bg: #f8fafc; --card: #ffffff;
@@ -14,7 +14,7 @@
     }
     * { box-sizing: border-box; }
     body {
-      margin: 0; font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", Arial, sans-serif;
+      margin: 0; font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
       background: linear-gradient(135deg, #ddd6fe 0%, #f8fafc 40%, #d1fae5 100%);
       color: var(--text); overflow: hidden;
     }
@@ -25,15 +25,15 @@
     }
     .slide.active { display: block; animation: fade 0.22s ease-in-out; }
     @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    h1 { font-size: 46px; line-height: 1.18; margin: 0 0 22px; color: #0f172a; }
-    h2 { font-size: 32px; margin: 0 0 18px; color: #4c1d95; }
-    h3 { font-size: 22px; margin: 14px 0 10px; color: #5b21b6; }
-    p, li { font-size: 19px; line-height: 1.55; color: #1e293b; }
-    small, .mini { color: var(--muted); font-size: 15px; }
-    .subtitle { font-size: 23px; color: #475569; }
+    h1 { font-size: 42px; line-height: 1.18; margin: 0 0 22px; color: #0f172a; }
+    h2 { font-size: 30px; margin: 0 0 18px; color: #4c1d95; }
+    h3 { font-size: 21px; margin: 14px 0 10px; color: #5b21b6; }
+    p, li { font-size: 18px; line-height: 1.55; color: #1e293b; }
+    small, .mini { color: var(--muted); font-size: 14px; }
+    .subtitle { font-size: 22px; color: #475569; }
     .tag {
       display: inline-block; padding: 5px 11px; border-radius: 999px;
-      background: #ede9fe; color: #4c1d95; font-size: 15px; margin: 4px 4px 4px 0;
+      background: #ede9fe; color: #4c1d95; font-size: 14px; margin: 4px 4px 4px 0;
       border: 1px solid #c4b5fd; font-weight: 600;
     }
     .tag.cyan { background: #cffafe; color: #155e75; border-color: #67e8f9; }
@@ -46,7 +46,7 @@
       padding: 18px; box-shadow: 0 3px 10px rgba(15,23,42,0.05);
       margin-bottom: 14px;
     }
-    .card p, .card li { font-size: 17px; }
+    .card p, .card li { font-size: 16px; }
     .activity {
       border-left: 6px solid var(--accent);
       background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%);
@@ -56,8 +56,8 @@
       background: linear-gradient(180deg, #fef3c7 0%, #ffffff 100%);
     }
     .tip::before {
-      content: "💡 提示"; display: block; font-weight: 700; color: #b45309;
-      font-size: 15px; margin-bottom: 6px;
+      content: "💡 Tip"; display: block; font-weight: 700; color: #b45309;
+      font-size: 14px; margin-bottom: 6px;
     }
     .ref {
       border-left: 6px solid var(--accent2);
@@ -67,7 +67,7 @@
     .good { color: #15803d; font-weight: 700; }
     .warn { color: #b45309; font-weight: 700; }
     .bad { color: #b91c1c; font-weight: 700; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 16px; background: white; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 15px; background: white; }
     th, td { border: 1px solid var(--line); padding: 8px 10px; vertical-align: top; }
     th { background: #ede9fe; color: #4c1d95; font-weight: 700; }
     tr:nth-child(even) td { background: #f8fafc; }
@@ -80,7 +80,7 @@
     }
     button {
       cursor: pointer; border: 0; border-radius: 8px;
-      padding: 8px 14px; font-size: 15px;
+      padding: 8px 14px; font-size: 14px;
       background: var(--accent); color: white; margin: 2px; font-weight: 600;
       box-shadow: 0 2px 4px rgba(14,165,233,0.25);
     }
@@ -91,7 +91,7 @@
     .choice {
       display: block; width: 100%; text-align: left;
       background: #ffffff; border: 1.5px solid var(--line-strong); color: #1e293b;
-      margin: 6px 0; padding: 10px 14px; white-space: normal; font-size: 17px;
+      margin: 6px 0; padding: 10px 14px; white-space: normal; font-size: 16px;
     }
     .choice:hover { background: #f1f5f9; border-color: var(--accent); }
     .choice.selected { background: #e0f2fe; border-color: #0ea5e9; outline: 2px solid #38bdf8; color: #075985; font-weight: 600; }
@@ -103,15 +103,15 @@
       width: 100%; border-radius: 8px;
       border: 1.5px solid var(--line-strong);
       background: #ffffff; color: var(--text);
-      padding: 8px 10px; font-size: 15px; margin: 3px 0 8px;
+      padding: 8px 10px; font-size: 14px; margin: 3px 0 8px;
       font-family: inherit;
     }
     textarea:focus, input:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,102,241,0.12); }
-    textarea { min-height: 70px; resize: vertical; font-family: ui-monospace, "Courier New", monospace; font-size: 13px; }
+    textarea { min-height: 70px; resize: vertical; font-family: ui-monospace, "Courier New", monospace; font-size: 12px; }
     .resultBox {
       margin-top: 8px; padding: 10px; border-radius: 8px;
       background: #f1f5f9; border: 1px solid var(--line);
-      font-size: 16px; color: #1e293b;
+      font-size: 15px; color: #1e293b;
     }
     .resultBox:empty { display: none; }
     .reset-btn {
@@ -124,13 +124,13 @@
       background: #f8fafc; padding: 10px 14px;
       border-radius: 10px; border: 1px solid var(--line); margin: 8px 0;
     }
-    details summary { cursor: pointer; font-weight: 700; font-size: 17px; color: #4c1d95; }
+    details summary { cursor: pointer; font-weight: 700; font-size: 16px; color: #4c1d95; }
     details:not([open]) {
       background: #fff7ed; border-color: #fed7aa; opacity: 0.85;
     }
     details:not([open]) summary { color: #9a3412; }
     details:not([open]) summary::after {
-      content: " 🔒 作答後才會自動展開";
+      content: " 🔒 Reveals after answering";
       font-size: 12px; color: #c2410c; font-weight: 500; margin-left: 10px;
     }
     .progress {
@@ -138,53 +138,51 @@
       background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
       width: 0%; z-index: 30; transition: width 0.3s;
     }
-    .slideNo { color: var(--muted); font-size: 15px; font-weight: 600; }
+    .slideNo { color: var(--muted); font-size: 14px; font-weight: 600; }
     .citation {
-      font-size: 13px; color: #64748b; font-style: italic;
+      font-size: 12px; color: #64748b; font-style: italic;
       border-left: 3px solid #cbd5e1; padding-left: 8px; margin: 6px 0;
     }
     .pill {
       display: inline-block; padding: 3px 9px; border-radius: 999px;
-      font-size: 13px; font-weight: 700; margin: 2px;
+      font-size: 12px; font-weight: 700; margin: 2px;
     }
     .pill.cyan { background: #cffafe; color: #155e75; border: 1px solid #67e8f9; }
     .pill.purple { background: #ede9fe; color: #5b21b6; border: 1px solid #c4b5fd; }
     .pill.pink { background: #fce7f3; color: #9d174d; border: 1px solid #f9a8d4; }
     .pill.green { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
     .pill.amber { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
-    /* ===== 學生資訊面板（頂端固定） ===== */
     .student-bar {
       position: fixed; top: 8px; right: 12px; z-index: 50;
       display: flex; gap: 6px; align-items: center;
       background: rgba(255,255,255,0.95); padding: 6px 12px;
       border-radius: 999px; border: 1px solid var(--line-strong);
-      box-shadow: 0 2px 8px rgba(15,23,42,0.08); font-size: 14px;
+      box-shadow: 0 2px 8px rgba(15,23,42,0.08); font-size: 13px;
     }
     .student-bar.active { background: #d1fae5; border-color: #6ee7b7; }
     .student-bar button {
-      padding: 4px 10px; font-size: 13px; background: var(--accent);
+      padding: 4px 10px; font-size: 12px; background: var(--accent);
       box-shadow: none;
     }
     .lang-switch {
       position: fixed; top: 8px; left: 12px; z-index: 50;
       background: rgba(255,255,255,0.95); padding: 4px 10px;
       border-radius: 999px; border: 1px solid var(--line-strong);
-      box-shadow: 0 2px 8px rgba(15,23,42,0.08); font-size: 13px;
+      box-shadow: 0 2px 8px rgba(15,23,42,0.08); font-size: 12px;
     }
     .lang-switch a { color: #4c1d95; text-decoration: none; font-weight: 600; margin: 0 4px; }
     .lang-switch a.active { background: var(--accent); color: white; padding: 2px 8px; border-radius: 999px; }
-    /* ===== 掃描資料上傳 widget ===== */
     .scan-recorder {
       background: #f8fafc; border: 2px dashed #c4b5fd;
       border-radius: 12px; padding: 16px; margin: 12px 0;
     }
     .scan-recorder h3 { margin-top: 0; color: #4c1d95; }
     .scan-recorder .form-row {
-      display: grid; grid-template-columns: 110px 1fr; gap: 8px;
+      display: grid; grid-template-columns: 130px 1fr; gap: 8px;
       align-items: center; margin: 6px 0;
     }
     .scan-recorder .form-row label {
-      font-weight: 600; color: #1e293b; font-size: 14px; margin: 0;
+      font-weight: 600; color: #1e293b; font-size: 13px; margin: 0;
     }
     .scan-recorder textarea { min-height: 90px; }
     .scan-recorder .actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
@@ -194,16 +192,13 @@
     }
     .scan-recorder .status.success { color: #15803d; font-weight: 700; }
     .scan-recorder .status.error { color: #b91c1c; font-weight: 700; }
-    /* ===== Spectrum SVG chart ===== */
     .specBox {
       background: #ffffff; border: 1px solid var(--line-strong);
       border-radius: 10px; padding: 12px; margin: 10px 0;
       box-shadow: 0 2px 6px rgba(15,23,42,0.05);
     }
     .specBox svg { width: 100%; height: auto; max-height: 280px; display: block; }
-    .specBox .spec-title { font-size: 14px; color: #1e293b; font-weight: 600; margin-bottom: 6px; }
-    .specBox .spec-source { font-size: 11px; color: #64748b; margin-top: 6px; font-style: italic; }
-    /* ===== 模態框 (學生資訊輸入) ===== */
+    .specBox .spec-title { font-size: 13px; color: #1e293b; font-weight: 600; margin-bottom: 6px; }
     .modal {
       position: fixed; inset: 0; z-index: 100;
       display: none; align-items: center; justify-content: center;
@@ -215,14 +210,14 @@
       max-width: 480px; width: 90%;
       box-shadow: 0 20px 50px rgba(0,0,0,0.3);
     }
-    .modal h3 { margin: 0 0 8px; color: #4c1d95; font-size: 22px; }
-    .modal .desc { font-size: 14px; color: #475569; margin-bottom: 12px; }
-    .modal label { display: block; margin: 10px 0 4px; font-weight: 600; color: #1e293b; font-size: 14px; }
+    .modal h3 { margin: 0 0 8px; color: #4c1d95; font-size: 20px; }
+    .modal .desc { font-size: 13px; color: #475569; margin-bottom: 12px; }
+    .modal label { display: block; margin: 10px 0 4px; font-weight: 600; color: #1e293b; font-size: 13px; }
     .modal .btns { display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end; }
     .toast {
       position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%);
       padding: 10px 18px; border-radius: 8px; z-index: 200;
-      background: #1e293b; color: white; font-size: 14px;
+      background: #1e293b; color: white; font-size: 13px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.25);
       opacity: 0; transition: opacity 0.25s; pointer-events: none;
     }
@@ -230,7 +225,7 @@
     @media print {
       body { overflow: visible; background: white; }
       .slide { display: block !important; height: auto; page-break-after: always; padding: 28px; }
-      .controls, .progress, .student-bar, .modal, .toast { display: none !important; }
+      .controls, .progress, .student-bar, .lang-switch, .modal, .toast { display: none !important; }
     }
   </style>
 </head>
@@ -238,40 +233,37 @@
   <div class="progress" id="progress"></div>
 
   <div class="lang-switch">
-    <a href="microplastic-ml-workshop.html" class="active">中文</a>
-    <a href="en/microplastic-ml-workshop.html">EN</a>
+    <a href="../microplastic-ml-workshop.html">中文</a>
+    <a href="microplastic-ml-workshop.html" class="active">EN</a>
   </div>
 
-  <!-- 學生資訊面板 -->
   <div class="student-bar" id="studentBar">
-    <button onclick="openStudentModal()">📝 學生登入</button>
+    <button onclick="openStudentModal()">📝 Sign in</button>
   </div>
   <div class="modal" id="studentModal">
     <div class="panel">
-      <h3>學生資訊</h3>
-      <p class="desc">登入後上傳的光譜資料會記到您的學號 / 組別；老師可在儀表板看到全班進度。</p>
-      <label>學號 <span style="color:#dc2626">*</span></label>
-      <input id="inpStudentId" type="text" placeholder="例：B11234567" />
-      <label>組別 <span style="color:#dc2626">*</span></label>
+      <h3>Student Information</h3>
+      <p class="desc">Spectra uploaded after sign-in will be linked to your Student ID and Group; the instructor can view class-wide progress on the dashboard.</p>
+      <label>Student ID <span style="color:#dc2626">*</span></label>
+      <input id="inpStudentId" type="text" placeholder="e.g., B11234567" />
+      <label>Group <span style="color:#dc2626">*</span></label>
       <select id="inpGroupId">
-        <option value="">請選擇...</option>
-        <option value="1">第 1 組</option>
-        <option value="2">第 2 組</option>
-        <option value="3">第 3 組</option>
-        <option value="4">第 4 組</option>
-        <option value="5">第 5 組</option>
+        <option value="">Please select...</option>
+        <option value="1">Group 1</option>
+        <option value="2">Group 2</option>
+        <option value="3">Group 3</option>
+        <option value="4">Group 4</option>
+        <option value="5">Group 5</option>
       </select>
       <div class="btns">
-        <button class="secondary" onclick="closeStudentModal()">取消</button>
-        <button onclick="saveStudentInfo()">開始</button>
+        <button class="secondary" onclick="closeStudentModal()">Cancel</button>
+        <button onclick="saveStudentInfo()">Start</button>
       </div>
     </div>
   </div>
   <div class="toast" id="toast"></div>
 
-  <main class="deck" id="deck">
-    <!-- 投影片將在此插入 -->
-  </main>
+  <main class="deck" id="deck"></main>
 
   <div class="controls">
     <button onclick="prevSlide()">◀</button>
@@ -280,26 +272,17 @@
   </div>
 
 <script>
-  // ===== Supabase Config =====
   const SUPABASE_URL = 'https://qmldcjkllisvfgegkfsz.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbGRjamtsbGlzdmZnZWdrZnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMjM5ODYsImV4cCI6MjA4NjY5OTk4Nn0.Bfj0W7HN_n_vcjGe5502Chamk0YV-de8a0fxF4Nyczk';
   let supabase = null;
-
-  // ===== 學生狀態 =====
-  const student = {
-    id: null,
-    groupId: null,
-  };
+  const student = { id: null, groupId: null };
 
   async function initSupabase() {
     try {
       const mod = await import('https://esm.sh/@supabase/supabase-js@2');
       supabase = mod.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    } catch (e) {
-      console.error('Supabase 載入失敗:', e);
-    }
+    } catch (e) { console.error('Supabase load failed:', e); }
   }
-
   function showToast(msg, ms = 2400) {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -307,42 +290,29 @@
     clearTimeout(showToast._t);
     showToast._t = setTimeout(() => t.classList.remove('show'), ms);
   }
-
   function openStudentModal() {
     document.getElementById('studentModal').classList.add('open');
     setTimeout(() => document.getElementById('inpStudentId').focus(), 50);
   }
-  function closeStudentModal() {
-    document.getElementById('studentModal').classList.remove('open');
-  }
+  function closeStudentModal() { document.getElementById('studentModal').classList.remove('open'); }
   function saveStudentInfo() {
     const sid = document.getElementById('inpStudentId').value.trim();
     const gid = document.getElementById('inpGroupId').value;
-    if (!sid) { alert('請輸入學號'); return; }
-    if (!gid) { alert('請選擇組別'); return; }
-    student.id = sid;
-    student.groupId = gid;
-    closeStudentModal();
-    updateStudentBar();
-    showToast(`✅ 已登入：${sid} ｜ 第 ${gid} 組`);
+    if (!sid) { alert('Please enter Student ID'); return; }
+    if (!gid) { alert('Please select Group'); return; }
+    student.id = sid; student.groupId = gid;
+    closeStudentModal(); updateStudentBar();
+    showToast(`✅ Signed in: ${sid} | Group ${gid}`);
   }
   function updateStudentBar() {
     const bar = document.getElementById('studentBar');
     const btn = bar.querySelector('button');
-    if (student.id) {
-      bar.classList.add('active');
-      btn.textContent = `👤 ${student.id} ｜ 第 ${student.groupId} 組`;
-    } else {
-      bar.classList.remove('active');
-      btn.textContent = '📝 學生登入';
-    }
+    if (student.id) { bar.classList.add('active'); btn.textContent = `👤 ${student.id} | Group ${student.groupId}`; }
+    else { bar.classList.remove('active'); btn.textContent = '📝 Sign in'; }
   }
 
-  // ===== 投影片導覽 =====
   function getSlides() { return document.querySelectorAll('#deck .slide'); }
-  function currentIdx() {
-    return Array.from(getSlides()).findIndex(s => s.classList.contains('active'));
-  }
+  function currentIdx() { return Array.from(getSlides()).findIndex(s => s.classList.contains('active')); }
   function showSlide(idx) {
     const slides = Array.from(getSlides());
     if (idx < 0 || idx >= slides.length) return;
@@ -361,14 +331,13 @@
     if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
   });
 
-  // ===== 互動題 (MCQ / select) =====
-  const RESET_BTN = ' <button class="reset-btn" onclick="resetQuestion(\'KEY\')">↺ 重新作答</button>';
+  const RESET_BTN = ' <button class="reset-btn" onclick="resetQuestion(\'KEY\')">↺ Retry</button>';
   function selectChoice(btn, key, value) {
     const group = btn.parentElement.querySelectorAll('.choice');
     group.forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
     const r = document.getElementById(key + '_result');
-    if (r) r.innerHTML = '✅ 已記錄：<strong>' + value + '</strong>' + RESET_BTN.replace('KEY', key);
+    if (r) r.innerHTML = '✅ Recorded: <strong>' + value + '</strong>' + RESET_BTN.replace('KEY', key);
     revealSlideDetails(btn);
   }
   function checkMCQ(btn, key, value, isCorrect) {
@@ -377,7 +346,7 @@
     btn.classList.add('selected', isCorrect ? 'correct' : 'wrong');
     const r = document.getElementById(key + '_result');
     if (r) {
-      const msg = isCorrect ? '🎉 <strong style="color:#15803d">正確！</strong>' : '🤔 <strong style="color:#b91c1c">非最佳答案</strong>，請看解析。';
+      const msg = isCorrect ? '🎉 <strong style="color:#15803d">Correct!</strong>' : '🤔 <strong style="color:#b91c1c">Not the best answer.</strong> See explanation.';
       r.innerHTML = msg + RESET_BTN.replace('KEY', key);
     }
     revealSlideDetails(btn);
@@ -395,12 +364,8 @@
     s.querySelectorAll('details').forEach(d => d.open = true);
   }
 
-  // ===== Spectrum chart 渲染 =====
   function renderSpectrumSVG(container, xs, ys, opts = {}) {
-    if (!xs.length || !ys.length) {
-      container.innerHTML = '<p style="color:#b91c1c;font-size:14px;">無資料</p>';
-      return;
-    }
+    if (!xs.length || !ys.length) { container.innerHTML = '<p style="color:#b91c1c;font-size:13px;">No data</p>'; return; }
     const W = 600, PL = 50, PR = 14, PT = 14, PB = 36, DATA_H = 160;
     const H = PT + DATA_H + PB;
     const xmin = Math.min(...xs), xmax = Math.max(...xs);
@@ -434,12 +399,11 @@
         <line x1="${PL}" y1="${PT+DATA_H}" x2="${W-PR}" y2="${PT+DATA_H}" stroke="#64748b"/>
         <line x1="${PL}" y1="${PT}" x2="${PL}" y2="${PT+DATA_H}" stroke="#64748b"/>
         ${ticks}
-        <text x="${(PL+W-PR)/2}" y="${H-4}" fill="#475569" font-size="11" text-anchor="middle">${xlabel}${xrev ? '（高→低）' : ''}</text>
+        <text x="${(PL+W-PR)/2}" y="${H-4}" fill="#475569" font-size="11" text-anchor="middle">${xlabel}${xrev ? ' (high → low)' : ''}</text>
         <text x="14" y="${PT+DATA_H/2}" fill="#475569" font-size="11" text-anchor="middle" transform="rotate(-90,14,${PT+DATA_H/2})">${ylabel}</text>
       </svg>`;
   }
 
-  // ===== Scan recorder：解析 CSV → 顯示 → 上傳 =====
   function parseCSV(text) {
     const lines = text.split(/\r?\n/).filter(l => l.trim() && !l.trim().startsWith('#'));
     const xs = [], ys = [];
@@ -455,7 +419,7 @@
     const { xs, ys } = parseCSV(text);
     const preview = card.querySelector('.preview');
     if (!xs.length) {
-      preview.innerHTML = '<p style="color:#b91c1c;font-size:14px;">無法解析資料（請確認格式為兩欄：wavelength, intensity）</p>';
+      preview.innerHTML = '<p style="color:#b91c1c;font-size:13px;">Could not parse data (expecting 2 columns: wavelength, intensity)</p>';
       return;
     }
     const technique = card.querySelector('[data-field="technique"]').value;
@@ -463,11 +427,11 @@
     const plastic = card.querySelector('[data-field="plastic_type"]').value;
     preview.innerHTML = '<div class="specBox"></div>';
     renderSpectrumSVG(preview.querySelector('.specBox'), xs, ys, {
-      title: `${plastic} | ${technique} | ${xs.length} 點`,
+      title: `${plastic} | ${technique} | ${xs.length} points`,
       xlabel, ylabel: 'Intensity',
       color: technique === 'NIR' ? '#0ea5e9' : '#16a34a'
     });
-    card.querySelector('.status').textContent = `✅ 已預覽 ${xs.length} 個資料點`;
+    card.querySelector('.status').textContent = `✅ Previewed ${xs.length} data points`;
     card.querySelector('.status').className = 'status success';
   }
   function pasteFile(btn) {
@@ -485,15 +449,15 @@
   }
   async function uploadScan(btn) {
     if (!student.id || !student.groupId) {
-      alert('請先點右上角「📝 學生登入」輸入學號 + 組別');
+      alert('Please sign in first (click 📝 Sign in at the top-right)');
       return;
     }
-    if (!supabase) { alert('Supabase 尚未載入'); return; }
+    if (!supabase) { alert('Supabase not loaded yet'); return; }
     const card = btn.closest('.scan-recorder');
     const status = card.querySelector('.status');
     const text = card.querySelector('textarea').value;
     const { xs, ys } = parseCSV(text);
-    if (!xs.length) { status.textContent = '⚠️ 無資料可上傳'; status.className = 'status error'; return; }
+    if (!xs.length) { status.textContent = '⚠️ No data to upload'; status.className = 'status error'; return; }
     const payload = {
       student_id: student.id,
       group_id: student.groupId,
@@ -506,63 +470,61 @@
       notes: card.querySelector('[data-field="notes"]')?.value || null,
       user_agent: navigator.userAgent.slice(0, 200),
     };
-    status.textContent = '⏳ 上傳中...';
+    status.textContent = '⏳ Uploading...';
     status.className = 'status';
     try {
       const { error } = await supabase.from('ml_workshop_scans').insert(payload);
       if (error) {
-        status.textContent = '❌ 上傳失敗：' + error.message;
+        status.textContent = '❌ Upload failed: ' + error.message;
         status.className = 'status error';
       } else {
-        status.textContent = `🎉 已上傳到雲端！${payload.plastic_type} ${payload.technique} ${xs.length} 點`;
+        status.textContent = `🎉 Uploaded to cloud! ${payload.plastic_type} ${payload.technique} ${xs.length} points`;
         status.className = 'status success';
-        showToast(`✅ 上傳成功：${payload.plastic_type} ${payload.technique}`);
+        showToast(`✅ Upload successful: ${payload.plastic_type} ${payload.technique}`);
       }
     } catch (e) {
-      status.textContent = '❌ 上傳例外：' + e.message;
+      status.textContent = '❌ Exception: ' + e.message;
       status.className = 'status error';
     }
   }
   function makeScanRecorder(id, defaults = {}) {
     return `
       <div class="scan-recorder" id="${id}">
-        <h3>📊 ${defaults.title || '掃描資料上傳'}</h3>
+        <h3>📊 ${defaults.title || 'Scan Upload'}</h3>
         <div class="form-row">
-          <label>儀器</label>
+          <label>Instrument</label>
           <select data-field="instrument">${(defaults.instruments || []).map(i => `<option value="${i.v}">${i.l}</option>`).join('')}</select>
         </div>
         <div class="form-row">
-          <label>塑膠</label>
+          <label>Plastic</label>
           <select data-field="plastic_type">
-            <option value="PE">PE 聚乙烯</option>
-            <option value="PP">PP 聚丙烯</option>
-            <option value="PET">PET 聚對苯二甲酸乙二酯</option>
-            <option value="PS">PS 聚苯乙烯</option>
-            <option value="PVC">PVC 聚氯乙烯</option>
-            <option value="unknown">未知樣品</option>
+            <option value="PE">PE (Polyethylene)</option>
+            <option value="PP">PP (Polypropylene)</option>
+            <option value="PET">PET (Polyethylene terephthalate)</option>
+            <option value="PS">PS (Polystyrene)</option>
+            <option value="PVC">PVC (Polyvinyl chloride)</option>
+            <option value="unknown">Unknown sample</option>
           </select>
         </div>
         <input type="hidden" data-field="technique" value="${defaults.technique || 'NIR'}" />
         <div class="form-row">
-          <label>備註</label>
-          <input data-field="notes" placeholder="例：3 重複的第 1 次" />
+          <label>Notes</label>
+          <input data-field="notes" placeholder="e.g., replicate 1 of 3" />
         </div>
-        <label style="font-weight:600;color:#1e293b;font-size:14px;">CSV 資料（wavelength, intensity 每行一筆）：</label>
+        <label style="font-weight:600;color:#1e293b;font-size:13px;">CSV data (one row per data point: wavelength, intensity):</label>
         <textarea placeholder="900, 0.123&#10;901, 0.124&#10;..."></textarea>
         <div class="actions">
-          <button onclick="pasteFile(this)" class="secondary">📁 從檔案載入</button>
-          <button onclick="previewScan(this)">👁️ 預覽光譜</button>
-          <button onclick="uploadScan(this)" class="goodBtn">☁️ 上傳到雲端</button>
+          <button onclick="pasteFile(this)" class="secondary">📁 Load from file</button>
+          <button onclick="previewScan(this)">👁️ Preview spectrum</button>
+          <button onclick="uploadScan(this)" class="goodBtn">☁️ Upload to cloud</button>
         </div>
         <div class="status"></div>
         <div class="preview"></div>
       </div>
     `;
   }
-  // 為 scan-recorder 暴露至全域
   window.makeScanRecorder = makeScanRecorder;
 
-  // ===== 初始化 =====
   window.addEventListener('DOMContentLoaded', () => {
     initSupabase();
     buildSlides();

@@ -61,6 +61,7 @@
 |---|---|
 | **主課程**（3 小時、66 張投影片） | [microplastic-food-analysis/](https://tai-shengyeh.github.io/microplastic-food-analysis/) |
 | **ML 實作工作坊**（3.5 小時、hands-on lab） | [microplastic-ml-workshop.html](https://tai-shengyeh.github.io/microplastic-food-analysis/microplastic-ml-workshop.html) |
+| **ML Workshop (English)** | [en/microplastic-ml-workshop.html](https://tai-shengyeh.github.io/microplastic-food-analysis/en/microplastic-ml-workshop.html) |
 | **教師儀表板** | [teacher.html](https://tai-shengyeh.github.io/microplastic-food-analysis/teacher.html) |
 
 ML 工作坊：學生親手用 NIR / Raman 掃描塑膠樣品，全班合作上傳資料到 Supabase，
